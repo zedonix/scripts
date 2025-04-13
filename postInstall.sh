@@ -9,6 +9,8 @@ sudo ufw enable
 sudo systemctl enable ufw
 
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+# gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+# sudo pacman -S gnome-themes-extra
 
 aur_pkgs=(
     ungoogled-chromium-bin

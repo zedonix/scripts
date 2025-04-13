@@ -9,12 +9,18 @@ echo ""
 read -p "Enter Disk: " disk
 disk="/dev/${disk%/}"
 
+# Validate disk input (optional)
+if ! lsblk "$disk" &> /dev/null; then
+    echo "Invalid disk selected."
+    exit 1
+fi
+
 # Partitioning
 parted -s "$disk" mklabel gpt
 
-# Convert swap size to MiB
-swap="8"
-swap_mib=$((swap * 1024))
+# Swap size configuration
+swap_size_gib=8
+swap_mib=$((swap_size_gib * 1024))
 
 # Partition Layout
 parted -s "$disk" mkpart ESP fat32 1MiB 1025MiB
@@ -35,13 +41,13 @@ swapon "${disk}2"
 
 # Base Installation
 install_pkgs=(
-base base-devel linux linux-firmware libxkbcommon-x11 sudo man-db man-pages 
-openssh gzip ncdu htop stow fastfetch bat eza fd fzf git ripgrep ripgrep-all sqlite ntfs-3g exfat-utils mtools dosfstools 
-networkmanager ufw newsboat pipewire wireplumber pipewire-pulse mpv 
-xorg-xwayland xdg-desktop-portal-wlr xdg-desktop-portal-gtk sway swaybg swayimg swaylock swayidle foot mako fuzzel 
-papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji clang lua python go git ttc-iosevka ttf-iosevkaterm-nerd 
-neovim tmux zathura texlive-latex texlive-bin unzip unrar zip grim slurp pcmanfm gimp clamav polkit intel-ucode 
-wl-clipboard cliphist libnotify asciinema mako qemu-full libvirt virt-manager yt-dlp reflector
+    base base-devel linux linux-firmware libxkbcommon-x11 sudo man-db man-pages 
+    openssh gzip ncdu htop stow fastfetch bat eza fd fzf git ripgrep ripgrep-all sqlite ntfs-3g exfat-utils mtools dosfstools 
+    networkmanager ufw newsboat pipewire wireplumber pipewire-pulse mpv 
+    xorg-xwayland xdg-desktop-portal-wlr xdg-desktop-portal-gtk sway swaybg swayimg swaylock swayidle foot mako fuzzel 
+    papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji clang lua python go git ttc-iosevka ttf-iosevkaterm-nerd 
+    neovim tmux zathura texlive-latex texlive-bin unzip unrar zip grim slurp pcmanfm gimp clamav polkit intel-ucode 
+    wl-clipboard cliphist libnotify asciinema mako qemu-full libvirt virt-manager yt-dlp reflector
 )
 
 # Rate and install the base system
@@ -58,22 +64,15 @@ arch-chroot /mnt /bin/bash -c "
     timezone=\"Asia/Kolkata\"
     hostname=\"archlinux\"
 
-    echo ""
-    echo ""
-    echo \"Root passwd\"
+    echo \"Setting root password...\"
     passwd
-    echo ""
-    echo ""
+    echo \"Setting user...\"
 
     # User Setup
     read -p \"Username: \" user
     useradd -m -G wheel,storage,power,video,audio -s /bin/bash \"\$user\"
-    echo ""
-    echo ""
-    echo \"\$user passwd\"
+    echo \"Setting user password...\"
     passwd \"\$user\"
-    echo ""
-    echo ""
 
     # Local Setup
     ln -sf \"/usr/share/zoneinfo/\$timezone\" /etc/localtime
@@ -109,19 +108,12 @@ arch-chroot /mnt /bin/bash -c "
     systemctl enable reflector.timer
 
     # Copy config
-    cd /home/piyush
-    git clone https://github.com/zedonix/arch.git
-    git clone https://github.com/tmux-plugins/tpm /home/piyush/.tmux/plugins/tpm
-    cd arch
-    mkdir /home/piyush/.config
-    cp -r config/* /home/piyush/.config/
-    cp .bashrc /home/piyush/.bashrc
-
-    # Change ownership to the piyush user
-    chown -R piyush:piyush /home/piyush/.config
-    chown -R piyush:piyush /home/piyush/.tmux
-    chown -R piyush:piyush /home/piyush/arch
-    chown piyush:piyush /home/piyush/.bashrc
+    cd /home/$user
+    git clone https://github.com/zedonix/arch.git /home/$user/arch
+    git clone https://github.com/zedonix/dotfiles.git /home/$user/dotfiles
+    git clone https://github.com/tmux-plugins/tpm /home/$user/.tmux/plugins/tpm
+    cd /home/$user/dotfiles
+    stow .
 
     # Services
     systemctl enable NetworkManager
