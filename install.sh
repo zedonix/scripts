@@ -109,11 +109,11 @@ arch-chroot /mnt /bin/bash -c "
 
     # Copy config
     cd /home/$user
-    git clone https://github.com/zedonix/arch.git /home/$user/arch
-    git clone https://github.com/zedonix/dotfiles.git /home/$user/dotfiles
-    git clone https://github.com/tmux-plugins/tpm /home/$user/.tmux/plugins/tpm
+    sudo -u piyush git clone https://github.com/zedonix/arch.git /home/$user/arch
+    sudo -u piyush git clone https://github.com/zedonix/dotfiles.git /home/$user/dotfiles
+    sudo -u piyush git clone https://github.com/tmux-plugins/tpm /home/$user/.tmux/plugins/tpm
     cd /home/$user/dotfiles
-    stow .
+    sudo -u piyush stow .
 
     # Services
     systemctl enable NetworkManager
