@@ -108,12 +108,12 @@ arch-chroot /mnt /bin/bash -c "
     systemctl enable reflector.timer
 
     # Copy config
-    cd /home/$user
-    sudo -u piyush git clone https://github.com/zedonix/arch.git /home/$user/arch
-    sudo -u piyush git clone https://github.com/zedonix/dotfiles.git /home/$user/dotfiles
-    sudo -u piyush git clone https://github.com/tmux-plugins/tpm /home/$user/.tmux/plugins/tpm
-    cd /home/$user/dotfiles
-    sudo -u piyush stow .
+    cd /home/\$user
+    sudo -u \$user git clone https://github.com/zedonix/arch.git /home/\$user/arch
+    sudo -u \$user git clone https://github.com/zedonix/dotfiles.git /home/\$user/dotfiles
+    sudo -u \$user git clone https://github.com/tmux-plugins/tpm /home/\$user/.tmux/plugins/tpm
+    cd /home/\$user/dotfiles
+    sudo -u \$user stow .
 
     # Services
     systemctl enable NetworkManager
