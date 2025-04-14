@@ -1,4 +1,3 @@
-gtk/qt theme and icons
 btrfs snapper
 qemu/kvm
 chroot

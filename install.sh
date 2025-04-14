@@ -26,28 +26,42 @@ swap_mib=$((swap_size_gib * 1024))
 parted -s "$disk" mkpart ESP fat32 1MiB 1025MiB
 parted -s "$disk" set 1 esp on
 parted -s "$disk" mkpart primary linux-swap 1025MiB $((1025 + swap_mib))MiB
-parted -s "$disk" mkpart primary ext4 $((1025 + swap_mib))MiB 100%
+parted -s "$disk" mkpart primary btrfs $((1025 + swap_mib))MiB 100%
 
 # Formatting
 mkfs.fat -F32 -n BOOT "${disk}1"
 mkswap -L SWAP "${disk}2"
-mkfs.ext4 -L ROOT "${disk}3"
+mkfs.btrfs -L ROOT "${disk}3"
 
 # Mounting
 mount "${disk}3" /mnt
-mkdir -p /mnt/boot
-mount "${disk}1" /mnt/boot
+
+btrfs subvolume create /mnt/@
+btrfs subvolume create /mnt/@home
+btrfs subvolume create /mnt/@var
+btrfs subvolume create /mnt/@snapshots
+
+umount /mnt
+
+mount -o noatime,compress=zstd,space_cache,subvol=@ /dev/"${disk}3" /mnt
+mkdir -p /mnt/{boot,home,var,.snapshots}
+mount -o noatime,compress=zstd,space_cache,subvol=@home /dev/"${disk}3" /mnt/home
+mount -o noatime,compress=zstd,space_cache,subvol=@var /dev/"${disk}3" /mnt/var
+mount -o noatime,compress=zstd,space_cache,subvol=@snapshots /dev/"${disk}3" /mnt/.snapshots
+
+mkdir -p /mnt/efi
+mount "${disk}1" /mnt/efi
 swapon "${disk}2"
 
 # Base Installation
 install_pkgs=(
-    base base-devel linux linux-firmware libxkbcommon-x11 sudo man-db man-pages 
+    base base-devel linux linux-headers linux-firmware libxkbcommon-x11 sudo man-db man-pages snapper 
     openssh gzip ncdu htop stow fastfetch bat eza fzf git ripgrep ripgrep-all sqlite ntfs-3g exfat-utils mtools dosfstools 
     networkmanager ufw newsboat pipewire wireplumber pipewire-pulse mpv 
     xorg-xwayland xdg-desktop-portal-wlr xdg-desktop-portal-gtk sway swaybg swayimg swaylock swayidle foot mako fuzzel 
     papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji clang lua python go ttc-iosevka ttf-iosevkaterm-nerd 
     neovim tmux zathura texlive-latex texlive-bin unrar 7zip  grim slurp pcmanfm-gtk3 gimp clamav polkit intel-ucode 
-    wl-clipboard cliphist libnotify asciinema qemu-full libvirt virt-manager yt-dlp reflector
+    wl-clipboard cliphist libnotify asciinema yt-dlp reflector
 )
 
 # Rate and install the base system
@@ -70,7 +84,7 @@ arch-chroot /mnt /bin/bash -c "
 
     # User Setup
     read -p \"Username: \" user
-    useradd -m -G wheel,storage,power,video,audio -s /bin/bash \"\$user\"
+    useradd -m -G wheel,storage,power,video,audio,kvm -s /bin/bash \"\$user\"
     echo \"Setting user password...\"
     passwd \"\$user\"
 
@@ -91,14 +105,14 @@ arch-chroot /mnt /bin/bash -c "
     echo \"127.0.1.1  \$hostname.localdomain  \$hostname\" >> /etc/hosts
 
     # Bootloader
-    pacman -S --noconfirm grub efibootmgr os-prober
-    grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+    pacman -S --noconfirm grub grub-btrfs efibootmgr os-prober
+    grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
     grub-mkconfig -o /boot/grub/grub.cfg
     echo \"GRUB_DISABLE_OS_PROBER=false\" >> /etc/default/grub
     grub-mkconfig -o /boot/grub/grub.cfg
 
     # Reflector Setup
-    mkdir /etc/xdg/reflector
+    # mkdir /etc/xdg/reflector
     echo \"--save /etc/pacman.d/mirrorlist\" > /etc/xdg/reflector/reflector.conf
     echo \"--protocol https\" >> /etc/xdg/reflector/reflector.conf
     echo \"--country India\" >> /etc/xdg/reflector/reflector.conf
