@@ -42,12 +42,12 @@ swapon "${disk}2"
 # Base Installation
 install_pkgs=(
     base base-devel linux linux-firmware libxkbcommon-x11 sudo man-db man-pages 
-    openssh gzip ncdu htop stow fastfetch bat eza fd fzf git ripgrep ripgrep-all sqlite ntfs-3g exfat-utils mtools dosfstools 
+    openssh gzip ncdu htop stow fastfetch bat eza fzf git ripgrep ripgrep-all sqlite ntfs-3g exfat-utils mtools dosfstools 
     networkmanager ufw newsboat pipewire wireplumber pipewire-pulse mpv 
     xorg-xwayland xdg-desktop-portal-wlr xdg-desktop-portal-gtk sway swaybg swayimg swaylock swayidle foot mako fuzzel 
-    papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji clang lua python go git ttc-iosevka ttf-iosevkaterm-nerd 
-    neovim tmux zathura texlive-latex texlive-bin unzip unrar zip grim slurp pcmanfm gimp clamav polkit intel-ucode 
-    wl-clipboard cliphist libnotify asciinema mako qemu-full libvirt virt-manager yt-dlp reflector
+    papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji clang lua python go ttc-iosevka ttf-iosevkaterm-nerd 
+    neovim tmux zathura texlive-latex texlive-bin unrar 7zip  grim slurp pcmanfm-gtk3 gimp clamav polkit intel-ucode 
+    wl-clipboard cliphist libnotify asciinema qemu-full libvirt virt-manager yt-dlp reflector
 )
 
 # Rate and install the base system
