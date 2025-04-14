@@ -113,6 +113,7 @@ arch-chroot /mnt /bin/bash -c "
     sudo -u \$user git clone https://github.com/zedonix/dotfiles.git /home/\$user/dotfiles
     sudo -u \$user git clone https://github.com/tmux-plugins/tpm /home/\$user/.tmux/plugins/tpm
     cd /home/\$user/dotfiles
+    rm /home/\$user/.bashrc
     sudo -u \$user stow .
 
     # Services
