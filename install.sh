@@ -31,7 +31,7 @@ parted -s "$disk" mkpart primary btrfs $((1025 + swap_mib))MiB 100%
 # Formatting
 mkfs.fat -F32 -n BOOT "${disk}1"
 mkswap -L SWAP "${disk}2"
-mkfs.btrfs -L ROOT "${disk}3"
+mkfs.btrfs -f -L ROOT "${disk}3"
 
 # Mounting
 mount "${disk}3" /mnt
@@ -43,11 +43,11 @@ btrfs subvolume create /mnt/@snapshots
 
 umount /mnt
 
-mount -o noatime,compress=zstd,space_cache,subvol=@ /dev/"${disk}3" /mnt
+mount -o noatime,compress=zstd,space_cache,subvol=@ "${disk}3" /mnt
 mkdir -p /mnt/{boot,home,var,.snapshots}
-mount -o noatime,compress=zstd,space_cache,subvol=@home /dev/"${disk}3" /mnt/home
-mount -o noatime,compress=zstd,space_cache,subvol=@var /dev/"${disk}3" /mnt/var
-mount -o noatime,compress=zstd,space_cache,subvol=@snapshots /dev/"${disk}3" /mnt/.snapshots
+mount -o noatime,compress=zstd,space_cache,subvol=@home "${disk}3" /mnt/home
+mount -o noatime,compress=zstd,space_cache,subvol=@var "${disk}3" /mnt/var
+mount -o noatime,compress=zstd,space_cache,subvol=@snapshots "${disk}3" /mnt/.snapshots
 
 mkdir -p /mnt/efi
 mount "${disk}1" /mnt/efi
