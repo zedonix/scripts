@@ -50,8 +50,8 @@ mount -o noatime,compress=zstd,subvol=@home "${disk}3" /mnt/home
 mount -o noatime,compress=zstd,subvol=@var "${disk}3" /mnt/var
 mount -o noatime,compress=zstd,subvol=@snapshots "${disk}3" /mnt/.snapshots
 
-mkdir -p /mnt/efi
-mount "${disk}1" /mnt/efi
+mkdir -p /mnt/boot
+mount "${disk}1" /mnt/boot
 
 # Base Installation
 install_pkgs=(
@@ -106,7 +106,7 @@ arch-chroot /mnt /bin/bash -c "
 
     # Bootloader
     pacman -S --noconfirm grub grub-btrfs efibootmgr os-prober
-    grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
+    grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
     grub-mkconfig -o /boot/grub/grub.cfg
     echo \"GRUB_DISABLE_OS_PROBER=false\" >> /etc/default/grub
     grub-mkconfig -o /boot/grub/grub.cfg
