@@ -50,17 +50,17 @@ mount -o noatime,compress=zstd,subvol=@home "${disk}3" /mnt/home
 mount -o noatime,compress=zstd,subvol=@var "${disk}3" /mnt/var
 mount -o noatime,compress=zstd,subvol=@snapshots "${disk}3" /mnt/.snapshots
 
-mkdir -p /mnt/boot
-mount "${disk}1" /mnt/boot
+mkdir -p /mnt/efi
+mount "${disk}1" /mnt/efi
 
 # Base Installation
 install_pkgs=(
-    base base-devel linux linux-headers linux-firmware libxkbcommon-x11 sudo man-db man-pages snapper 
-    openssh gzip ncdu htop stow fastfetch bat eza fzf git ripgrep ripgrep-all sqlite ntfs-3g exfat-utils mtools dosfstools 
+    base base-devel linux linux-headers linux-firmware libxkbcommon-x11 sudo man-db man-pages snapper snap-pac btrfs-progs
+    openssh gzip ncdu htop fastfetch bat eza fzf git ripgrep ripgrep-all sqlite ntfs-3g exfat-utils mtools dosfstools 
     networkmanager ufw newsboat pipewire wireplumber pipewire-pulse mpv 
     xorg-xwayland xdg-desktop-portal-wlr xdg-desktop-portal-gtk sway swaybg swayimg swaylock swayidle foot mako fuzzel 
-    papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji clang lua python go ttc-iosevka ttf-iosevkaterm-nerd 
-    neovim tmux zathura texlive-latex texlive-bin unrar 7zip  grim slurp pcmanfm-gtk3 gimp clamav polkit intel-ucode 
+    papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji clang lua python go ttc-iosevka ttf-iosevkaterm-nerd gnome-themes-extra 
+    neovim tmux zathura texlive-latex texlive-bin unrar 7zip grim slurp pcmanfm-gtk3 gimp clamav polkit intel-ucode 
     wl-clipboard cliphist libnotify asciinema yt-dlp reflector
 )
 
@@ -122,13 +122,10 @@ arch-chroot /mnt /bin/bash -c "
     systemctl enable reflector.timer
 
     # Copy config
-    cd /home/\$user
     sudo -u \$user git clone https://github.com/zedonix/arch.git /home/\$user/arch
     sudo -u \$user git clone https://github.com/zedonix/dotfiles.git /home/\$user/dotfiles
     sudo -u \$user git clone https://github.com/tmux-plugins/tpm /home/\$user/.tmux/plugins/tpm
-    cd /home/\$user/dotfiles
-    rm /home/\$user/.bashrc
-    sudo -u \$user stow .
+    cp -r /home/\$user/dotfiles/* /home/\$user/
 
     # Services
     systemctl enable NetworkManager
