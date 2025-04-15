@@ -117,7 +117,8 @@ arch-chroot /mnt /bin/bash -c "
     sudo -u \$user git clone https://github.com/zedonix/arch.git /home/\$user/arch
     sudo -u \$user git clone https://github.com/zedonix/dotfiles.git /home/\$user/dotfiles
     sudo -u \$user git clone https://github.com/tmux-plugins/tpm /home/\$user/.tmux/plugins/tpm
-    cp -r /home/\$user/dotfiles/* /home/\$user/
+    sudo -u \$user cp -r /home/\$user/dotfiles/.config /home/\$user/
+    sudo -u \$user cp /home/\$user/dotfiles/.bashrc /home/\$user/
 
     # Services
     systemctl enable NetworkManager
