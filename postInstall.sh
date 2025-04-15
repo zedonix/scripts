@@ -23,6 +23,7 @@ sudo systemctl enable --now grub-btrfsd
 
 # aur installation
 aur_pkgs=(
+    btrfs-assistant
     ungoogled-chromium-bin
     chromium-extension-web-store
     chromium-extension-ublock-origin
