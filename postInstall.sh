@@ -17,6 +17,7 @@ gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 # Snapper setup
 sudo snapper -c root create-config /
 sudo systemctl enable --now grub-btrfsd
+grub-mkconfig
 
 # aur installation
 aur_pkgs=(
