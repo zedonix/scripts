@@ -13,23 +13,17 @@ sudo systemctl enable ufw
 gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
 gsettings set org.gnome.desktop.interface icon-theme "Papirus-Dark"
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
-# sudo pacman -S gnome-themes-extra
 
 # Snapper setup
 sudo umount /.snapshots
 sudo rm -rf
 sudo snapper -c root create-config /
-sudo nvim /etc/snapper/config/root
-sudo chmod a+rx /.snapshots/
-sudo systemctl start snapper-timeline.timer
-sudo systemctl enable snapper-timeline.timer
-sudo systemctl start snapper-cleanup.timer
-sudo systemctl enable snapper-cleanup.timer
-sudo systemctl start grup-btrfs.path
-sudo systemctl enable grup-btrfs.path
+mount -a
+sudo systemctl enable --now grub-btrfsd
 
 # aur installation
 aur_pkgs=(
+    snap-pac-grub
     ungoogled-chromium-bin
     chromium-extension-web-store
     chromium-extension-ublock-origin
