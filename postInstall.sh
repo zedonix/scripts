@@ -16,6 +16,8 @@ gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
 # Snapper setup
 sudo snapper -c root create-config /
+sudo systemctl enable --now snapper-timeline.timer
+sudo systemctl enable --now snapper-cleanup.timer
 sudo systemctl enable --now grub-btrfsd
 
 # aur installation
