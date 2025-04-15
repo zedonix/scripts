@@ -4,16 +4,8 @@ set -euo pipefail
 # Disk Selection
 echo "Available disks:"
 lsblk
-echo ""
-echo ""
 read -p "Enter Disk: " disk
 disk="/dev/${disk%/}"
-
-# Validate disk input (optional)
-if ! lsblk "$disk" &> /dev/null; then
-    echo "Invalid disk selected."
-    exit 1
-fi
 
 # Partitioning
 parted -s "$disk" mklabel gpt
@@ -57,7 +49,7 @@ mount "${disk}1" /mnt/efi
 install_pkgs=(
     base base-devel linux linux-headers linux-firmware libxkbcommon-x11 sudo man-db man-pages snapper snap-pac btrfs-progs
     openssh gzip ncdu htop fastfetch bat eza fzf git ripgrep ripgrep-all sqlite ntfs-3g exfat-utils mtools dosfstools 
-    networkmanager ufw newsboat pipewire wireplumber pipewire-pulse mpv 
+    networkmanager ufw newsboat pipewire wireplumber pipewire-pulse pipewire-alsa pipewire-audio pipewire-jack mpv easyeffects
     xorg-xwayland xdg-desktop-portal-wlr xdg-desktop-portal-gtk sway swaybg swayimg swaylock swayidle foot mako fuzzel 
     papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji clang lua python go ttc-iosevka ttf-iosevkaterm-nerd gnome-themes-extra 
     neovim tmux zathura texlive-latex texlive-bin unrar 7zip grim slurp pcmanfm-gtk3 gimp clamav polkit intel-ucode 
