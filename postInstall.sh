@@ -16,7 +16,7 @@ gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
 # Snapper setup
 sudo umount /.snapshots
-sudo rm -rf
+sudo rm -rvf /.snapshots
 sudo snapper -c root create-config /
 mount -a
 sudo systemctl enable --now grub-btrfsd
