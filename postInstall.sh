@@ -18,7 +18,7 @@ gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 sudo umount /.snapshots
 sudo rm -rvf /.snapshots
 sudo snapper -c root create-config /
-mount -a
+sudo mount -a
 sudo systemctl enable --now grub-btrfsd
 
 # aur installation
