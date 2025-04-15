@@ -36,7 +36,7 @@ btrfs subvolume create /mnt/@var
 umount /mnt
 
 mount -o noatime,compress=zstd,subvol=@ "${disk}3" /mnt
-mkdir -p /mnt/{boot,home,var,.snapshots}
+mkdir -p /mnt/{boot,home,var}
 mount -o noatime,compress=zstd,subvol=@home "${disk}3" /mnt/home
 mount -o noatime,compress=zstd,subvol=@var "${disk}3" /mnt/var
 
