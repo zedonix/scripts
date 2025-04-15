@@ -1,3 +1,2 @@
-btrfs snapper
 qemu/kvm
 chroot
