@@ -34,8 +34,8 @@ aur_pkgs=(
     github-cli-git
 )
 
-mkdir -p ../aur
-cd ../aur
+mkdir -p /home/piyush/aur
+cd /home/piyush/aur
 
 for pkg in "${aur_pkgs[@]}"; do
     git clone "https://aur.archlinux.org/$pkg.git"
