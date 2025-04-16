@@ -51,7 +51,7 @@ install_pkgs=(
     xorg-xwayland xdg-desktop-portal-wlr xdg-desktop-portal-gtk sway swaybg swayimg swaylock swayidle foot mako fuzzel 
     papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji ttc-iosevka ttf-iosevkaterm-nerd gnome-themes-extra 
     neovim tmux zathura texlive-latex texlive-bin unrar 7zip grim slurp pcmanfm-gtk3 gimp clamav intel-ucode 
-    wl-clipboard cliphist libnotify asciinema yt-dlp reflector polkit polkit-kde-agent clang lua python go 
+    wl-clipboard cliphist libnotify asciinema yt-dlp reflector polkit polkit-kde-agent clang lua python go inotify-tools
 )
 
 # Rate and install the base system
