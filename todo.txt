@@ -1,4 +1,3 @@
-zram
 qemu/kvm
 chroot
 qt dark
