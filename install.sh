@@ -125,7 +125,6 @@ arch-chroot /mnt /bin/bash -c "
     systemctl enable clamav-daemon.service
 
     # Clean up package cache and Wrapping up
-    pacman -Syu
     pacman -Scc --noconfirm
 "
 
