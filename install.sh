@@ -46,12 +46,12 @@ mount "${disk}1" /mnt/boot
 # Base Installation
 install_pkgs=(
     base base-devel linux linux-headers linux-firmware libxkbcommon-x11 sudo man-db man-pages snapper btrfs-progs
-    openssh ncdu htop fastfetch bat eza fzf git ripgrep ripgrep-all sqlite ntfs-3g exfat-utils mtools dosfstools stylua pyright
+    openssh ncdu htop fastfetch bat eza fzf git ripgrep ripgrep-all sqlite ntfs-3g exfat-utils mtools dosfstools
     networkmanager ufw newsboat pipewire wireplumber pipewire-pulse pipewire-alsa pipewire-audio pipewire-jack mpv easyeffects
-    xorg-xwayland xdg-desktop-portal-wlr xdg-desktop-portal-gtk sway swaybg swayimg swaylock swayidle foot dunst fuzzel 
+    xorg-xwayland xdg-desktop-portal-wlr xdg-desktop-portal-gtk sway swaybg swayimg swaylock swayidle foot dunst fuzzel
     papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji ttc-iosevka ttf-iosevkaterm-nerd gnome-themes-extra yt-dlp
     neovim tmux zathura texlive-latex texlive-bin unrar 7zip grim slurp pcmanfm-gtk3 gimp clamav intel-ucode inotify-tools
-    wl-clipboard cliphist libnotify asciinema reflector polkit polkit-kde-agent clang lua python python-black go gofumpt
+    wl-clipboard cliphist libnotify asciinema reflector polkit polkit-kde-agent clang lua python python-black stylua pyright
 )
 
 # Rate and install the base system
