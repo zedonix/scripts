@@ -1,4 +1,5 @@
 foot server
+unit tests
 qemu/kvm virt manager
 chroot
 qt dark
