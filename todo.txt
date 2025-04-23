@@ -1,3 +1,4 @@
+foot server
 qemu/kvm virt manager
 chroot
 qt dark
