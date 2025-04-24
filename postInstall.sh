@@ -25,12 +25,12 @@ aur_pkgs=(
     ungoogled-chromium-bin
     chromium-extension-web-store
     chromium-extension-ublock-origin
+    github-cli-git
     btrfs-assistant
     sway-audio-idle-inhibit-git
     shotman
     swayosd-git
     onlyoffice-bin
-    github-cli-git
 )
 
 mkdir -p /home/piyush/aur

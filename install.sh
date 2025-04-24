@@ -135,17 +135,16 @@ arch-chroot /mnt /bin/bash -c "
     systemctl enable --now grub-btrfsd
 
     # Copy config
-    sudo -u "$user" bash -c '
-        git clone https://github.com/zedonix/arch.git /home/'"$user"'/arch
-        git clone https://github.com/zedonix/dotfiles.git /home/'"$user"'/dotfiles
-        git clone https://github.com/tmux-plugins/tpm /home/'"$user"'/.tmux/plugins/tpm
+    sudo -u \"\$user\" bash -c '
+        git clone https://github.com/zedonix/arch.git \"/home/\$user/arch\"
+        git clone https://github.com/zedonix/dotfiles.git \"/home/\$user/dotfiles\"
+        git clone https://github.com/tmux-plugins/tpm \"/home/\$user/.tmux/plugins/tpm\"
 
-        mkdir -p /home/'"$user"'/.config
-        ln -s /home/'"$user"'/dotfiles/.config/ /home/'"$user"'/.config
-        ln -s /home/'"$user"'/dotfiles/.bashrc /home/'"$user"'/.bashrc
+        mkdir -p \"/home/\$user/.config\"
+        ln -s \"/home/\$user/dotfiles/.bashrc\" \"/home/\$user/.bashrc\"
 
-        git config --global user.name "$user"
-        git config --global user.email "zedonix@proton.me"
+        git config --global user.name \"\$user\"
+        git config --global user.email \"zedonix@proton.me\"
         git config --global core.editor nvim
         git config --global init.defaultBranch main
     '
