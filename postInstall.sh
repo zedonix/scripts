@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # ufw setup
 sudo ufw limit 22/tcp
 sudo ufw allow 80/tcp
@@ -14,12 +16,6 @@ gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
 gsettings set org.gnome.desktop.interface icon-theme "Papirus-Dark"
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
-# Snapper setup
-# sudo snapper -c root create-config /
-# sudo systemctl enable --now snapper-timeline.timer
-# sudo systemctl enable --now snapper-cleanup.timer
-# sudo systemctl enable --now grub-btrfsd
-
 # aur installation
 aur_pkgs=(
     ungoogled-chromium-bin
@@ -33,16 +29,20 @@ aur_pkgs=(
     onlyoffice-bin
 )
 
-mkdir -p /home/piyush/aur
-cd /home/piyush/aur
+aur_dir="$HOME/aur"
+mkdir -p "$aur_dir"
+cd "$aur_dir"
 
 for pkg in "${aur_pkgs[@]}"; do
-    git clone "https://aur.archlinux.org/$pkg.git"
-    cd "$pkg"
-    cat PKGBUILD
-    read -p "Wanna build $pkg? (y/n) " choice
-    if [ "$choice" = "y" ] || [ -z "$choice" ]; then
-        makepkg -si
+    read -p "Install $pkg? [Y/n] " -r
+    if [[ $REPLY =~ ^[Yy]?$ ]]; then
+        git clone "https://aur.archlinux.org/$pkg.git"
+        cd "$pkg"
+        less PKGBUILD
+        read -p "Build $pkg? [Y/n] " -r
+        if [[ $REPLY =~ ^[Yy]?$ ]]; then
+            makepkg -si --noconfirm --needed
+        fi
+        cd ..
     fi
-    cd ..
 done
