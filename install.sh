@@ -49,7 +49,7 @@ install_pkgs=(
     openssh ncdu htop fastfetch bat eza fzf git ripgrep ripgrep-all sqlite ntfs-3g exfat-utils mtools dosfstools
     networkmanager ufw newsboat pipewire wireplumber pipewire-pulse pipewire-alsa pipewire-audio pipewire-jack mpv
     xorg-xwayland xdg-desktop-portal-wlr xdg-desktop-portal-gtk sway swaybg swayimg swaylock swayidle foot dunst fuzzel
-    papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji ttc-iosevka ttf-iosevkaterm-nerd gnome-themes-extra yt-dlp
+    papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji ttc-iosevka ttf-iosevkaterm-nerd gnome-themes-extra yt-dlp aria2
     neovim tmux zathura texlive-latex unrar 7zip grim slurp pcmanfm-gtk3 gimp clamav intel-ucode inotify-tools easyeffects
     wl-clipboard cliphist libnotify asciinema reflector polkit polkit-kde-agent clang lua python python-black stylua pyright
 )

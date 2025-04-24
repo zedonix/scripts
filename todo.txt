@@ -1,6 +1,7 @@
 unit tests
 dunst notify by all
 link config
+aria2 config
 git config
 pacman color
 qemu/kvm virt manager
