@@ -1,9 +1,6 @@
-unit tests
-dunst notify by all
-link config
-aria2 config
-git config
-pacman color
+mako config
+matrix server?
+apparmor
 qemu/kvm virt manager
 chroot
 qt dark

@@ -4,8 +4,24 @@ set -euo pipefail
 # Disk Selection
 echo "Available disks:"
 lsblk
-read -p "Enter Disk: " disk
-disk="/dev/${disk%/}"
+read -p "Enter Disk: " disk_input
+disk="/dev/${disk_input%/}"
+
+# Disk Checking
+if [ ! -b "$disk" ]; then
+  echo "Disk $disk does not exist. Exiting."
+  exit 1
+fi
+
+if [[ "$disk" == *nvme* ]]; then
+  part1="${disk}p1"
+  part2="${disk}p2"
+  part3="${disk}p3"
+else
+  part1="${disk}1"
+  part2="${disk}2"
+  part3="${disk}3"
+fi
 
 # Partitioning
 parted -s "$disk" mklabel gpt
@@ -21,13 +37,13 @@ parted -s "$disk" mkpart primary linux-swap 1025MiB $((1025 + swap_mib))MiB
 parted -s "$disk" mkpart primary btrfs $((1025 + swap_mib))MiB 100%
 
 # Formatting
-mkfs.fat -F32 -n BOOT "${disk}1"
-mkswap -L SWAP "${disk}2"
-swapon "${disk}2"
-mkfs.btrfs -f -L ROOT "${disk}3"
+mkfs.fat -F32 -n BOOT "$part1"
+mkswap -L SWAP "$part2"
+swapon "$part2"
+mkfs.btrfs -f -L ROOT "$part3"
 
 # Mounting
-mount "${disk}3" /mnt
+mount "$part3" /mnt
 
 btrfs subvolume create /mnt/@
 btrfs subvolume create /mnt/@home
@@ -48,9 +64,9 @@ install_pkgs=(
     base base-devel linux linux-headers linux-firmware libxkbcommon-x11 sudo man-db man-pages snapper btrfs-progs
     openssh ncdu htop fastfetch bat eza fzf git ripgrep ripgrep-all sqlite ntfs-3g exfat-utils mtools dosfstools
     networkmanager ufw newsboat pipewire wireplumber pipewire-pulse pipewire-alsa pipewire-audio pipewire-jack mpv
-    xorg-xwayland xdg-desktop-portal-wlr xdg-desktop-portal-gtk sway swaybg swayimg swaylock swayidle foot dunst fuzzel
+    xorg-xwayland xdg-desktop-portal-wlr xdg-desktop-portal-gtk sway swaybg swayimg swaylock swayidle foot mako fuzzel
     papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji ttc-iosevka ttf-iosevkaterm-nerd gnome-themes-extra yt-dlp aria2
-    neovim tmux zathura texlive-latex unrar 7zip grim slurp pcmanfm-gtk3 gimp clamav intel-ucode inotify-tools easyeffects
+    neovim tmux zathura texlive-latex unrar 7zip grim slurp pcmanfm-gtk3 gimp clamav clamtk intel-ucode inotify-tools easyeffects
     wl-clipboard cliphist libnotify asciinema reflector polkit polkit-kde-agent clang lua python python-black stylua pyright
 )
 
@@ -84,6 +100,7 @@ arch-chroot /mnt /bin/bash -c "
     sed -i \"/en_US.UTF-8/s/^#//\" /etc/locale.gen
     locale-gen
     echo \"LANG=en_US.UTF-8\" > /etc/locale.conf
+    timedatectl set-ntp true
 
     # Sudo Configuration
     echo \"%wheel ALL=(ALL) ALL\" > /etc/sudoers.d/wheel
@@ -101,8 +118,8 @@ arch-chroot /mnt /bin/bash -c "
     echo \"GRUB_DISABLE_OS_PROBER=false\" >> /etc/default/grub
     grub-mkconfig -o /boot/grub/grub.cfg
 
-    # Reflector Setup
-    # mkdir /etc/xdg/reflector
+    # Reflector and pacman Setup
+    sed -i '/^#Color$/c\Color' /etc/pacman.conf
     echo \"--save /etc/pacman.d/mirrorlist\" > /etc/xdg/reflector/reflector.conf
     echo \"--protocol https\" >> /etc/xdg/reflector/reflector.conf
     echo \"--country India\" >> /etc/xdg/reflector/reflector.conf
@@ -111,12 +128,27 @@ arch-chroot /mnt /bin/bash -c "
     echo \"--sort rate\" >> /etc/xdg/reflector/reflector.conf
     systemctl enable reflector.timer
 
+    # Snapper config
+    snapper -c root create-config /
+    systemctl enable --now snapper-timeline.timer
+    systemctl enable --now snapper-cleanup.timer
+    systemctl enable --now grub-btrfsd
+
     # Copy config
-    sudo -u \$user git clone https://github.com/zedonix/arch.git /home/\$user/arch
-    sudo -u \$user git clone https://github.com/zedonix/dotfiles.git /home/\$user/dotfiles
-    sudo -u \$user git clone https://github.com/tmux-plugins/tpm /home/\$user/.tmux/plugins/tpm
-    sudo -u \$user cp -r /home/\$user/dotfiles/.config /home/\$user/
-    sudo -u \$user cp /home/\$user/dotfiles/.bashrc /home/\$user/
+    sudo -u "$user" bash -c '
+        git clone https://github.com/zedonix/arch.git /home/'"$user"'/arch
+        git clone https://github.com/zedonix/dotfiles.git /home/'"$user"'/dotfiles
+        git clone https://github.com/tmux-plugins/tpm /home/'"$user"'/.tmux/plugins/tpm
+
+        mkdir -p /home/'"$user"'/.config
+        ln -s /home/'"$user"'/dotfiles/.config/ /home/'"$user"'/.config
+        ln -s /home/'"$user"'/dotfiles/.bashrc /home/'"$user"'/.bashrc
+
+        git config --global user.name "$user"
+        git config --global user.email "zedonix@proton.me"
+        git config --global core.editor nvim
+        git config --global init.defaultBranch main
+    '
 
     # Services
     systemctl enable NetworkManager
