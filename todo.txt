@@ -1,5 +1,7 @@
-foot server
 unit tests
+link config
+git config
+pacman color
 qemu/kvm virt manager
 chroot
 qt dark
