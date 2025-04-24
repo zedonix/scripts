@@ -1,4 +1,5 @@
 unit tests
+dunst notify by all
 link config
 git config
 pacman color

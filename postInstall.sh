@@ -30,6 +30,7 @@ aur_pkgs=(
     btrfs-assistant
     sway-audio-idle-inhibit-git
     shotman
+    swayosd-git
     onlyoffice-bin
     github-cli-git
 )
@@ -42,7 +43,7 @@ for pkg in "${aur_pkgs[@]}"; do
     cd "$pkg"
     cat PKGBUILD
     read -p "Wanna build $pkg? (y/n) " choice
-    if [ "$choice" == "y" ]; then
+    if [ "$choice" = "y" ] || [ -z "$choice" ]; then
         makepkg -si
     fi
     cd ..
