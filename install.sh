@@ -130,9 +130,9 @@ arch-chroot /mnt /bin/bash -c "
 
     # Snapper config
     snapper -c root create-config /
-    systemctl enable --now snapper-timeline.timer
-    systemctl enable --now snapper-cleanup.timer
-    systemctl enable --now grub-btrfsd
+    systemctl enable snapper-timeline.timer
+    systemctl enable snapper-cleanup.timer
+    systemctl enable grub-btrfsd
 
     # Copy config
     sudo -u \"\$user\" bash -c '
@@ -142,6 +142,19 @@ arch-chroot /mnt /bin/bash -c "
 
         mkdir -p \"/home/\$user/.config\"
         ln -s \"/home/\$user/dotfiles/.bashrc\" \"/home/\$user/.bashrc\"
+        links=(
+            foot
+            fuzzel
+            htop
+            newsboat
+            nvim
+            sway
+            tmux
+            zathura
+        )
+        for link in \"\${links[@]}\"; do
+            ln -s \"/home/\$user/dotfiles/\$link/\" \"/home/\$user/.config\"
+        done
 
         git config --global user.name \"\$user\"
         git config --global user.email \"zedonix@proton.me\"
