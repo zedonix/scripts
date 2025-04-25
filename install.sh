@@ -134,14 +134,14 @@ arch-chroot /mnt /bin/bash -c "
     systemctl enable grub-btrfsd
 
     # Copy config
-    sudo -u \"\$user\" bash -c '
-        git clone https://github.com/zedonix/arch.git \"/home/\$user/arch\"
-        git clone https://github.com/zedonix/dotfiles.git \"/home/\$user/dotfiles\"
-        git clone https://github.com/tmux-plugins/tpm \"/home/\$user/.tmux/plugins/tpm\"
-        
-        mkdir -p \"/home/\$user/.config\"
-        ln -s \"/home/\$user/dotfiles/.bashrc\" \"/home/\$user/.bashrc\"
- 
+    sudo -u "\$user" bash -c "
+        git clone https://github.com/zedonix/arch.git \"/home/\${user}/arch\"
+        git clone https://github.com/zedonix/dotfiles.git \"/home/\${user}/dotfiles\"
+        git clone https://github.com/tmux-plugins/tpm \"/home/\${user}/.tmux/plugins/tpm\"
+    
+        mkdir -p \"/home/\${user}/.config\"
+        ln -s \"/home/\${user}/dotfiles/.bashrc\" \"/home/\${user}/.bashrc\"
+
         links=(
             foot
             fuzzel
@@ -152,11 +152,11 @@ arch-chroot /mnt /bin/bash -c "
             tmux
             zathura
         )
- 
+    
         for link in \"\${links[@]}\"; do
-            ln -s \"/home/\$user/dotfiles/.config/\$link/\" \"/home/\$user/.config\"
+            ln -s \"/home/\${user}/dotfiles/.config/\$link/\" \"/home/\${user}/.config\"
         done
-    '
+    "
 
     # Services
     systemctl enable NetworkManager
