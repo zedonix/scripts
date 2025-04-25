@@ -1,22 +1,5 @@
 #!/bin/bash
 
-set -e
-
-# ufw setup
-sudo ufw limit 22/tcp
-sudo ufw allow 80/tcp
-sudo ufw allow 443/tcp
-sudo ufw default deny incoming
-sudo ufw default allow outgoing
-sudo ufw enable
-sudo systemctl enable ufw
-
-# GTK setup
-gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
-gsettings set org.gnome.desktop.interface icon-theme "Papirus-Dark"
-gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
-
-# aur installation
 aur_pkgs=(
     ungoogled-chromium-bin
     chromium-extension-web-store

@@ -155,11 +155,6 @@ arch-chroot /mnt /bin/bash -c "
         for link in \"\${links[@]}\"; do
             ln -s \"/home/\$user/dotfiles/.config/\$link/\" \"/home/\$user/.config\"
         done
-
-        git config --global user.name \"\$user\"
-        git config --global user.email \"zedonix@proton.me\"
-        git config --global core.editor nvim
-        git config --global init.defaultBranch main
     '
 
     # Services
