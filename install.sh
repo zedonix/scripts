@@ -153,7 +153,7 @@ arch-chroot /mnt /bin/bash -c "
             zathura
         )
         for link in \"\${links[@]}\"; do
-            ln -s \"/home/\$user/dotfiles/\$link/\" \"/home/\$user/.config\"
+            ln -s \"/home/\$user/dotfiles/.config/\$link/\" \"/home/\$user/.config\"
         done
 
         git config --global user.name \"\$user\"
