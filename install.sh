@@ -134,13 +134,13 @@ arch-chroot /mnt /bin/bash -c "
     systemctl enable grub-btrfsd
 
     # Copy config
-    sudo -u "\$user" bash -c "
-        git clone https://github.com/zedonix/arch.git \"/home/\${user}/arch\"
-        git clone https://github.com/zedonix/dotfiles.git \"/home/\${user}/dotfiles\"
-        git clone https://github.com/tmux-plugins/tpm \"/home/\${user}/.tmux/plugins/tpm\"
+    sudo -u \"\$user\" bash -c '
+        git clone https://github.com/zedonix/arch.git \"/home/\${USER}/arch\"
+        git clone https://github.com/zedonix/dotfiles.git \"/home/\${USER}/dotfiles\"
+        git clone https://github.com/tmux-plugins/tpm \"/home/\${USER}/.tmux/plugins/tpm\"
     
-        mkdir -p \"/home/\${user}/.config\"
-        ln -s \"/home/\${user}/dotfiles/.bashrc\" \"/home/\${user}/.bashrc\"
+        mkdir -p \"/home/\${USER}/.config\"
+        ln -s \"/home/\${USER}/dotfiles/.bashrc\" \"/home/\${USER}/.bashrc\"
 
         links=(
             foot
@@ -154,7 +154,7 @@ arch-chroot /mnt /bin/bash -c "
         )
     
         for link in \"\${links[@]}\"; do
-            ln -s \"/home/\${user}/dotfiles/.config/\$link/\" \"/home/\${user}/.config\"
+            ln -s \"/home/\${USER}/dotfiles/.config/\$link/\" \"/home/\${USER}/.config\"
         done
     "
 
