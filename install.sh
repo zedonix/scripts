@@ -113,7 +113,6 @@ arch-chroot /mnt /bin/bash -c "
     # Bootloader
     pacman -S --noconfirm grub grub-btrfs efibootmgr os-prober
     grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-    grub-mkconfig -o /boot/grub/grub.cfg
     echo \"GRUB_DISABLE_OS_PROBER=false\" >> /etc/default/grub
     grub-mkconfig -o /boot/grub/grub.cfg
 
@@ -140,7 +139,7 @@ arch-chroot /mnt /bin/bash -c "
         git clone https://github.com/tmux-plugins/tpm \"/home/\${USER}/.tmux/plugins/tpm\"
     
         mkdir -p \"/home/\${USER}/.config\"
-        ln -s \"/home/\${USER}/dotfiles/.bashrc\" \"/home/\${USER}/.bashrc\"
+        ln -sf \"/home/\${USER}/dotfiles/.bashrc\" \"/home/\${USER}/.bashrc\"
 
         links=(
             foot
@@ -160,7 +159,6 @@ arch-chroot /mnt /bin/bash -c "
 
     # Services
     systemctl enable NetworkManager
-
     freshclam
     systemctl enable clamav-daemon.service
 
