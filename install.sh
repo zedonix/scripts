@@ -134,7 +134,7 @@ arch-chroot /mnt /bin/bash -c "
 
     # Copy config
     sudo -u \"\$user\" bash -c '
-        git clone https://github.com/zedonix/arch.git \"/home/\${USER}/arch\"
+        git clone https://github.com/zedonix/scripts.git \"/home/\${USER}/scripts\"
         git clone https://github.com/zedonix/dotfiles.git \"/home/\${USER}/dotfiles\"
         git clone https://github.com/tmux-plugins/tpm \"/home/\${USER}/.tmux/plugins/tpm\"
     
