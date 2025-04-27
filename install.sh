@@ -126,12 +126,6 @@ arch-chroot /mnt /bin/bash -c "
     echo \"--sort rate\" >> /etc/xdg/reflector/reflector.conf
     systemctl enable reflector.timer
 
-    # Snapper config
-    snapper -c root create-config /
-    systemctl enable snapper-timeline.timer
-    systemctl enable snapper-cleanup.timer
-    systemctl enable grub-btrfsd
-
     # Copy config
     sudo -u \"\$user\" bash -c '
         git clone https://github.com/zedonix/scripts.git \"/home/\${USER}/scripts\"

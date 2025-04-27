@@ -4,6 +4,7 @@ aur_pkgs=(
     ungoogled-chromium-bin
     chromium-extension-web-store
     chromium-extension-ublock-origin
+    chromium-extension-return-youtube-dislike
     github-cli-git
     btrfs-assistant
     sway-audio-idle-inhibit-git
