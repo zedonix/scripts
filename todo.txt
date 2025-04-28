@@ -1,5 +1,11 @@
-mako config
+mako config noti all systemd
 apparmor
 qemu/kvm virt manager
 chroot
-qt dark
+gtk and qt gruvbox
+
+https://wyag.thb.lt/#intro
+https://www.leshenko.net/p/ugit/#
+
+https://aur.archlinux.org/packages/ungoogled-chromium-xdg
+https://aur.archlinux.org/packages/chromium-extension-arch-search
