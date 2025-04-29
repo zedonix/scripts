@@ -148,6 +148,7 @@ arch-chroot /mnt /bin/bash -c "
             sway
             tmux
             zathura
+            swaync
         )
         for link in \"\${links[@]}\"; do
             ln -s \"/home/\${USER}/dotfiles/.config/\$link/\" \"/home/\${USER}/.config\"
