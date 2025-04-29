@@ -1,4 +1,5 @@
 scripts to install.sh
+swaync vs mako
 
 apparmor
 qemu/kvm virt manager
