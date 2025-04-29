@@ -150,6 +150,7 @@ arch-chroot /mnt /bin/bash -c "
             zathura
             swaync
         )
+        rm \"/home/\${USER}/dotfiles/.config/nvim/lazy-lock.json\"
         for link in \"\${links[@]}\"; do
             ln -s \"/home/\${USER}/dotfiles/.config/\$link/\" \"/home/\${USER}/.config\"
         done
