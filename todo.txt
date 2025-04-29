@@ -7,3 +7,13 @@ qt gruvbox
 
 https://wyag.thb.lt/#intro
 https://www.leshenko.net/p/ugit/#
+
+grep, rg, awk, sed
+journelctl, systemd
+chmod, chown, chgrp, umask
+tar, gzip, 7zip
+kill, pkill, ps, pgrep
+ssh, wget, scp, ping, rsync
+redirection output
+user management commands
+cron jobs
