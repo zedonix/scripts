@@ -1,9 +1,7 @@
-bcachefs
-xdg-settings ,mime
+scripts to install.sh
 
 apparmor
 qemu/kvm virt manager
-chroot
 qt gruvbox
 
 https://wyag.thb.lt/#intro
