@@ -68,7 +68,6 @@ install_pkgs=(
     papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji ttc-iosevka ttf-iosevkaterm-nerd yt-dlp aria2
     neovim tmux zathura texlive-latex unrar 7zip grim slurp pcmanfm-gtk3 gimp clamav intel-ucode inotify-tools easyeffects
     wl-clipboard cliphist libnotify asciinema reflector polkit polkit-kde-agent lua python python-black stylua pyright
-#gnome-themes-extra
 )
 
 # Rate and install the base system
