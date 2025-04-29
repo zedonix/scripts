@@ -66,8 +66,8 @@ install_pkgs=(
     networkmanager ufw newsboat pipewire wireplumber pipewire-pulse pipewire-alsa pipewire-audio pipewire-jack mpv sassc
     xorg-xwayland xdg-desktop-portal-wlr xdg-desktop-portal-gtk sway swaybg swayimg swaylock swayidle foot wl-clip-persist swaync fuzzel autotiling
     papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji ttc-iosevka ttf-iosevkaterm-nerd yt-dlp aria2
-    neovim tmux zathura texlive-latex unrar 7zip grim slurp pcmanfm-gtk3 gimp clamav intel-ucode inotify-tools easyeffects
-    wl-clipboard cliphist libnotify asciinema reflector polkit polkit-kde-agent lua python python-black stylua pyright
+    neovim tmux zathura texlive-latex unrar 7zip grim slurp flameshot pcmanfm-gtk3 gimp clamav intel-ucode inotify-tools easyeffects
+    wl-clipboard cliphist libnotify asciinema reflector polkit polkit-gnome lua python python-black stylua pyright
 )
 
 # Rate and install the base system
@@ -133,6 +133,11 @@ arch-chroot /mnt /bin/bash -c "
         git clone https://github.com/tmux-plugins/tpm \"/home/\${USER}/.tmux/plugins/tpm\"
 
         mkdir -p \"/home/\${USER}/Downloads\"
+        mkdir -p \"/home/\${USER}/Documents\"
+        mkdir -p \"/home/\${USER}/Public\"
+        mkdir -p \"/home/\${USER}/Templates\"
+        mkdir -p \"/home/\${USER}/Videos\"
+        mkdir -p \"/home/\${USER}/Pictures/Screenshots\"
         mkdir -p \"/home/\${USER}/PenDrive\"
         mkdir -p \"/home/\${USER}/Disk\"
 
