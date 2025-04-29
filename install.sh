@@ -134,7 +134,7 @@ arch-chroot /mnt /bin/bash -c "
         git clone https://github.com/tmux-plugins/tpm \"/home/\${USER}/.tmux/plugins/tpm\"
 
         mkdir -p \"/home/\${USER}/Downloads\"
-        git clone https://github.com/Fausto-Korpsvart/Gruvbox-GTK-Theme \"/home/\${USER}/Downloads\"
+        git clone https://github.com/Fausto-Korpsvart/Gruvbox-GTK-Theme.git \"/home/\${USER}/Downloads\"
 
         mkdir -p \"/home/\${USER}/.config\"
         ln -sf \"/home/\${USER}/dotfiles/.bashrc\" \"/home/\${USER}/.bashrc\"
