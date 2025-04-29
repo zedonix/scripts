@@ -3,7 +3,7 @@
 set -e
 
 # Paths
-SRC_DIR="/home/piyush/scripts/GruvboxGtk"
+SRC_DIR="/home/piyush/Downloads/GruvboxGtk"
 DEST_DIR="${HOME}/.themes"
 THEME_NAME="Gruvbox-Dark"
 

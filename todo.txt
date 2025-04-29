@@ -8,5 +8,3 @@ qt gruvbox
 
 https://wyag.thb.lt/#intro
 https://www.leshenko.net/p/ugit/#
-
-https://practicaltypography.com/
