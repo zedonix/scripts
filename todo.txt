@@ -1,7 +1,6 @@
 scripts to install.sh
-swaync vs mako
 
-apparmor
+apparmor & firejail
 qemu/kvm virt manager
 qt gruvbox
 
