@@ -128,10 +128,6 @@ arch-chroot /mnt /bin/bash -c "
 
     # Copy config
     sudo -u \"\$user\" bash -c '
-        git clone https://github.com/zedonix/scripts.git \"/home/\${USER}/scripts\"
-        git clone https://github.com/zedonix/dotfiles.git \"/home/\${USER}/dotfiles\"
-        git clone https://github.com/tmux-plugins/tpm \"/home/\${USER}/.tmux/plugins/tpm\"
-
         mkdir -p \"/home/\${USER}/Downloads\"
         mkdir -p \"/home/\${USER}/Documents\"
         mkdir -p \"/home/\${USER}/Public\"
@@ -139,7 +135,11 @@ arch-chroot /mnt /bin/bash -c "
         mkdir -p \"/home/\${USER}/Videos\"
         mkdir -p \"/home/\${USER}/Pictures/Screenshots\"
         mkdir -p \"/home/\${USER}/PenDrive\"
-        mkdir -p \"/home/\${USER}/Disk\"
+
+        git clone https://github.com/zedonix/scripts.git \"/home/\${USER}/.scripts\"
+        git clone https://github.com/zedonix/dotfiles.git \"/home/\${USER}/.dotfiles\"
+        git clone https://github.com/zedonix/GruvboxGtk.git \"/home/\${USER}/Downloads/GruvboxGtk\"
+        git clone https://github.com/tmux-plugins/tpm \"/home/\${USER}/.tmux/plugins/tpm\"
 
         mkdir -p \"/home/\${USER}/.config\"
         ln -sf \"/home/\${USER}/dotfiles/.bashrc\" \"/home/\${USER}/.bashrc\"

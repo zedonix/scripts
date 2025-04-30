@@ -1,6 +1,6 @@
 #!/bin/bash
 
-aur_dir="$HOME/aur"
+aur_dir="$HOME/.aur"
 cd "$aur_dir"
 
 for pkg_dir in */ ; do

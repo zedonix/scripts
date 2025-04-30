@@ -1,4 +1,5 @@
-scripts to install.sh
+scripts together
+htop config
 
 apparmor & firejail
 qemu/kvm virt manager
