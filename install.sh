@@ -142,7 +142,7 @@ arch-chroot /mnt /bin/bash -c "
         git clone https://github.com/tmux-plugins/tpm \"/home/\${USER}/.tmux/plugins/tpm\"
 
         mkdir -p \"/home/\${USER}/.config\"
-        ln -sf \"/home/\${USER}/dotfiles/.bashrc\" \"/home/\${USER}/.bashrc\"
+        ln -sf \"/home/\${USER}/.dotfiles/.bashrc\" \"/home/\${USER}/.bashrc\"
 
         links=(
             foot
@@ -154,10 +154,11 @@ arch-chroot /mnt /bin/bash -c "
             tmux
             zathura
             swaync
+            mako
         )
         rm \"/home/\${USER}/dotfiles/.config/nvim/lazy-lock.json\"
         for link in \"\${links[@]}\"; do
-            ln -s \"/home/\${USER}/dotfiles/.config/\$link/\" \"/home/\${USER}/.config\"
+            ln -s \"/home/\${USER}/.dotfiles/.config/\$link/\" \"/home/\${USER}/.config\"
         done
     '
 
