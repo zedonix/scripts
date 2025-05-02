@@ -1,11 +1,6 @@
 #!/bin/bash
 
 aur_pkgs=(
-    ungoogled-chromium-bin
-    chromium-extension-web-store
-    chromium-extension-ublock-origin
-    chromium-extension-return-youtube-dislike
-    btrfs-assistant
     sway-audio-idle-inhibit-git
     swayosd-git
     github-cli-git
