@@ -1,6 +1,6 @@
+vivaldi
 apparmor & firejail
 qemu/kvm virt manager
-qt gruvbox
 
 https://wyag.thb.lt/#intro
 https://www.leshenko.net/p/ugit/#
