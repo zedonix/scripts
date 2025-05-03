@@ -1,6 +1,4 @@
-vivaldi
 apparmor & firejail
-qemu/kvm virt manager
 
 https://wyag.thb.lt/#intro
 https://www.leshenko.net/p/ugit/#
@@ -14,15 +12,3 @@ ssh, wget, scp, ping, rsync
 redirection output
 user management commands
 cron jobs
-
-sudo pacman -S qemu-desktop virt-manager libvirt dnsmasq vde2 bridge-utils openbsd-netcat
-sudo systemctl enable libvirtd
-sudo systemctl start --now libvirtd
-sudo usermod -aG libvirt $(whoami)
-newgrp libvirt
-sudo EDITOR=nvim virsh net-edit default
-sudo systemctl restart libvirtd
-sudo virsh net-start default
-sudo virsh net-autostart default
-sudo virsh net-list --all
-virt-manager
