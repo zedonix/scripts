@@ -62,10 +62,10 @@ mount "${disk}1" /mnt/boot
 # Base Installation
 install_pkgs=(
     base base-devel linux linux-headers linux-firmware libxkbcommon-x11 sudo man-db man-pages snapper btrfs-progs
-    openssh ncdu htop fastfetch bat eza fzf git ripgrep ripgrep-all sqlite ntfs-3g exfat-utils mtools dosfstools
-    networkmanager ufw newsboat pipewire wireplumber pipewire-pulse pipewire-alsa pipewire-audio pipewire-jack mpv sassc
+    openssh ncdu htop fastfetch bat eza fzf git ripgrep ripgrep-all sqlite ntfs-3g exfat-utils mtools dosfstools qemu-desktop virt-manager
+    networkmanager ufw newsboat pipewire wireplumber pipewire-pulse pipewire-alsa pipewire-audio pipewire-jack mpv sassc libvirt dnsmasq vde2
     xorg-xwayland xdg-desktop-portal-wlr xdg-desktop-portal-gtk sway swaybg swayimg swaylock swayidle foot wl-clip-persist swaync fuzzel autotiling
-    papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji ttc-iosevka ttf-iosevkaterm-nerd yt-dlp aria2 vivaldi
+    papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji ttc-iosevka ttf-iosevkaterm-nerd yt-dlp aria2 vivaldi bridge-utils openbsd-netcat
     neovim tmux zathura texlive-latex unrar 7zip rsync grim slurp flameshot pcmanfm-gtk3 gimp clamav intel-ucode inotify-tools easyeffects
     wl-clipboard cliphist libnotify asciinema reflector polkit polkit-gnome lua python python-black stylua pyright
 )
@@ -89,7 +89,7 @@ arch-chroot /mnt /bin/bash -c "
 
     # User Setup
     read -p \"Username: \" user
-    useradd -m -G wheel,storage,power,video,audio,kvm -s /bin/bash \"\$user\"
+    useradd -m -G wheel,storage,power,video,audio,libvirt -s /bin/bash \"\$user\"
     echo \"Setting user password...\"
     passwd \"\$user\"
 
@@ -164,6 +164,8 @@ arch-chroot /mnt /bin/bash -c "
 
     # Services
     systemctl enable NetworkManager
+    systemctl enable libvirtd
+    virsh net-autostart default
     freshclam
     systemctl enable clamav-daemon.service
 
