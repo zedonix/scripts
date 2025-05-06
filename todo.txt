@@ -1,5 +1,3 @@
-apparmor & firejail
-
 https://wyag.thb.lt/#intro
 https://www.leshenko.net/p/ugit/#
 
