@@ -144,6 +144,7 @@ arch-chroot /mnt /bin/bash -c "
         mkdir -p \"/home/\${USER}/.config\"
         ln -sf \"/home/\${USER}/.dotfiles/.bashrc\" \"/home/\${USER}/.bashrc\"
         ln -s \"/home/\${USER}/.dotfiles/home.html\" \"/home/\${USER}/Documents/home.html\"
+        ln -s \"/home/\${USER}/.dotfiles/archlinux.png\" \"/home/\${USER}/Documents/archlinux.png\"
 
         links=(
             foot
