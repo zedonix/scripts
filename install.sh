@@ -159,6 +159,7 @@ arch-chroot /mnt /bin/bash -c "
             mako
         )
         rm \"/home/\${USER}/dotfiles/.config/nvim/lazy-lock.json\"
+        rm -rf \"/home/\${USER}/dotfiles/.config/tmux/plugins\"
         for link in \"\${links[@]}\"; do
             ln -s \"/home/\${USER}/.dotfiles/.config/\$link/\" \"/home/\${USER}/.config\"
         done
