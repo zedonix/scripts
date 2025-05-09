@@ -1,13 +1,11 @@
 #!/bin/bash
 set -euo pipefail
 
-# Disk Selection
 echo "Available disks:"
 lsblk
-read -p "Enter Disk: " disk_input
+read -p "Enter Disk (e.g. nvme0n1 or sda): " disk_input
 disk="/dev/${disk_input%/}"
 
-# Disk Checking
 if [ ! -b "$disk" ]; then
   echo "Disk $disk does not exist. Exiting."
   exit 1
@@ -23,43 +21,30 @@ else
   part3="${disk}3"
 fi
 
-# Partitioning
-parted -s "$disk" mklabel gpt
+# Mount the Btrfs partition's top-level
+mount -o subvolid=5 "$part3" /mnt
 
-# Swap size configuration
-swap_size_gib=8
-swap_mib=$((swap_size_gib * 1024))
-
-# Partition Layout
-parted -s "$disk" mkpart ESP fat32 1MiB 1025MiB
-parted -s "$disk" set 1 esp on
-parted -s "$disk" mkpart primary linux-swap 1025MiB $((1025 + swap_mib))MiB
-parted -s "$disk" mkpart primary btrfs $((1025 + swap_mib))MiB 100%
-
-# Formatting
-mkfs.fat -F32 -n BOOT "$part1"
-mkswap -L SWAP "$part2"
-swapon "$part2"
-mkfs.btrfs -f -L ROOT "$part3"
-
-# Mounting
-mount "$part3" /mnt
-
+# Delete and recreate the root subvolume (@)
+if [ -d /mnt/@ ]; then
+  echo "Deleting old root subvolume (@)..."
+  btrfs subvolume delete /mnt/@
+fi
+echo "Creating new root subvolume (@)..."
 btrfs subvolume create /mnt/@
-btrfs subvolume create /mnt/@home
-btrfs subvolume create /mnt/@var
 
 umount /mnt
 
-mount -o noatime,compress=zstd,subvol=@ "${disk}3" /mnt
+# Mount subvolumes
+mount -o noatime,compress=zstd,subvol=@ "$part3" /mnt
 mkdir -p /mnt/{boot,home,var}
-mount -o noatime,compress=zstd,subvol=@home "${disk}3" /mnt/home
-mount -o noatime,compress=zstd,subvol=@var "${disk}3" /mnt/var
+mount -o noatime,compress=zstd,subvol=@home "$part3" /mnt/home
+mount -o noatime,compress=zstd,subvol=@var "$part3" /mnt/var
 
-mkdir -p /mnt/boot
-mount "${disk}1" /mnt/boot
+# Mount EFI and swap
+mount "$part1" /mnt/boot
+swapon "$part2"
 
-# Base Installation
+# Base Installation (customize your package list as needed)
 install_pkgs=(
     base base-devel linux linux-headers linux-firmware sudo man-db man-pages snapper btrfs-progs uv qemu-desktop virt-manager vde2 bash-completion
     openssh ncdu htop fastfetch bat eza fzf git github-cli ripgrep ripgrep-all sqlite ntfs-3g exfat-utils mtools dosfstools dnsmasq dysk
@@ -70,28 +55,30 @@ install_pkgs=(
     wl-clipboard cliphist libnotify asciinema reflector polkit polkit-gnome lua python python-black stylua pyright jq swayosd gnu-free-fonts
 )
 
-# Rate and install the base system
 reflector --country 'India' --latest 10 --age 24 --sort rate --save /etc/pacman.d/mirrorlist
 
 pacstrap /mnt "${install_pkgs[@]}"
 
-# System Configuration
+# Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
 
-# Run commands in the chroot
+# Chroot for configuration
 arch-chroot /mnt /bin/bash -c "
-    # Configuration
     timezone=\"Asia/Kolkata\"
     hostname=\"archlinux\"
 
     echo \"Setting root password...\"
     passwd
 
-    # User Setup
+    # User Setup (skip if user already exists)
     read -p \"Username: \" user
-    useradd -m -G wheel,storage,power,video,audio,libvirt -s /bin/bash \"\$user\"
-    echo \"Setting user password...\"
-    passwd \"\$user\"
+    if ! id \"\$user\" &>/dev/null; then
+        useradd -m -G wheel,storage,power,video,audio,libvirt -s /bin/bash \"\$user\"
+        echo \"Setting user password...\"
+        passwd \"\$user\"
+    else
+        echo \"User \$user already exists, skipping creation.\"
+    fi
 
     # Local Setup
     ln -sf \"/usr/share/zoneinfo/\$timezone\" /etc/localtime
@@ -125,44 +112,6 @@ arch-chroot /mnt /bin/bash -c "
     echo \"--sort rate\" >> /etc/xdg/reflector/reflector.conf
     systemctl enable reflector.timer
 
-    # Copy config
-    sudo -u \"\$user\" bash -c '
-        mkdir -p \"/home/\${USER}/Downloads\"
-        mkdir -p \"/home/\${USER}/Documents\"
-        mkdir -p \"/home/\${USER}/Public\"
-        mkdir -p \"/home/\${USER}/Templates\"
-        mkdir -p \"/home/\${USER}/Videos\"
-        mkdir -p \"/home/\${USER}/Pictures/Screenshots\"
-        mkdir -p \"/home/\${USER}/PenDrive\"
-        mkdir -p \"/home/\${USER}/.config\"
-
-        git clone https://github.com/zedonix/scripts.git \"/home/\${USER}/.scripts\"
-        git clone https://github.com/zedonix/dotfiles.git \"/home/\${USER}/.dotfiles\"
-        git clone https://github.com/zedonix/GruvboxGtk.git \"/home/\${USER}/Downloads/GruvboxGtk\"
-        git clone https://github.com/tmux-plugins/tpm \"/home/\${USER}/.config/tmux/plugins/tpm\"
-
-        ln -sf \"/home/\${USER}/.dotfiles/.bashrc\" \"/home/\${USER}/.bashrc\"
-
-        dir=\$(ls /home/piyush/.mozilla/firefox/ | grep \".default-release\")
-        ln -sf \"/home/piyush/.dotfiles/user.js\" \"/home/piyush/.mozilla/firefox/\$dir/user.js\"
-
-        links=(
-            foot
-            fuzzel
-            htop
-            newsboat
-            nvim
-            sway
-            tmux
-            zathura
-            swaync
-            mako
-        )
-        for link in \"\${links[@]}\"; do
-            ln -s \"/home/\${USER}/.dotfiles/.config/\$link/\" \"/home/\${USER}/.config\"
-        done
-    '
-
     # Services
     systemctl enable NetworkManager
     systemctl enable libvirtd
@@ -170,10 +119,8 @@ arch-chroot /mnt /bin/bash -c "
     freshclam
     systemctl enable clamav-daemon.service
 
-    # Clean up package cache and Wrapping up
     pacman -Scc --noconfirm
 "
 
-# Unmount and finalize
 umount -lR /mnt
-echo "Installation completed. Please reboot your system."
+echo "Reinstallation completed. Please reboot your system."
