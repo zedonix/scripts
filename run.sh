@@ -39,11 +39,11 @@ gsettings set org.gnome.desktop.interface icon-theme "Papirus-Dark"
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
 # Mime setup
-# find /usr/share/applications ~/.local/share/applications -iname '*.desktop' -print0 | while IFS= read -r -d $'\0' d; do
-#   for m in $(grep MimeType "$d" | cut -d= -f2 | tr ";" " "); do
-#     echo xdg-mime default "'$d'" "'$m'"
-#   done
-# done
+find /usr/share/applications ~/.local/share/applications -iname '*.desktop' -print0 | while IFS= read -r -d $'\0' d; do
+  for m in $(grep MimeType "$d" | cut -d= -f2 | tr ";" " "); do
+    echo xdg-mime default "'$d'" "'$m'"
+  done
+done
 for type in pdf x-pdf fdf xdp xfdf pdx; do xdg-mime default org.pwmt.zathura.desktop application/$type; done
 
 # Snapper setup
@@ -54,6 +54,14 @@ sudo systemctl enable --now grub-btrfsd
 
 # Libvirt setup
 sudo virsh net-autostart default
+
+# Firefox user.js linking
+if [ -d ~/.mozilla/firefox ]; then
+  dir=$(ls ~/.mozilla/firefox/ | grep ".default-release" | head -n1)
+  if [ -n "$dir" ]; then
+      ln -sf ~/.dotfiles/user.js ~/.mozilla/firefox/$dir/user.js
+  fi
+fi
 
 # UFW setup
 sudo ufw limit 22/tcp

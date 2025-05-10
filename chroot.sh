@@ -63,17 +63,6 @@ su - "$user" -c '
 
   ln -sf ~/.dotfiles/.bashrc ~/.bashrc
 
-  # Firefox user.js linking
-  if [ -d ~/.mozilla/firefox ]; then
-    dir=$(ls ~/.mozilla/firefox/ | grep ".default-release" | head -n1)
-    if [ -n "$dir" ]; then
-      ln -sf ~/.dotfiles/user.js ~/.mozilla/firefox/$dir/user.js
-    fi
-  fi
-
-  ls .mozilla/firefox/\$dir/
-  sleep 10
-
   # .config links
   for link in foot fuzzel htop newsboat nvim sway tmux zathura swaync mpv mako; do
     ln -sf ~/.dotfiles/.config/$link/ ~/.config
