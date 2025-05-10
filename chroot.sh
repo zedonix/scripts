@@ -60,7 +60,6 @@ su - "$user" -c '
   git clone https://github.com/zedonix/scripts.git ~/.scripts
   git clone https://github.com/zedonix/dotfiles.git ~/.dotfiles
   git clone https://github.com/zedonix/GruvboxGtk.git ~/Downloads/GruvboxGtk
-  git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
 
   ln -sf ~/.dotfiles/.bashrc ~/.bashrc
 
@@ -76,6 +75,7 @@ su - "$user" -c '
   for link in foot fuzzel htop newsboat nvim sway tmux zathura swaync mpv mako; do
     ln -sf ~/.dotfiles/.config/$link/ ~/.config
   done
+  git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
 '
 
 # Polkit/Firefox policy
@@ -85,6 +85,8 @@ ln -sf /home/"$user"/.dotfiles/policies.json /etc/firefox/policies/policies.json
 # Services
 systemctl enable NetworkManager
 systemctl enable libvirtd
+systemctl start libvirtd
+sleep 2 # Wait a moment for the daemon to start
 virsh net-autostart default
 freshclam
 systemctl enable clamav-daemon.service
