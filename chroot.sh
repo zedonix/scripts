@@ -37,7 +37,7 @@ echo "127.0.1.1  $hostname.localdomain  $hostname" >> /etc/hosts
 # Bootloader
 pacman -S --noconfirm grub grub-btrfs efibootmgr os-prober
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-echo "GRUB_DISABLE_OS_PROBER=false" >> /etc/default/grub
+sed -i '/^#GRUB_DISABLE_OS_PROBER=false$/c\GRUB_DISABLE_OS_PROBER=false' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # Reflector and pacman Setup
