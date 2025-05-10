@@ -13,6 +13,11 @@ if [ ! -b "$disk" ]; then
   exit 1
 fi
 
+# Safety Confirmation
+echo "WARNING: This will erase all data on $disk!"
+read -p "Type 'yes' to continue: " confirm
+[[ "$confirm" == "yes" ]] || { echo "Aborted."; exit 1; }
+
 if [[ "$disk" == *nvme* ]]; then
   part1="${disk}p1"
   part2="${disk}p2"
@@ -51,13 +56,13 @@ btrfs subvolume create /mnt/@var
 
 umount /mnt
 
-mount -o noatime,compress=zstd,subvol=@ "${disk}3" /mnt
+mount -o noatime,compress=zstd,subvol=@ "$part3" /mnt
 mkdir -p /mnt/{boot,home,var}
-mount -o noatime,compress=zstd,subvol=@home "${disk}3" /mnt/home
-mount -o noatime,compress=zstd,subvol=@var "${disk}3" /mnt/var
+mount -o noatime,compress=zstd,subvol=@home "$part3" /mnt/home
+mount -o noatime,compress=zstd,subvol=@var "$part3" /mnt/var
 
 mkdir -p /mnt/boot
-mount "${disk}1" /mnt/boot
+mount "$part1" /mnt/boot
 
 # Base Installation
 install_pkgs=(
@@ -70,110 +75,29 @@ install_pkgs=(
     wl-clipboard cliphist libnotify asciinema reflector polkit polkit-gnome lua python python-black stylua pyright jq swayosd gnu-free-fonts
 )
 
+# Ensure reflector is installed (if not already)
+if ! command -v reflector &>/dev/null; then
+  pacman -Sy --noconfirm reflector
+fi
+
 # Rate and install the base system
 reflector --country 'India' --latest 10 --age 24 --sort rate --save /etc/pacman.d/mirrorlist
 
+# Pacstrap with error handling
+set +e
 pacstrap /mnt "${install_pkgs[@]}"
+if [ $? -ne 0 ]; then
+  echo "pacstrap failed. Please check the package list and network connection."
+  exit 1
+fi
+set -e
 
 # System Configuration
 genfstab -U /mnt >> /mnt/etc/fstab
 
-# Run commands in the chroot
-arch-chroot /mnt /bin/bash -c "
-    # Configuration
-    timezone=\"Asia/Kolkata\"
-    hostname=\"archlinux\"
-
-    echo \"Setting root password...\"
-    passwd
-
-    # User Setup
-    read -p \"Username: \" user
-    useradd -m -G wheel,storage,power,video,audio,libvirt -s /bin/bash \"\$user\"
-    echo \"Setting user password...\"
-    passwd \"\$user\"
-
-    # Local Setup
-    ln -sf \"/usr/share/zoneinfo/\$timezone\" /etc/localtime
-    hwclock --systohc
-    sed -i \"/en_US.UTF-8/s/^#//\" /etc/locale.gen
-    locale-gen
-    echo \"LANG=en_US.UTF-8\" > /etc/locale.conf
-
-    # Sudo Configuration
-    echo \"%wheel ALL=(ALL) ALL\" > /etc/sudoers.d/wheel
-
-    # Host Configuration
-    echo \"\$hostname\" > /etc/hostname
-    echo \"127.0.0.1  localhost\" > /etc/hosts
-    echo \"::1        localhost\" >> /etc/hosts
-    echo \"127.0.1.1  \$hostname.localdomain  \$hostname\" >> /etc/hosts
-
-    # Bootloader
-    pacman -S --noconfirm grub grub-btrfs efibootmgr os-prober
-    grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-    echo \"GRUB_DISABLE_OS_PROBER=false\" >> /etc/default/grub
-    grub-mkconfig -o /boot/grub/grub.cfg
-
-    # Reflector and pacman Setup
-    sed -i '/^#Color$/c\Color' /etc/pacman.conf
-    echo \"--save /etc/pacman.d/mirrorlist\" > /etc/xdg/reflector/reflector.conf
-    echo \"--protocol https\" >> /etc/xdg/reflector/reflector.conf
-    echo \"--country India\" >> /etc/xdg/reflector/reflector.conf
-    echo \"--latest 10\" >> /etc/xdg/reflector/reflector.conf
-    echo \"--age 24\" >> /etc/xdg/reflector/reflector.conf
-    echo \"--sort rate\" >> /etc/xdg/reflector/reflector.conf
-    systemctl enable reflector.timer
-
-    # Copy config
-    sudo -u \"\$user\" bash -c '
-        mkdir -p \"/home/\${USER}/Downloads\"
-        mkdir -p \"/home/\${USER}/Documents\"
-        mkdir -p \"/home/\${USER}/Public\"
-        mkdir -p \"/home/\${USER}/Templates\"
-        mkdir -p \"/home/\${USER}/Videos\"
-        mkdir -p \"/home/\${USER}/Pictures/Screenshots\"
-        mkdir -p \"/home/\${USER}/PenDrive\"
-        mkdir -p \"/home/\${USER}/.config\"
-
-        git clone https://github.com/zedonix/scripts.git \"/home/\${USER}/.scripts\"
-        git clone https://github.com/zedonix/dotfiles.git \"/home/\${USER}/.dotfiles\"
-        git clone https://github.com/zedonix/GruvboxGtk.git \"/home/\${USER}/Downloads/GruvboxGtk\"
-        git clone https://github.com/tmux-plugins/tpm \"/home/\${USER}/.config/tmux/plugins/tpm\"
-
-        ln -sf \"/home/\${USER}/.dotfiles/.bashrc\" \"/home/\${USER}/.bashrc\"
-
-        dir=\$(ls /home/piyush/.mozilla/firefox/ | grep \".default-release\")
-        ln -sf \"/home/piyush/.dotfiles/user.js\" \"/home/piyush/.mozilla/firefox/\$dir/user.js\"
-
-        links=(
-            foot
-            fuzzel
-            htop
-            newsboat
-            nvim
-            sway
-            tmux
-            zathura
-            swaync
-            mpv
-            mako
-        )
-        for link in \"\${links[@]}\"; do
-            ln -s \"/home/\${USER}/.dotfiles/.config/\$link/\" \"/home/\${USER}/.config\"
-        done
-    '
-
-    # Services
-    systemctl enable NetworkManager
-    systemctl enable libvirtd
-    virsh net-autostart default
-    freshclam
-    systemctl enable clamav-daemon.service
-
-    # Clean up package cache and Wrapping up
-    pacman -Scc --noconfirm
-"
+cp "$(dirname "$0")/chroot.sh" /mnt/root/chroot.sh
+chmod +x /mnt/root/chroot.sh
+arch-chroot /mnt /root/chroot.sh
 
 # Unmount and finalize
 umount -lR /mnt
