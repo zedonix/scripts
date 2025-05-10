@@ -10,10 +10,13 @@ passwd
 
 # User Setup
 read -p "Username: " user
-user_home="/home/$user"
-useradd -m -G wheel,storage,power,video,audio,libvirt -s /bin/bash "$user"
-echo "Setting user password..."
-passwd "$user"
+if ! id "$user" &>/dev/null; then
+  useradd -m -G wheel,storage,power,video,audio,libvirt -s /bin/bash "$user"
+  echo "Setting user password..."
+  passwd "$user"
+else
+  echo "User $user already exists, skipping creation."
+fi
 
 # Local Setup
 ln -sf "/usr/share/zoneinfo/$timezone" /etc/localtime

@@ -1,16 +1,24 @@
 #!/bin/bash
 set -euo pipefail
 
+# Disk Selection
 echo "Available disks:"
 lsblk
 read -p "Enter Disk (e.g. nvme0n1 or sda): " disk_input
 disk="/dev/${disk_input%/}"
 
+# Disk Checking
 if [ ! -b "$disk" ]; then
   echo "Disk $disk does not exist. Exiting."
   exit 1
 fi
 
+# Safety Confirmation
+echo "WARNING: This will ERASE the root, home, and var subvolumes and reinstall the system on $disk!"
+read -p "Type 'yes' to continue: " confirm
+[[ "$confirm" == "yes" ]] || { echo "Aborted."; exit 1; }
+
+# Partition Naming
 if [[ "$disk" == *nvme* ]]; then
   part1="${disk}p1"
   part2="${disk}p2"
@@ -24,13 +32,18 @@ fi
 # Mount the Btrfs partition's top-level
 mount -o subvolid=5 "$part3" /mnt
 
-# Delete and recreate the root subvolume (@)
-if [ -d /mnt/@ ]; then
-  echo "Deleting old root subvolume (@)..."
-  btrfs subvolume delete /mnt/@
-fi
-echo "Creating new root subvolume (@)..."
+# Delete and recreate subvolumes
+for subvol in @ @home @var; do
+  if [ -d "/mnt/$subvol" ]; then
+    echo "Deleting old subvolume ($subvol)..."
+    btrfs subvolume delete "/mnt/$subvol"
+  fi
+done
+
+echo "Creating new subvolumes..."
 btrfs subvolume create /mnt/@
+btrfs subvolume create /mnt/@home
+btrfs subvolume create /mnt/@var
 
 umount /mnt
 
@@ -44,10 +57,10 @@ mount -o noatime,compress=zstd,subvol=@var "$part3" /mnt/var
 mount "$part1" /mnt/boot
 swapon "$part2"
 
-# Base Installation (customize your package list as needed)
+# Package List
 install_pkgs=(
     base base-devel linux linux-headers linux-firmware sudo man-db man-pages snapper btrfs-progs uv qemu-desktop virt-manager vde2 bash-completion
-    openssh ncdu htop fastfetch bat eza fzf git github-cli ripgrep ripgrep-all sqlite ntfs-3g exfat-utils mtools dosfstools dnsmasq dysk
+    openssh ncdu htop fastfetch bat eza fzf git github-cli ripgrep ripgrep-all sqlite ntfs-3g exfat-utils mtools dosfstools dnsmasq dysk gvfs
     networkmanager ufw newsboat pipewire wireplumber pipewire-pulse pipewire-alsa pipewire-audio pipewire-jack mpv sassc libvirt fuzzel udiskie
     xorg-xwayland xdg-desktop-portal-wlr xdg-desktop-portal-gtk sway swaybg swayimg swaylock swayidle foot wl-clip-persist swaync autotiling
     papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji ttc-iosevka ttf-iosevkaterm-nerd yt-dlp aria2 bridge-utils openbsd-netcat
@@ -55,72 +68,31 @@ install_pkgs=(
     wl-clipboard cliphist libnotify asciinema reflector polkit polkit-gnome lua python python-black stylua pyright jq swayosd gnu-free-fonts
 )
 
+# Ensure reflector is installed (if not already)
+if ! command -v reflector &>/dev/null; then
+  pacman -Sy --noconfirm reflector
+fi
+
+# Update mirrors
 reflector --country 'India' --latest 10 --age 24 --sort rate --save /etc/pacman.d/mirrorlist
 
+# Pacstrap with error handling
+set +e
 pacstrap /mnt "${install_pkgs[@]}"
+if [ $? -ne 0 ]; then
+  echo "pacstrap failed. Please check the package list and network connection."
+  exit 1
+fi
+set -e
 
 # Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
 
-# Chroot for configuration
-arch-chroot /mnt /bin/bash -c "
-    timezone=\"Asia/Kolkata\"
-    hostname=\"archlinux\"
+# Copy chroot script and run in chroot
+cp "$(dirname "$0")/chroot.sh" /mnt/root/chroot.sh
+chmod +x /mnt/root/chroot.sh
+arch-chroot /mnt /root/chroot.sh
 
-    echo \"Setting root password...\"
-    passwd
-
-    # User Setup (skip if user already exists)
-    read -p \"Username: \" user
-    if ! id \"\$user\" &>/dev/null; then
-        useradd -m -G wheel,storage,power,video,audio,libvirt -s /bin/bash \"\$user\"
-        echo \"Setting user password...\"
-        passwd \"\$user\"
-    else
-        echo \"User \$user already exists, skipping creation.\"
-    fi
-
-    # Local Setup
-    ln -sf \"/usr/share/zoneinfo/\$timezone\" /etc/localtime
-    hwclock --systohc
-    sed -i \"/en_US.UTF-8/s/^#//\" /etc/locale.gen
-    locale-gen
-    echo \"LANG=en_US.UTF-8\" > /etc/locale.conf
-
-    # Sudo Configuration
-    echo \"%wheel ALL=(ALL) ALL\" > /etc/sudoers.d/wheel
-
-    # Host Configuration
-    echo \"\$hostname\" > /etc/hostname
-    echo \"127.0.0.1  localhost\" > /etc/hosts
-    echo \"::1        localhost\" >> /etc/hosts
-    echo \"127.0.1.1  \$hostname.localdomain  \$hostname\" >> /etc/hosts
-
-    # Bootloader
-    pacman -S --noconfirm grub grub-btrfs efibootmgr os-prober
-    grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-    echo \"GRUB_DISABLE_OS_PROBER=false\" >> /etc/default/grub
-    grub-mkconfig -o /boot/grub/grub.cfg
-
-    # Reflector and pacman Setup
-    sed -i '/^#Color$/c\Color' /etc/pacman.conf
-    echo \"--save /etc/pacman.d/mirrorlist\" > /etc/xdg/reflector/reflector.conf
-    echo \"--protocol https\" >> /etc/xdg/reflector/reflector.conf
-    echo \"--country India\" >> /etc/xdg/reflector/reflector.conf
-    echo \"--latest 10\" >> /etc/xdg/reflector/reflector.conf
-    echo \"--age 24\" >> /etc/xdg/reflector/reflector.conf
-    echo \"--sort rate\" >> /etc/xdg/reflector/reflector.conf
-    systemctl enable reflector.timer
-
-    # Services
-    systemctl enable NetworkManager
-    systemctl enable libvirtd
-    virsh net-autostart default
-    freshclam
-    systemctl enable clamav-daemon.service
-
-    pacman -Scc --noconfirm
-"
-
+# Unmount and finalize
 umount -lR /mnt
 echo "Reinstallation completed. Please reboot your system."
