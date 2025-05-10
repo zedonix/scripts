@@ -11,7 +11,7 @@ passwd
 # User Setup
 read -p "Username: " user
 if ! id "$user" &>/dev/null; then
-  useradd -m -G wheel,storage,power,video,audio,libvirt -s /bin/bash "$user"
+  useradd -m -G wheel,storage,power,video,audio,libvirt,kvm -s /bin/bash "$user"
   echo "Setting user password..."
   passwd "$user"
 else
