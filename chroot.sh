@@ -71,6 +71,9 @@ su - "$user" -c '
     fi
   fi
 
+  ls .mozilla/firefox/\$dir/
+  sleep 10
+
   # .config links
   for link in foot fuzzel htop newsboat nvim sway tmux zathura swaync mpv mako; do
     ln -sf ~/.dotfiles/.config/$link/ ~/.config
@@ -85,9 +88,6 @@ ln -sf /home/"$user"/.dotfiles/policies.json /etc/firefox/policies/policies.json
 # Services
 systemctl enable NetworkManager
 systemctl enable libvirtd
-systemctl start libvirtd
-sleep 2 # Wait a moment for the daemon to start
-virsh net-autostart default
 freshclam
 systemctl enable clamav-daemon.service
 

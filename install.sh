@@ -13,11 +13,7 @@ if [ ! -b "$disk" ]; then
   exit 1
 fi
 
-# Safety Confirmation
-echo "WARNING: This will erase all data on $disk!"
-read -p "Type 'yes' to continue: " confirm
-[[ "$confirm" == "yes" ]] || { echo "Aborted."; exit 1; }
-
+# Partition Naming
 if [[ "$disk" == *nvme* ]]; then
   part1="${disk}p1"
   part2="${disk}p2"
@@ -28,7 +24,7 @@ else
   part3="${disk}3"
 fi
 
-# Partitioning
+# Partitioning --
 parted -s "$disk" mklabel gpt
 
 # Swap size configuration
@@ -44,15 +40,19 @@ parted -s "$disk" mkpart primary btrfs $((1025 + swap_mib))MiB 100%
 # Formatting
 mkfs.fat -F32 -n BOOT "$part1"
 mkswap -L SWAP "$part2"
-swapon "$part2"
 mkfs.btrfs -f -L ROOT "$part3"
 
-# Mounting
 mount "$part3" /mnt
-
+# --
+# mount -o subvolid=5 "$part3" /mnt
+# btrfs subvolume delete /mnt/@ || true
 btrfs subvolume create /mnt/@
-btrfs subvolume create /mnt/@home
-btrfs subvolume create /mnt/@var
+if [ ! -d /mnt/@home ]; then
+  btrfs subvolume create /mnt/@home
+fi
+if [ ! -d /mnt/@var ]; then
+  btrfs subvolume create /mnt/@var
+fi
 
 umount /mnt
 
@@ -61,8 +61,9 @@ mkdir -p /mnt/{boot,home,var}
 mount -o noatime,compress=zstd,subvol=@home "$part3" /mnt/home
 mount -o noatime,compress=zstd,subvol=@var "$part3" /mnt/var
 
-mkdir -p /mnt/boot
+mkdir -p /mnt/boot # --
 mount "$part1" /mnt/boot
+swapon "$part2"
 
 # Base Installation
 install_pkgs=(

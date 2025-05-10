@@ -52,6 +52,9 @@ sudo systemctl enable --now snapper-timeline.timer
 sudo systemctl enable --now snapper-cleanup.timer
 sudo systemctl enable --now grub-btrfsd
 
+# Libvirt setup
+sudo virsh net-autostart default
+
 # UFW setup
 sudo ufw limit 22/tcp
 sudo ufw allow 80/tcp
