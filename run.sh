@@ -38,6 +38,8 @@ gsettings set org.gnome.desktop.interface gtk-theme 'Gruvbox-Dark'
 gsettings set org.gnome.desktop.interface icon-theme "Papirus-Dark"
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
+echo "Gruvbox setup Done"
+
 # Mime setup
 find /usr/share/applications -iname '*.desktop' -print0 | while IFS= read -r -d $'\0' d; do
   for m in $(grep MimeType "$d" | cut -d= -f2 | tr ";" " "); do
@@ -73,6 +75,9 @@ sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw enable
 sudo systemctl enable ufw
+
+# Flatpak setup
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 # Running aur.sh
 bash ~/.scripts/aur.sh

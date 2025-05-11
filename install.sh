@@ -61,8 +61,9 @@ mkdir -p /mnt/{boot,home,var}
 mount -o noatime,compress=zstd,subvol=@home "$part3" /mnt/home
 mount -o noatime,compress=zstd,subvol=@var "$part3" /mnt/var
 
-mkdir -p /mnt/boot # --
-mount "$part1" /mnt/boot
+# Mount EFI System Partition at /efi
+mkdir -p /mnt/efi # --
+mount "$part1" /mnt/efi
 swapon "$part2"
 
 # Base Installation
@@ -71,8 +72,8 @@ install_pkgs=(
     openssh ncdu htop fastfetch bat eza fzf git github-cli ripgrep ripgrep-all sqlite ntfs-3g exfat-utils mtools dosfstools dnsmasq dysk gvfs
     networkmanager ufw newsboat pipewire wireplumber pipewire-pulse pipewire-alsa pipewire-audio pipewire-jack mpv sassc libvirt fuzzel udiskie
     xorg-xwayland xdg-desktop-portal-wlr xdg-desktop-portal-gtk sway swaybg swaylock swayidle foot wl-clip-persist swaync autotiling swayimg
-    papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji ttc-iosevka ttf-iosevkaterm-nerd yt-dlp aria2 bridge-utils openbsd-netcat
-    neovim tmux zathura texlive-latex unrar 7zip rsync grim slurp flameshot pcmanfm-gtk3 gimp clamav intel-ucode inotify-tools discord firefox
+    papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji ttc-iosevka ttf-iosevkaterm-nerd yt-dlp aria2 bridge-utils openbsd-netcat flatpak
+    neovim tmux zathura texlive-latex unrar 7zip unzip rsync grim slurp flameshot pcmanfm-gtk3 gimp clamav intel-ucode inotify-tools discord firefox
     wl-clipboard cliphist libnotify asciinema reflector polkit polkit-gnome lua python python-black stylua pyright jq swayosd gnu-free-fonts zathura-pdf-mupdf
 )
 
