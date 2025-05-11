@@ -2,7 +2,7 @@
 
 set -e
 
-SRC_DIR="/home/piyush/Downloads/GruvboxGtk"
+SRC_DIR="/home/${USER}/Downloads/GruvboxGtk"
 DEST_DIR="${HOME}/.themes"
 THEME_NAME="Gruvbox-Dark"
 THEME_DIR="${DEST_DIR}/${THEME_NAME}"
@@ -41,13 +41,13 @@ gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 # Mime setup
 find /usr/share/applications ~/.local/share/applications -iname '*.desktop' -print0 | while IFS= read -r -d $'\0' d; do
   for m in $(grep MimeType "$d" | cut -d= -f2 | tr ";" " "); do
-    echo xdg-mime default "'$d'" "'$m'"
+    xdg-mime default "$(basename "$d")" "$m"
   done
 done
 for type in pdf x-pdf fdf xdp xfdf pdx; do xdg-mime default org.pwmt.zathura.desktop application/$type; done
 
 # Snapper setup
-sudo snapper -c root create-config /
+sudo snapper -c root create-config / || true
 sudo systemctl enable --now snapper-timeline.timer
 sudo systemctl enable --now snapper-cleanup.timer
 sudo systemctl enable --now grub-btrfsd
@@ -59,7 +59,7 @@ sudo virsh net-autostart default
 if [ -d ~/.mozilla/firefox ]; then
   dir=$(ls ~/.mozilla/firefox/ | grep ".default-release" | head -n1)
   if [ -n "$dir" ]; then
-      ln -sf ~/.dotfiles/user.js ~/.mozilla/firefox/$dir/user.js
+      ln -sf /home/$USER/.dotfiles/user.js /home/$USER/.mozilla/firefox/$dir/user.js
   fi
 fi
 
