@@ -57,13 +57,13 @@ fi
 umount /mnt
 
 mount -o noatime,compress=zstd,subvol=@ "$part3" /mnt
-mkdir -p /mnt/{home,var}
+mkdir -p /mnt/{boot,home,var}
 mount -o noatime,compress=zstd,subvol=@home "$part3" /mnt/home
 mount -o noatime,compress=zstd,subvol=@var "$part3" /mnt/var
 
 # Mount EFI System Partition at /efi
-mkdir -p /mnt/boot # --
-mount "$part1" /mnt/boot
+mkdir -p /mnt/boot/efi # --
+mount "$part1" /mnt/boot/efi
 swapon "$part2"
 
 # Base Installation
