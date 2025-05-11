@@ -3,6 +3,7 @@ https://0xax.gitbooks.io/linux-insides/content/index.html
 https://wyag.thb.lt/#intro
 https://www.leshenko.net/p/ugit/#
 
+master these -
 grep, rg, awk, sed
 journelctl, systemd
 chmod, chown, chgrp, umask
