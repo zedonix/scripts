@@ -1,4 +1,5 @@
-gruvbox gtk directory cleanup
+password error check
+home page server
 
 https://0xax.gitbooks.io/linux-insides/content/index.html
 

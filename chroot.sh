@@ -5,15 +5,37 @@ set -euo pipefail
 timezone="Asia/Kolkata"
 hostname="archlinux"
 
-echo "Setting root password..."
-passwd
+# --- Root password setup with retry ---
+while true; do
+  echo "Setting root password..."
+  if passwd; then
+    break
+  else
+    echo "Password setup failed. Please try again."
+  fi
+done
 
-# User Setup
-read -p "Username: " user
+# --- User Setup with username prompt loop ---
+while true; do
+  read -p "Username: " user
+  if [[ -z "$user" ]]; then
+    echo "Username cannot be empty. Please enter a username."
+    continue
+  fi
+  break
+done
+
 if ! id "$user" &>/dev/null; then
   useradd -m -G wheel,storage,power,video,audio,libvirt,kvm -s /bin/bash "$user"
-  echo "Setting user password..."
-  passwd "$user"
+  # --- User password setup with retry ---
+  while true; do
+    echo "Setting user password..."
+    if passwd "$user"; then
+      break
+    else
+      echo "Password setup failed. Please try again."
+    fi
+  done
 else
   echo "User $user already exists, skipping creation."
 fi
