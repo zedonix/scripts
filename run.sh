@@ -74,6 +74,5 @@ sudo ufw default allow outgoing
 sudo ufw enable
 sudo systemctl enable ufw
 
-# Remove passwordless after running run.sh
-echo "Removing temporary passwordless sudo rule..."
-sudo rm -f /etc/sudoers.d/010_$(whoami)-nopasswd
+# Running aur.sh
+bash ~/.scripts/aur.sh
