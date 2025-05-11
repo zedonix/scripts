@@ -9,7 +9,3 @@ cd paru
 makepkg -si
 
 paru -S sway-audio-idle-inhibit-git sdl-ball
-
-# Remove passwordless after running run.sh
-echo "Removing temporary passwordless sudo rule..."
-sudo rm -f /etc/sudoers.d/010_$(whoami)-nopasswd
