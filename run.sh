@@ -45,7 +45,7 @@ find /usr/share/applications -iname '*.desktop' -print0 | while IFS= read -r -d 
   done
 done
 for type in pdf x-pdf fdf xdp xfdf pdx; do xdg-mime default org.pwmt.zathura.desktop application/$type; done
-for type in jpeg png gif webp bmp tiff; do xdg-mime default org.gnome.Loupe.desktop image/$type; done
+for type in jpeg svg png gif webp bmp tiff; do xdg-mime default swayimg.desktop image/$type; done
 
 # Snapper setup
 sudo snapper -c root create-config / || true
