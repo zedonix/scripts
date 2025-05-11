@@ -1,3 +1,5 @@
+gruvbox gtk directory cleanup
+
 https://0xax.gitbooks.io/linux-insides/content/index.html
 
 https://wyag.thb.lt/#intro

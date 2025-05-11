@@ -39,12 +39,13 @@ gsettings set org.gnome.desktop.interface icon-theme "Papirus-Dark"
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
 # Mime setup
-find /usr/share/applications ~/.local/share/applications -iname '*.desktop' -print0 | while IFS= read -r -d $'\0' d; do
+find /usr/share/applications -iname '*.desktop' -print0 | while IFS= read -r -d $'\0' d; do
   for m in $(grep MimeType "$d" | cut -d= -f2 | tr ";" " "); do
     xdg-mime default "$(basename "$d")" "$m"
   done
 done
 for type in pdf x-pdf fdf xdp xfdf pdx; do xdg-mime default org.pwmt.zathura.desktop application/$type; done
+for type in jpeg png gif webp bmp tiff; do xdg-mime default org.gnome.Loupe.desktop image/$type; done
 
 # Snapper setup
 sudo snapper -c root create-config / || true
@@ -56,6 +57,7 @@ sudo systemctl enable --now grub-btrfsd
 sudo virsh net-autostart default
 
 # Firefox user.js linking
+firefox
 if [ -d ~/.mozilla/firefox ]; then
   dir=$(ls ~/.mozilla/firefox/ | grep ".default-release" | head -n1)
   if [ -n "$dir" ]; then
@@ -71,3 +73,7 @@ sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw enable
 sudo systemctl enable ufw
+
+# Remove passwordless after running run.sh
+echo "Removing temporary passwordless sudo rule..."
+sudo rm -f /etc/sudoers.d/010_$(whoami)-nopasswd

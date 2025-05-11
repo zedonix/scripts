@@ -56,11 +56,12 @@ systemctl enable reflector.timer
 # Copy config and dotfiles as the user
 su - "$user" -c '
   mkdir -p ~/Downloads ~/Documents/home ~/Public ~/Templates ~/Videos ~/Pictures/Screenshots ~/.config
-  cp ~/.dotfiles/archpfp.png ~/Pictures/
 
   git clone https://github.com/zedonix/scripts.git ~/.scripts
   git clone https://github.com/zedonix/dotfiles.git ~/.dotfiles
   git clone https://github.com/zedonix/GruvboxGtk.git ~/Downloads/GruvboxGtk
+
+  cp ~/.dotfiles/archpfp.png ~/Pictures/
 
   ln -sf ~/.dotfiles/.bashrc ~/.bashrc
   ln -sf ~/.dotfiles/home.html ~/Documents/home/home.html
@@ -75,6 +76,10 @@ su - "$user" -c '
 # Polkit/Firefox policy
 mkdir -p /etc/firefox/policies
 ln -sf /home/"$user"/.dotfiles/policies.json /etc/firefox/policies/policies.json
+
+# Passwordless for first boot
+echo "$user ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/010_${user}-nopasswd
+chmod 0440 /etc/sudoers.d/010_${user}-nopasswd
 
 # Services
 systemctl enable NetworkManager
