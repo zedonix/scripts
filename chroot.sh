@@ -99,10 +99,6 @@ su - "$user" -c '
 mkdir -p /etc/firefox/policies
 ln -sf /home/"$user"/.dotfiles/policies.json /etc/firefox/policies/policies.json
 
-# Passwordless for first boot
-echo "$user ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/010_${user}-nopasswd
-chmod 0440 /etc/sudoers.d/010_${user}-nopasswd
-
 # Services
 systemctl enable NetworkManager
 systemctl enable libvirtd
