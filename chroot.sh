@@ -101,9 +101,6 @@ ln -sf /home/"$user"/.dotfiles/policies.json /etc/firefox/policies/policies.json
 
 # Services
 systemctl enable NetworkManager
-systemctl enable libvirtd
-freshclam
-systemctl enable clamav-daemon.service
 
 # Clean up package cache and Wrapping up
 pacman -Scc --noconfirm
