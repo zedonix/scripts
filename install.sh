@@ -97,5 +97,5 @@ chmod +x /mnt/root/chroot.sh
 arch-chroot /mnt /root/chroot.sh
 
 # Unmount and finalize
-# umount -lR /mnt
+umount -lR /mnt
 echo "Installation completed. Please reboot your system."
