@@ -43,7 +43,7 @@ fi
 # Local Setup
 ln -sf "/usr/share/zoneinfo/$timezone" /etc/localtime
 hwclock --systohc
-sed -i "/en_US.UTF-8/s/^#//" /etc/locale.gen
+sed -i 's/#en_US.UTF-8/en_US.UTF-8/g' /etc/locale.gen
 locale-gen
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
