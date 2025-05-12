@@ -56,9 +56,13 @@ echo "127.0.0.1  localhost" > /etc/hosts
 echo "::1        localhost" >> /etc/hosts
 echo "127.0.1.1  $hostname.localdomain  $hostname" >> /etc/hosts
 
+# Random shit
+mkinitcpio -p
+
 # Bootloader
 pacman -S --noconfirm grub grub-btrfs efibootmgr os-prober
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
+grub-mkconfig -o /boot/grub/grub.cfg
 sed -i '/^#GRUB_DISABLE_OS_PROBER=false$/c\GRUB_DISABLE_OS_PROBER=false' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
