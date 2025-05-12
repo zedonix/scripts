@@ -57,13 +57,13 @@ fi
 umount /mnt
 
 mount -o noatime,compress=zstd,subvol=@ "$part3" /mnt
-mkdir -p /mnt/{boot,home,var}
+mkdir -p /mnt/{home,var}
 mount -o noatime,compress=zstd,subvol=@home "$part3" /mnt/home
 mount -o noatime,compress=zstd,subvol=@var "$part3" /mnt/var
 
-# Mount EFI System Partition at /efi
-mkdir -p /mnt/boot/efi # --
-mount "$part1" /mnt/boot/efi
+# Mount EFI System Partition
+mkdir -p /mnt/boot
+mount "$part1" /mnt/boot
 swapon "$part2"
 
 # Base Installation
@@ -97,5 +97,5 @@ chmod +x /mnt/root/chroot.sh
 arch-chroot /mnt /root/chroot.sh
 
 # Unmount and finalize
-# umount -lR /mnt
+umount -lR /mnt
 echo "Installation completed. Please reboot your system."
