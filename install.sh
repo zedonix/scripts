@@ -38,7 +38,7 @@ parted -s "$disk" mkpart primary linux-swap 1025MiB $((1025 + swap_mib))MiB
 parted -s "$disk" mkpart primary btrfs $((1025 + swap_mib))MiB 100%
 
 # Formatting
-mkfs.fat -F32 -n BOOT "$part1"
+mkfs.fat -F32 "$part1"
 mkswap -L SWAP "$part2"
 mkfs.btrfs -f -L ROOT "$part3"
 
