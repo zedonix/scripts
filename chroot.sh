@@ -80,34 +80,34 @@ REFCONF
 systemctl enable reflector.timer
 
 # Copy config and dotfiles as the user
-su - "$user" -c '
-  mkdir -p ~/Downloads ~/Documents/home ~/Public ~/Templates ~/Videos ~/Pictures/Screenshots ~/.config
+#su - "$user" -c '
+#  mkdir -p ~/Downloads ~/Documents/home ~/Public ~/Templates ~/Videos ~/Pictures/Screenshots ~/.config
 
-  git clone https://github.com/zedonix/scripts.git ~/.scripts
-  git clone https://github.com/zedonix/dotfiles.git ~/.dotfiles
-  git clone https://github.com/zedonix/GruvboxGtk.git ~/Downloads/GruvboxGtk
+#  git clone https://github.com/zedonix/scripts.git ~/.scripts
+#  git clone https://github.com/zedonix/dotfiles.git ~/.dotfiles
+#  git clone https://github.com/zedonix/GruvboxGtk.git ~/Downloads/GruvboxGtk
 
-  cp ~/.dotfiles/archpfp.png ~/Pictures/
+#  cp ~/.dotfiles/archpfp.png ~/Pictures/
 
-  ln -sf ~/.dotfiles/.bashrc ~/.bashrc
-  ln -sf ~/.dotfiles/home.html ~/Documents/home/home.html
-  ln -sf ~/.dotfiles/archlinux.png ~/Documents/home/archlinux.png
+#  ln -sf ~/.dotfiles/.bashrc ~/.bashrc
+#  ln -sf ~/.dotfiles/home.html ~/Documents/home/home.html
+#  ln -sf ~/.dotfiles/archlinux.png ~/Documents/home/archlinux.png
 
-  for link in foot fuzzel htop newsboat nvim sway tmux zathura swaync mpv mako; do
-    ln -sf ~/.dotfiles/.config/$link/ ~/.config
-  done
-  git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
-'
+#  for link in foot fuzzel htop newsboat nvim sway tmux zathura swaync mpv mako; do
+#    ln -sf ~/.dotfiles/.config/$link/ ~/.config
+#  done
+#  git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
+#'
 
 # Polkit/Firefox policy
-mkdir -p /etc/firefox/policies
-ln -sf /home/"$user"/.dotfiles/policies.json /etc/firefox/policies/policies.json
+#mkdir -p /etc/firefox/policies
+#ln -sf /home/"$user"/.dotfiles/policies.json /etc/firefox/policies/policies.json
 
 # Services
-systemctl enable NetworkManager
-systemctl enable libvirtd
-freshclam
-systemctl enable clamav-daemon.service
+#systemctl enable NetworkManager
+#systemctl enable libvirtd
+#freshclam
+#systemctl enable clamav-daemon.service
 
 # Clean up package cache and Wrapping up
-pacman -Scc --noconfirm
+#pacman -Scc --noconfirm
