@@ -77,11 +77,6 @@ install_pkgs=(
     wl-clipboard cliphist libnotify asciinema reflector polkit polkit-gnome lua python python-black stylua pyright jq swayosd gnu-free-fonts zathura-pdf-mupdf
 )
 
-# Ensure reflector is installed (if not already)
-if ! command -v reflector &>/dev/null; then
-  pacman -Sy --noconfirm reflector
-fi
-
 # Rate and install the base system
 reflector --country 'India' --latest 10 --age 24 --sort rate --save /etc/pacman.d/mirrorlist
 
