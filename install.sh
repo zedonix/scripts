@@ -47,12 +47,8 @@ mount "$part3" /mnt
 # mount -o subvolid=5 "$part3" /mnt
 # btrfs subvolume delete /mnt/@ || true
 btrfs subvolume create /mnt/@
-if [ ! -d /mnt/@home ]; then
-  btrfs subvolume create /mnt/@home
-fi
-if [ ! -d /mnt/@var ]; then
-  btrfs subvolume create /mnt/@var
-fi
+[ ! -d /mnt/@home ] && btrfs subvolume create /mnt/@home
+[ ! -d /mnt/@var ] && btrfs subvolume create /mnt/@var
 
 umount /mnt
 
