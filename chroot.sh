@@ -57,7 +57,7 @@ echo "::1        localhost" >> /etc/hosts
 echo "127.0.1.1  $hostname.localdomain  $hostname" >> /etc/hosts
 
 # Random shit
-mkinitcpio -p
+mkinitcpio -P
 
 # Bootloader
 pacman -S --noconfirm grub grub-btrfs efibootmgr os-prober
