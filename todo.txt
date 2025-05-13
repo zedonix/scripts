@@ -4,6 +4,4 @@ https://wyag.thb.lt/#intro
 https://www.leshenko.net/p/ugit/#
 
 master these -
-awk, sed
-ssh, wget, scp, ping, rsync
-cron jobs
+awk, sed, ssh
