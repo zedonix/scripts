@@ -2,6 +2,3 @@ https://0xax.gitbooks.io/linux-insides/content/index.html
 
 https://wyag.thb.lt/#intro
 https://www.leshenko.net/p/ugit/#
-
-master these -
-awk, sed, ssh
