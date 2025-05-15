@@ -97,7 +97,7 @@ mount "$part1" /mnt/boot
 # Base Installation
 install_pkgs=(
     base base-devel linux-zen linux-zen-headers linux-firmware 
-    sudo man-db man-pages btrfs-progs networkmanager network-manager-applet nmcli nmtui bash-completion ananicy-cpp zram-generator
+    sudo man-db man-pages btrfs-progs networkmanager network-manager-applet bash-completion ananicy-cpp zram-generator
     ntfs-3g exfat-utils mtools dosfstools intel-ucode inotify-tools
     grub grub-btrfs efibootmgr os-prober snapper
     qemu-desktop virt-manager vde2 dnsmasq libvirt bridge-utils openbsd-netcat
