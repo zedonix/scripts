@@ -1,3 +1,5 @@
+run.sh -> chroot.sh
+.snapshots
 easyeffects how?
 firefox dns
 unbound setup

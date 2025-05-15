@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
 set -e
+mkdir -p "$XDG_STATE_HOME"/bash
 
 SRC_DIR="/home/${USER}/Downloads/GruvboxGtk"
-DEST_DIR="${HOME}/.themes"
+DEST_DIR="${HOME}/.local/share"
 THEME_NAME="Gruvbox-Dark"
 THEME_DIR="${DEST_DIR}/${THEME_NAME}"
 rm -rf "${THEME_DIR}"
