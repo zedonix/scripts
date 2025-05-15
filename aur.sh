@@ -8,4 +8,4 @@ git clone https://aur.archlinux.org/paru.git
 cd paru
 makepkg -si
 
-paru -S sway-audio-idle-inhibit-git sdl-ball r-rmarkdown
+paru -S sway-audio-idle-inhibit-git sdl-ball

@@ -1,5 +1,7 @@
-kernal zen
+remove swap
+kernal zen how?
 easyeffects how?
+dns
 
 https://wiki.archlinux.org/title/Improving_performance
 2.4.4

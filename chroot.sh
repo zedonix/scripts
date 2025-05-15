@@ -3,39 +3,23 @@ set -euo pipefail
 
 # Configuration
 timezone="Asia/Kolkata"
-hostname="archlinux"
 
-# --- Root password setup with retry ---
-while true; do
-  echo "Setting root password..."
-  if passwd; then
-    break
-  else
-    echo "Password setup failed. Please try again."
-  fi
-done
+# Load variables from install.conf
+source /root/install.conf
 
-# --- User Setup with username prompt loop ---
-while true; do
-  read -p "Username: " user
-  if [[ -z "$user" ]]; then
-    echo "Username cannot be empty. Please enter a username."
-    continue
-  fi
-  break
-done
+# --- Set hostname ---
+echo "$hostname" > /etc/hostname
+echo "127.0.0.1  localhost" > /etc/hosts
+echo "::1        localhost" >> /etc/hosts
+echo "127.0.1.1  $hostname.localdomain  $hostname" >> /etc/hosts
 
+# --- Set root password ---
+echo "root:$root_password" | chpasswd
+
+# --- Create user and set password ---
 if ! id "$user" &>/dev/null; then
   useradd -m -G wheel,storage,power,video,audio,libvirt,kvm -s /bin/bash "$user"
-  # --- User password setup with retry ---
-  while true; do
-    echo "Setting user password..."
-    if passwd "$user"; then
-      break
-    else
-      echo "Password setup failed. Please try again."
-    fi
-  done
+  echo "$user:$user_password" | chpasswd
 else
   echo "User $user already exists, skipping creation."
 fi
@@ -48,13 +32,7 @@ locale-gen
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
 # Sudo Configuration
-echo "%wheel ALL=(ALL) ALL" | sudo tee /etc/sudoers.d/wheel
-
-# Host Configuration
-echo "$hostname" > /etc/hostname
-echo "127.0.0.1  localhost" > /etc/hosts
-echo "::1        localhost" >> /etc/hosts
-echo "127.0.1.1  $hostname.localdomain  $hostname" >> /etc/hosts
+echo "%wheel ALL=(ALL) ALL" > /etc/sudoers.d/wheel
 
 # Bootloader
 pacman -S --noconfirm grub grub-btrfs efibootmgr os-prober
@@ -84,7 +62,6 @@ su - "$user" -c '
   git clone https://github.com/zedonix/GruvboxGtk.git ~/Downloads/GruvboxGtk
 
   cp ~/.dotfiles/archpfp.png ~/Pictures/
-
   ln -sf ~/.dotfiles/.bashrc ~/.bashrc
   ln -sf ~/.dotfiles/home.html ~/Documents/home/home.html
   ln -sf ~/.dotfiles/archlinux.png ~/Documents/home/archlinux.png
@@ -107,3 +84,5 @@ systemctl enable clamav-daemon.service
 
 # Clean up package cache and Wrapping up
 pacman -Scc --noconfirm
+
+echo "Chroot configuration complete."

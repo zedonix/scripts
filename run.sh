@@ -81,13 +81,17 @@ sudo ufw enable
 sudo systemctl enable ufw
 
 # Enable profile-sync-daemon
-systemctl --user enable --now psd
+# systemctl --user enable --now psd
 
-# Enable ananicy-cpp
+# Enable ananicy-cpp(nice value) and fstrim(ssd)
 sudo systemctl enable --now ananicy-cpp.service
+sudo systemctl enable fstrim.timer
 
 # Flatpak setup
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+# zram setup
+printf '[zram0]\nzram-size = ram * 2\ncompression-algorithm = zstd\nswap-priority = 100\nfs-type = swap\n' | sudo tee /etc/systemd/zram-generator.conf
 
 # Running aur.sh
 bash ~/.scripts/aur.sh
