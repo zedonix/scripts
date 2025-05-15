@@ -96,14 +96,22 @@ mount "$part1" /mnt/boot
 
 # Base Installation
 install_pkgs=(
-    base base-devel linux linux-headers linux-firmware sudo man-db man-pages snapper btrfs-progs qemu-desktop virt-manager vde2 bash-completion profile-sync-daemon
-    openssh ncdu bat eza fzf git github-cli ripgrep ripgrep-all sqlite ntfs-3g exfat-utils mtools dosfstools dnsmasq dysk gvfs cronie uv network-manager-applet
-    networkmanager ufw newsboat pipewire wireplumber pipewire-pulse pipewire-alsa pipewire-audio pipewire-jack mpv sassc libvirt fuzzel udiskie nvtop ananicy-cpp
-    xorg-xwayland xdg-desktop-portal-wlr xdg-desktop-portal-gtk sway swaybg swaylock swayidle foot wl-clip-persist swaync autotiling swayimg qalculate-gtk nmcli
-    papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji ttc-iosevka ttf-iosevkaterm-nerd yt-dlp aria2 bridge-utils openbsd-netcat flatpak kanshi nmtui
-    neovim tmux zathura texlive-latex unrar 7zip unzip rsync grim slurp pcmanfm-gtk3 gimp clamav intel-ucode inotify-tools discord firefox easyeffects pandoc
-    wl-clipboard cliphist libnotify asciinema reflector polkit polkit-gnome lua python python-black stylua pyright jq swayosd gnu-free-fonts zathura-pdf-mupdf
-    htop fastfetch zram-generator
+    base base-devel linux-zen linux-zen-headers linux-firmware 
+    sudo man-db man-pages btrfs-progs networkmanager network-manager-applet nmcli nmtui bash-completion ananicy-cpp zram-generator
+    ntfs-3g exfat-utils mtools dosfstools intel-ucode inotify-tools
+    grub grub-btrfs efibootmgr os-prober snapper
+    qemu-desktop virt-manager vde2 dnsmasq libvirt bridge-utils openbsd-netcat
+    openssh ncdu bat eza fzf git github-cli ripgrep ripgrep-all sqlite dysk cronie ufw clamav
+    sassc udiskie gvfs yt-dlp aria2 unrar 7zip unzip rsync jq reflector polkit polkit-gnome
+    pipewire wireplumber pipewire-pulse pipewire-alsa pipewire-audio pipewire-jack
+    xorg-xwayland xdg-desktop-portal-wlr xdg-desktop-portal-gtk
+    sway swaybg swaylock swayidle swayimg autotiling flatpak
+    mpv fuzzel qalculate-gtk discord firefox zathura kanshi pcmanfm-gtk3 gimp easyeffects
+    foot nvtop htop fastfetch newsboat neovim tmux asciinema
+    papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji ttc-iosevka ttf-iosevkaterm-nerd gnu-free-fonts
+    wl-clip-persist wl-clipboard cliphist libnotify swaync grim slurp swayosd
+    texlive-latex pandoc zathura-pdf-mupdf
+    lua python uv python-black stylua pyright
 )
 
 # Rate and install the base system

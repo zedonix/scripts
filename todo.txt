@@ -1,18 +1,10 @@
-remove swap
-kernal zen how?
 easyeffects how?
-dns
-
-https://wiki.archlinux.org/title/Improving_performance
-2.4.4
-7.1.1
-
-https://wiki.archlinux.org/title/Btrfs#Known_issues
-6.7
-https://wiki.archlinux.org/title/Limine#Snapper_snapshot_integration_for_Btrfs
+firefox dns
 unbound setup
 
-https://0xax.gitbooks.io/linux-insides/content/index.html
+https://wiki.archlinux.org/title/Improving_performance
+2.4.4 - laptop
 
+https://0xax.gitbooks.io/linux-insides/content/index.html
 https://wyag.thb.lt/#intro
 https://www.leshenko.net/p/ugit/#

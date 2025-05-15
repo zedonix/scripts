@@ -35,7 +35,6 @@ echo "LANG=en_US.UTF-8" > /etc/locale.conf
 echo "%wheel ALL=(ALL) ALL" > /etc/sudoers.d/wheel
 
 # Bootloader
-pacman -S --noconfirm grub grub-btrfs efibootmgr os-prober
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 sed -i '/^#GRUB_DISABLE_OS_PROBER=false$/c\GRUB_DISABLE_OS_PROBER=false' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
