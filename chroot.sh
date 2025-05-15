@@ -48,7 +48,7 @@ locale-gen
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
 # Sudo Configuration
-echo "%wheel ALL=(ALL) ALL" > /etc/sudoers.d/wheel
+echo "%wheel ALL=(ALL) ALL" | sudo tee /etc/sudoers.d/wheel
 
 # Host Configuration
 echo "$hostname" > /etc/hostname
