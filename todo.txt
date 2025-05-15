@@ -1,3 +1,15 @@
+kernal zen
+easyeffects how?
+
+https://wiki.archlinux.org/title/Improving_performance
+2.4.4
+7.1.1
+
+https://wiki.archlinux.org/title/Btrfs#Known_issues
+6.7
+https://wiki.archlinux.org/title/Limine#Snapper_snapshot_integration_for_Btrfs
+unbound setup
+
 https://0xax.gitbooks.io/linux-insides/content/index.html
 
 https://wyag.thb.lt/#intro

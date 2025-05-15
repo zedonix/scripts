@@ -76,6 +76,12 @@ sudo ufw default allow outgoing
 sudo ufw enable
 sudo systemctl enable ufw
 
+# Enable profile-sync-daemon
+systemctl --user enable --now psd
+
+# Enable ananicy-cpp
+sudo systemctl enable --now ananicy-cpp.service
+
 # Flatpak setup
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 

@@ -64,12 +64,12 @@ swapon "$part2"
 
 # Base Installation
 install_pkgs=(
-    base base-devel linux linux-headers linux-firmware sudo man-db man-pages snapper btrfs-progs uv qemu-desktop virt-manager vde2 bash-completion
-    openssh ncdu htop fastfetch bat eza fzf git github-cli ripgrep ripgrep-all sqlite ntfs-3g exfat-utils mtools dosfstools dnsmasq dysk gvfs cronie
-    networkmanager ufw newsboat pipewire wireplumber pipewire-pulse pipewire-alsa pipewire-audio pipewire-jack mpv sassc libvirt fuzzel udiskie nvtop
+    base base-devel linux linux-headers linux-firmware sudo man-db man-pages snapper btrfs-progs qemu-desktop virt-manager vde2 bash-completion profile-sync-daemon
+    openssh ncdu htop fastfetch bat eza fzf git github-cli ripgrep ripgrep-all sqlite ntfs-3g exfat-utils mtools dosfstools dnsmasq dysk gvfs cronie r uv
+    networkmanager ufw newsboat pipewire wireplumber pipewire-pulse pipewire-alsa pipewire-audio pipewire-jack mpv sassc libvirt fuzzel udiskie nvtop ananicy-cpp
     xorg-xwayland xdg-desktop-portal-wlr xdg-desktop-portal-gtk sway swaybg swaylock swayidle foot wl-clip-persist swaync autotiling swayimg qalculate-gtk
     papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji ttc-iosevka ttf-iosevkaterm-nerd yt-dlp aria2 bridge-utils openbsd-netcat flatpak kanshi
-    neovim tmux zathura texlive-latex unrar 7zip unzip rsync grim slurp pcmanfm-gtk3 gimp clamav intel-ucode inotify-tools discord firefox easyeffects
+    neovim tmux zathura texlive-latex unrar 7zip unzip rsync grim slurp pcmanfm-gtk3 gimp clamav intel-ucode inotify-tools discord firefox easyeffects pandoc
     wl-clipboard cliphist libnotify asciinema reflector polkit polkit-gnome lua python python-black stylua pyright jq swayosd gnu-free-fonts zathura-pdf-mupdf
 )
 
