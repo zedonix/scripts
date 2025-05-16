@@ -80,15 +80,10 @@ sudo ufw allow 21/tcp
 sudo ufw limit 22/tcp
 sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
-sudo ufw allow 6881:6999/tcp
-sudo ufw allow 6881:6999/udp
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw enable
 sudo systemctl enable ufw
-
-# Enable profile-sync-daemon
-# systemctl --user enable --now psd
 
 # Enable ananicy-cpp(nice value) and fstrim(ssd)
 sudo systemctl enable --now ananicy-cpp.service
