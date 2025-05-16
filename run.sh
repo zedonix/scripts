@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-
-set -e
+set -euo pipefail
 mkdir -p "$XDG_STATE_HOME"/bash
 
 SRC_DIR="/home/${USER}/Downloads/GruvboxGtk"
@@ -56,8 +55,10 @@ for type in pdf x-pdf fdf xdp xfdf pdx; do xdg-mime default org.pwmt.zathura.des
 for type in jpeg svg png gif webp bmp tiff; do xdg-mime default swayimg.desktop image/$type; done
 
 # Snapper setup
-umount /.snapshots/
-rm -r /.snapshots/
+if mountpoint -q /.snapshots; then
+  umount /.snapshots/
+fi
+rm -rf /.snapshots/
 sudo snapper -c root create-config / || true
 sudo snapper -c home create-config /home || true
 sudo snapper -c var create-config /var || true
@@ -72,11 +73,9 @@ sudo virsh net-autostart default
 
 # Firefox user.js linking
 firefox
-if [ -d ~/.mozilla/firefox ]; then
-  dir=$(ls ~/.mozilla/firefox/ | grep ".default-release" | head -n1)
-  if [ -n "$dir" ]; then
-      ln -sf /home/$USER/.dotfiles/user.js /home/$USER/.mozilla/firefox/$dir/user.js
-  fi
+profile_dir=$(find ~/.mozilla/firefox -maxdepth 1 -type d -name '*.default-release' | head -n1)
+if [[ -n "$profile_dir" ]]; then
+  ln -sf "$HOME/.dotfiles/user.js" "$profile_dir/user.js"
 fi
 
 # UFW setup
