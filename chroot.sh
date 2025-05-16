@@ -57,6 +57,27 @@ REFCONF
 reflector --country 'India' --latest 10 --age 24 --sort rate --save /etc/pacman.d/mirrorlist
 systemctl enable reflector.timer
 
+# Installing stuff
+install_pkgs=( 
+    man-db man-pages network-manager-applet bash-completion ananicy-cpp zram-generator acpid power-profiles-daemon
+    ntfs-3g exfat-utils mtools dosfstools intel-ucode inotify-tools
+    grub grub-btrfs efibootmgr os-prober snapper
+    qemu-desktop virt-manager vde2 dnsmasq libvirt bridge-utils openbsd-netcat
+    openssh ncdu bat eza fzf git github-cli ripgrep ripgrep-all sqlite dysk cronie ufw clamav
+    sassc udiskie gvfs yt-dlp aria2 unrar 7zip unzip rsync jq reflector polkit polkit-gnome wget
+    pipewire wireplumber pipewire-pulse pipewire-alsa pipewire-audio pipewire-jack
+    xorg-xwayland xdg-desktop-portal-wlr xdg-desktop-portal-gtk
+    sway swaybg swaylock swayidle swayimg autotiling flatpak ly
+    mpv fuzzel qalculate-gtk discord firefox zathura kanshi pcmanfm-gtk3 gimp
+    easyeffects lsp-plugins-lv2 mda.lv2 zam-plugins-lv2 calf
+    foot nvtop htop fastfetch newsboat neovim tmux asciinema
+    papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji ttc-iosevka ttf-iosevkaterm-nerd gnu-free-fonts
+    wl-clip-persist wl-clipboard cliphist libnotify swaync grim slurp swayosd
+    texlive-latex pandoc zathura-pdf-mupdf hunspell hunspell-en_us nuspell enchant languagetool
+    lua python uv python-black stylua pyright ollama
+)
+sudo pacman -Syu "${install_pkgs[@]}" --noconfirm
+
 # Copy config and dotfiles as the user
 su - "$user" -c '
   mkdir -p ~/Downloads ~/Documents/home ~/Public ~/Templates ~/Videos ~/Pictures/Screenshots ~/.config ~/.local/state/bash
@@ -84,7 +105,7 @@ mkdir -p /etc/firefox/policies
 ln -sf /home/"$user"/.dotfiles/policies.json /etc/firefox/policies/policies.json
 
 # Services
-systemctl enable NetworkManager libvirtd sshd ananicy-cpp.service fstrim.timer ollama.service ly.service acpid power-profiles-daemon.service auto-cpufreq.service
+systemctl enable NetworkManager libvirtd sshd ananicy-cpp.service fstrim.timer ollama.service ly.service acpid power-profiles-daemon.service
 freshclam
 systemctl enable clamav-daemon.service clamav-freshclam.service
 
