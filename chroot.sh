@@ -86,27 +86,6 @@ ln -sf /home/"$user"/.dotfiles/policies.json /etc/firefox/policies/policies.json
 # Delete password
 shred -u /root/install.conf
 
-# Installing stuff
-install_pkgs=( 
-    man-db man-pages network-manager-applet bash-completion ananicy-cpp acpid power-profiles-daemon
-    ntfs-3g exfat-utils mtools dosfstools intel-ucode inotify-tools
-    grub-btrfs snapper
-    qemu-desktop virt-manager vde2 dnsmasq  bridge-utils openbsd-netcat
-    openssh ncdu bat eza fzf  github-cli ripgrep ripgrep-all sqlite dysk cronie ufw clamav
-    sassc udiskie gvfs yt-dlp aria2 unrar 7zip unzip rsync jq polkit polkit-gnome wget
-    pipewire wireplumber pipewire-pulse pipewire-alsa pipewire-audio pipewire-jack
-    xorg-xwayland xdg-desktop-portal-wlr xdg-desktop-portal-gtk
-    sway swaybg swaylock swayidle swayimg autotiling ly
-    mpv fuzzel qalculate-gtk discord firefox zathura kanshi pcmanfm-gtk3 gimp
-    easyeffects lsp-plugins-lv2 mda.lv2 zam-plugins-lv2 calf
-    foot nvtop htop fastfetch newsboat neovim tmux asciinema
-    papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji ttc-iosevka ttf-iosevkaterm-nerd gnu-free-fonts
-    wl-clip-persist wl-clipboard cliphist libnotify swaync grim slurp swayosd
-    texlive-latex pandoc zathura-pdf-mupdf hunspell hunspell-en_us nuspell enchant languagetool
-    lua python uv python-black stylua pyright ollama
-)
-sudo pacman -Syu "${install_pkgs[@]}" --noconfirm
-
 # Services
 systemctl enable NetworkManager libvirtd sshd ananicy-cpp.service fstrim.timer ollama.service ly.service acpid power-profiles-daemon.service
 freshclam
@@ -114,4 +93,3 @@ systemctl enable clamav-daemon.service clamav-freshclam.service
 
 # Clean up package cache and Wrapping up
 pacman -Scc --noconfirm
-echo "Chroot configuration complete."
