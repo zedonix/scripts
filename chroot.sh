@@ -85,6 +85,6 @@ systemctl enable clamav-daemon.service clamav-freshclam.service
 pacman -Scc --noconfirm
 
 # Delete password
-rm -rf /root/*
+shred -u /root/install.conf
 
 echo "Chroot configuration complete."
