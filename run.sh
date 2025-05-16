@@ -91,8 +91,8 @@ sudo ufw enable
 sudo systemctl enable ufw
 
 # Flatpak and zram
-  flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-  printf "[zram0]\nzram-size = ram * 2\ncompression-algorithm = zstd\nswap-priority = 100\nfs-type = swap\n" | sudo tee /etc/systemd/zram-generator.conf
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+printf "[zram0]\nzram-size = ram * 2\ncompression-algorithm = zstd\nswap-priority = 100\nfs-type = swap\n" | sudo tee /etc/systemd/zram-generator.conf
 
 # Snapper setup
 if mountpoint -q /.snapshots; then
