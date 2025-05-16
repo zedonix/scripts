@@ -18,7 +18,7 @@ echo "root:$root_password" | chpasswd
 
 # --- Create user and set password ---
 if ! id "$user" &>/dev/null; then
-  useradd -m -G wheel,storage,power,video,audio,libvirt,kvm -s /bin/bash "$user"
+  useradd -m -G wheel,storage,video,audio,kvm -s /bin/bash "$user"
   echo "$user:$user_password" | chpasswd
 else
   echo "User $user already exists, skipping creation."
@@ -77,6 +77,7 @@ install_pkgs=(
     lua python uv python-black stylua pyright ollama
 )
 sudo pacman -Syu "${install_pkgs[@]}" --noconfirm
+usermod -aG libvirt piyush
 
 # Copy config and dotfiles as the user
 su - "$user" -c '
