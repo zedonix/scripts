@@ -71,12 +71,27 @@ sudo systemctl enable --now grub-btrfsd
 # Libvirt setup
 sudo virsh net-autostart default
 
-# Firefox user.js linking
-firefox
-profile_dir=$(find ~/.mozilla/firefox -maxdepth 1 -type d -name '*.default-release' | head -n1)
+# Launch Firefox in background (no window shown)
+firefox --headless &
+
+# Wait up to 15 seconds for profile directory to be created
+timeout=7 # Thala for a reason
+elapsed=0
+until profile_dir=$(find ~/.mozilla/firefox -maxdepth 1 -type d -name '*.default-release' | head -n1) && [[ -n "$profile_dir" ]]; do
+  sleep 1
+  ((elapsed++))
+  if (( elapsed >= timeout )); then
+    echo "Timeout waiting for Firefox profile creation"
+    break
+  fi
+done
+
 if [[ -n "$profile_dir" ]]; then
   ln -sf "$HOME/.dotfiles/user.js" "$profile_dir/user.js"
 fi
+
+# Kill headless Firefox if still running
+pkill firefox || true
 
 # UFW setup
 sudo ufw allow 20/tcp
