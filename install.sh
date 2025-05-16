@@ -98,7 +98,12 @@ mkdir -p /mnt/boot
 mount "$part1" /mnt/boot
 
 # Pacstrap stuff
-pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware sudo btrfs-progs  networkmanager
+install_pkgs=(
+base base-devel linux-zen linux-zen-headers linux-firmware
+sudo btrfs-progs networkmanager grub efibootmgr os-prober reflector git
+flatpak zram-generator
+)
+pacstrap /mnt "${install_pkgs[@]}";
 
 # System Configuration
 genfstab -U /mnt > /mnt/etc/fstab
