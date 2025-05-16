@@ -24,9 +24,6 @@ else
   echo "User $user already exists, skipping creation."
 fi
 
-# Delete pass
-rm -rf /root/*
-
 # Local Setup
 ln -sf "/usr/share/zoneinfo/$timezone" /etc/localtime
 hwclock --systohc
@@ -80,12 +77,14 @@ mkdir -p /etc/firefox/policies
 ln -sf /home/"$user"/.dotfiles/policies.json /etc/firefox/policies/policies.json
 
 # Services
-systemctl enable NetworkManager
-systemctl enable libvirtd
+systemctl enable NetworkManager libvirtd sshd
 freshclam
-systemctl enable clamav-daemon.service
+systemctl enable clamav-daemon.service clamav-freshclam.service
 
 # Clean up package cache and Wrapping up
 pacman -Scc --noconfirm
+
+# Delete password
+rm -rf /root/*
 
 echo "Chroot configuration complete."
