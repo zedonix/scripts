@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
-SRC_DIR="~/Downloads/GruvboxGtk"
-DEST_DIR="~/.local/share/themes"
+SRC_DIR="$HOME/Downloads/GruvboxGtk"
+DEST_DIR="$HOME/.local/share/themes"
 THEME_NAME="Gruvbox-Dark"
 THEME_DIR="${DEST_DIR}/${THEME_NAME}"
 rm -rf "${THEME_DIR}"
