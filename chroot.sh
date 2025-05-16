@@ -84,7 +84,7 @@ mkdir -p /etc/firefox/policies
 ln -sf /home/"$user"/.dotfiles/policies.json /etc/firefox/policies/policies.json
 
 # Services
-systemctl enable NetworkManager libvirtd sshd ananicy-cpp.service fstrim.timer
+systemctl enable NetworkManager libvirtd sshd ananicy-cpp.service fstrim.timer ollama.service ly.service acpid power-profiles-daemon.service auto-cpufreq.service
 freshclam
 systemctl enable clamav-daemon.service clamav-freshclam.service
 

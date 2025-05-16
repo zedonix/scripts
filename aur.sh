@@ -8,4 +8,5 @@ git clone https://aur.archlinux.org/paru.git
 cd paru
 makepkg -si
 
-paru -S sway-audio-idle-inhibit-git sdl-ball textidote-bin snp && sudo snapper -c root create -d "After initial AUR"
+paru -S sway-audio-idle-inhibit-git sdl-ball auto-cpufreq textidote-bin && sudo snapper -c root create -d "After initial AUR"
+ollama pull gemma3:1b

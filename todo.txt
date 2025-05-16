@@ -1,10 +1,7 @@
-limine
-unbound setup
-firefox dns
-gpt4all
-
 https://wiki.archlinux.org/title/Improving_performance
-2.4.4 - laptop
+2.4.4 - laptop - io schedular
+
+unbound
 
 https://0xax.gitbooks.io/linux-insides/content/index.html
 https://wyag.thb.lt/#intro
