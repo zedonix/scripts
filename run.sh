@@ -39,13 +39,18 @@ gsettings set org.gnome.desktop.interface gtk-theme 'Gruvbox-Dark'
 gsettings set org.gnome.desktop.interface icon-theme "Papirus-Dark"
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
-echo "Gruvbox setup Done"
-
 # Mime setup
-find /usr/share/applications -iname '*.desktop' -print0 | while IFS= read -r -d $'\0' d; do
-  for m in $(grep MimeType "$d" | cut -d= -f2 | tr ";" " "); do
-    xdg-mime default "$(basename "$d")" "$m"
-  done
+shopt -s nullglob
+for desktopfile in /usr/share/applications/*.desktop; do
+  mime_types=$(grep '^MimeType=' "$desktopfile" | head -n1 | cut -d= -f2)
+  if [[ -n $mime_types ]]; then
+    IFS=';' read -ra mimes <<< "$mime_types"
+    for mime in "${mimes[@]}"; do
+      # skip empty mime types
+      [[ -z "$mime" ]] && continue
+      xdg-mime default "$(basename "$desktopfile")" "$mime"
+    done
+  fi
 done
 for type in pdf x-pdf fdf xdp xfdf pdx; do xdg-mime default org.pwmt.zathura.desktop application/$type; done
 for type in jpeg svg png gif webp bmp tiff; do xdg-mime default swayimg.desktop image/$type; done
