@@ -1,8 +1,7 @@
 run.sh -> chroot.sh
-.snapshots
-easyeffects how?
-firefox dns
+limine
 unbound setup
+firefox dns
 
 https://wiki.archlinux.org/title/Improving_performance
 2.4.4 - laptop

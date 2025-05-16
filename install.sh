@@ -82,6 +82,7 @@ mount "$part2" /mnt
 btrfs subvolume create /mnt/@
 [ ! -d /mnt/@home ] && btrfs subvolume create /mnt/@home
 [ ! -d /mnt/@var ] && btrfs subvolume create /mnt/@var
+[ ! -d /mnt/@.snapshots] && btrfs subvolume create /mnt/@/.snapshots
 
 umount /mnt
 
@@ -89,6 +90,7 @@ mount -o noatime,compress=lzo,ssd,space_cache=v2,discard=async,subvol=@ "$part2"
 mkdir -p /mnt/{home,var}
 mount -o noatime,compress=lzo,ssd,space_cache=v2,discard=async,subvol=@home "$part2" /mnt/home
 mount -o noatime,compress=lzo,ssd,space_cache=v2,discard=async,subvol=@var "$part2" /mnt/var
+mount -o noatime,compress=,zstd,ssd,space_cache=v2,discard=async,subvol=@.snapshots "$part2" /mnt/.snapshots
 
 # Mount EFI System Partition
 mkdir -p /mnt/boot

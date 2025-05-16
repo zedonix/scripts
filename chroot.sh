@@ -24,6 +24,9 @@ else
   echo "User $user already exists, skipping creation."
 fi
 
+# Delete pass
+rm -rf /root/*
+
 # Local Setup
 ln -sf "/usr/share/zoneinfo/$timezone" /etc/localtime
 hwclock --systohc
@@ -50,6 +53,7 @@ cat > /etc/xdg/reflector/reflector.conf << REFCONF
 --age 24
 --sort rate
 REFCONF
+reflector --country 'India' --latest 10 --age 24 --sort rate --save /etc/pacman.d/mirrorlist
 systemctl enable reflector.timer
 
 # Copy config and dotfiles as the user
