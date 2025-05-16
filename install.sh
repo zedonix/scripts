@@ -99,9 +99,9 @@ mount "$part1" /mnt/boot
 
 # Pacstrap stuff
 install_pkgs=(
-base base-devel linux-zen linux-zen-headers linux-firmware
-sudo btrfs-progs networkmanager grub efibootmgr os-prober reflector git
-flatpak zram-generator
+  base base-devel linux-zen linux-zen-headers linux-firmware
+  sudo btrfs-progs networkmanager grub efibootmgr os-prober reflector git
+  flatpak zram-generator libvirt
 )
 pacstrap /mnt "${install_pkgs[@]}";
 
