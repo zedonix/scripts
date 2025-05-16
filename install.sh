@@ -83,7 +83,7 @@ mount "$part2" /mnt
 btrfs subvolume create /mnt/@
 [ ! -d /mnt/@home ] && btrfs subvolume create /mnt/@home
 [ ! -d /mnt/@var ] && btrfs subvolume create /mnt/@var
-[ ! -d /mnt/@snapshots ] && btrfs subvolume create /mnt/.snapshots
+[ ! -d /mnt/@snapshots ] && btrfs subvolume create /mnt/@snapshots
 
 umount /mnt
 
