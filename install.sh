@@ -82,7 +82,7 @@ mount "$part2" /mnt
 btrfs subvolume create /mnt/@
 [ ! -d /mnt/@home ] && btrfs subvolume create /mnt/@home
 [ ! -d /mnt/@var ] && btrfs subvolume create /mnt/@var
-[ ! -d /mnt/@.snapshots] && btrfs subvolume create /mnt/@/.snapshots
+[ ! -d /mnt/@.snapshots ] && btrfs subvolume create /mnt/@/.snapshots
 
 umount /mnt
 
@@ -121,13 +121,10 @@ install_pkgs=(
 reflector --country 'India' --latest 10 --age 24 --sort rate --save /etc/pacman.d/mirrorlist
 
 # Pacstrap with error handling
-set +e
-pacstrap /mnt "${install_pkgs[@]}"
-if [ $? -ne 0 ]; then
+if ! pacstrap /mnt "${install_pkgs[@]}"; then
   echo "pacstrap failed. Please check the package list and network connection."
   exit 1
 fi
-set -e
 
 # System Configuration
 genfstab -U /mnt >> /mnt/etc/fstab
