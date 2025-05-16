@@ -59,7 +59,7 @@ systemctl enable reflector.timer
 
 # Copy config and dotfiles as the user
 su - "$user" -c '
-  mkdir -p ~/Downloads ~/Documents/home ~/Public ~/Templates ~/Videos ~/Pictures/Screenshots ~/.config
+  mkdir -p ~/Downloads ~/Documents/home ~/Public ~/Templates ~/Videos ~/Pictures/Screenshots ~/.config ~/.local/state/bash
 
   git clone https://github.com/zedonix/scripts.git ~/.scripts
   git clone https://github.com/zedonix/dotfiles.git ~/.dotfiles
@@ -74,6 +74,9 @@ su - "$user" -c '
     ln -sf ~/.dotfiles/.config/$link/ ~/.config
   done
   git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
+
+  flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+  printf "[zram0]\nzram-size = ram * 2\ncompression-algorithm = zstd\nswap-priority = 100\nfs-type = swap\n" | sudo tee /etc/systemd/zram-generator.conf
 '
 
 # Polkit/Firefox policy
@@ -81,7 +84,7 @@ mkdir -p /etc/firefox/policies
 ln -sf /home/"$user"/.dotfiles/policies.json /etc/firefox/policies/policies.json
 
 # Services
-systemctl enable NetworkManager libvirtd sshd
+systemctl enable NetworkManager libvirtd sshd ananicy-cpp.service fstrim.timer
 freshclam
 systemctl enable clamav-daemon.service clamav-freshclam.service
 

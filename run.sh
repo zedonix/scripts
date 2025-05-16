@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 set -e
-mkdir -p "$XDG_STATE_HOME"/bash
 
-SRC_DIR="/home/${USER}/Downloads/GruvboxGtk"
-DEST_DIR="${HOME}/.local/share/themes"
+SRC_DIR="~/Downloads/GruvboxGtk"
+DEST_DIR="~/.local/share/themes"
 THEME_NAME="Gruvbox-Dark"
 THEME_DIR="${DEST_DIR}/${THEME_NAME}"
 rm -rf "${THEME_DIR}"
@@ -61,7 +60,7 @@ sudo virsh net-autostart default
 echo "firefor stuff"
 firefox --headless &
 
-# Wait up to 7 seconds for profile directory to be created
+# Wait few seconds for profile directory to be created
 timeout=7 # Thala for a reason
 elapsed=0
 until profile_dir=$(find ~/.mozilla/firefox -maxdepth 1 -type d -name '*.default-release' | head -n1) && [[ -n "$profile_dir" ]]; do
@@ -90,16 +89,6 @@ sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw enable
 sudo systemctl enable ufw
-
-# Enable ananicy-cpp(nice value) and fstrim(ssd)
-sudo systemctl enable --now ananicy-cpp.service
-sudo systemctl enable fstrim.timer
-
-# Flatpak setup
-flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-
-# zram setup
-printf '[zram0]\nzram-size = ram * 2\ncompression-algorithm = zstd\nswap-priority = 100\nfs-type = swap\n' | sudo tee /etc/systemd/zram-generator.conf
 
 # Snapper setup
 if mountpoint -q /.snapshots; then
