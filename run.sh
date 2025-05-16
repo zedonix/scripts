@@ -54,20 +54,6 @@ done
 for type in pdf x-pdf fdf xdp xfdf pdx; do xdg-mime default org.pwmt.zathura.desktop application/$type; done
 for type in jpeg svg png gif webp bmp tiff; do xdg-mime default swayimg.desktop image/$type; done
 
-# Snapper setup
-if mountpoint -q /.snapshots; then
-  umount /.snapshots/
-fi
-rm -rf /.snapshots/
-sudo snapper -c root create-config / || true
-sudo snapper -c home create-config /home || true
-sudo snapper -c var create-config /var || true
-mount -a
-
-sudo systemctl enable --now snapper-timeline.timer
-sudo systemctl enable --now snapper-cleanup.timer
-sudo systemctl enable --now grub-btrfsd
-
 # Libvirt setup
 sudo virsh net-autostart default
 
@@ -113,6 +99,20 @@ flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flat
 
 # zram setup
 printf '[zram0]\nzram-size = ram * 2\ncompression-algorithm = zstd\nswap-priority = 100\nfs-type = swap\n' | sudo tee /etc/systemd/zram-generator.conf
+
+# Snapper setup
+if mountpoint -q /.snapshots; then
+  umount /.snapshots/
+fi
+[[ -d /.snapshots ]] && sudo rm -rf /.snapshots/
+sudo snapper -c root create-config / || true
+sudo snapper -c home create-config /home || true
+sudo snapper -c var create-config /var || true
+mount -a
+
+sudo systemctl enable --now snapper-timeline.timer
+sudo systemctl enable --now snapper-cleanup.timer
+sudo systemctl enable --now grub-btrfsd
 
 # Take snapshot befor aur
 sudo snapper -c root create -d "Before initial AUR"
