@@ -38,7 +38,7 @@ echo "%wheel ALL=(ALL) ALL" > /etc/sudoers.d/wheel
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 if grep -q "^#GRUB_DISABLE_OS_PROBER=false" /etc/default/grub; then
   sed -i 's/^#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /etc/default/grub
-elif ! grep -q "^GRUB_DISABLE_OS_PROBER=" /etc/default/grub; then
+else
   echo "GRUB_DISABLE_OS_PROBER=false" >> /etc/default/grub
 fi
 grub-mkconfig -o /boot/grub/grub.cfg
@@ -74,9 +74,6 @@ su - "$user" -c '
     ln -sf ~/.dotfiles/.config/$link/ ~/.config
   done
   git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
-
-  flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-  printf "[zram0]\nzram-size = ram * 2\ncompression-algorithm = zstd\nswap-priority = 100\nfs-type = swap\n" | sudo tee /etc/systemd/zram-generator.conf
 '
 
 # Polkit/Firefox policy
@@ -85,6 +82,15 @@ ln -sf /home/"$user"/.dotfiles/policies.json /etc/firefox/policies/policies.json
 
 # Delete password
 shred -u /root/install.conf
+
+# zram config
+cat > /etc/systemd/zram-generator.conf <<EOF
+[zram0]
+zram-size = ram * 2
+compression-algorithm = zstd
+swap-priority = 100
+fs-type = swap
+EOF
 
 # Services
 systemctl enable NetworkManager libvirtd sshd ananicy-cpp.service fstrim.timer ollama.service ly.service acpid power-profiles-daemon.service
