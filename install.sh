@@ -87,7 +87,7 @@ btrfs subvolume create /mnt/@
 umount /mnt
 
 mount -o noatime,compress=lzo,ssd,space_cache=v2,discard=async,subvol=@ "$part2" /mnt
-mkdir -p /mnt/{home,var}
+mkdir -p /mnt/{home,var,.snapshots}
 mount -o noatime,compress=lzo,ssd,space_cache=v2,discard=async,subvol=@home "$part2" /mnt/home
 mount -o noatime,compress=lzo,ssd,space_cache=v2,discard=async,subvol=@var "$part2" /mnt/var
 mount -o noatime,compress=,zstd,ssd,space_cache=v2,discard=async,subvol=@.snapshots "$part2" /mnt/.snapshots

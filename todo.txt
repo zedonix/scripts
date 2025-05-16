@@ -2,6 +2,7 @@ run.sh -> chroot.sh
 limine
 unbound setup
 firefox dns
+gpt4all
 
 https://wiki.archlinux.org/title/Improving_performance
 2.4.4 - laptop

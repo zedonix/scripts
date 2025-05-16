@@ -51,14 +51,11 @@ for type in pdf x-pdf fdf xdp xfdf pdx; do xdg-mime default org.pwmt.zathura.des
 for type in jpeg svg png gif webp bmp tiff; do xdg-mime default swayimg.desktop image/$type; done
 
 # Snapper setup
-umount /.snapshots
-rm -r /.snapshots
+umount /.snapshots/
+rm -r /.snapshots/
 sudo snapper -c root create-config / || true
 sudo snapper -c home create-config /home || true
 sudo snapper -c var create-config /var || true
-btrfs subvolume delete /.snapshots
-mkdir /.snapshots
-mount -o noatime,compress=,zstd,ssd,space_cache=v2,discard=async,subvol=@var /dev/sda2 /mnt/.snapshots
 mount -a
 
 sudo systemctl enable --now snapper-timeline.timer
