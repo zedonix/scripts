@@ -57,12 +57,13 @@ export disk hostname root_password user user_password
 
 # Partition Naming
 if [[ "$disk" == *nvme* ]]; then
-  part1="${disk}p1"
-  part2="${disk}p2"
+  part_prefix="${disk}p"
 else
-  part1="${disk}1"
-  part2="${disk}2"
+  part_prefix="${disk}"
 fi
+
+part1="${part_prefix}1"
+part2="${part_prefix}2"
 
 # Partitioning --
 parted -s "$disk" mklabel gpt
