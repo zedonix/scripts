@@ -97,32 +97,8 @@ mount -o noatime,compress=zstd,ssd,space_cache=v2,discard=async,subvol=@snapshot
 mkdir -p /mnt/boot
 mount "$part1" /mnt/boot
 
-# Base Installation
-install_pkgs=(
-    base base-devel linux-zen linux-zen-headers linux-firmware sudo btrfs-progs
-    man-db man-pages networkmanager network-manager-applet bash-completion ananicy-cpp zram-generator acpid power-profiles-daemon
-    ntfs-3g exfat-utils mtools dosfstools intel-ucode inotify-tools
-    grub grub-btrfs efibootmgr os-prober snapper
-    qemu-desktop virt-manager vde2 dnsmasq libvirt bridge-utils openbsd-netcat
-    openssh ncdu bat eza fzf git github-cli ripgrep ripgrep-all sqlite dysk cronie ufw clamav
-    sassc udiskie gvfs yt-dlp aria2 unrar 7zip unzip rsync jq reflector polkit polkit-gnome wget
-    pipewire wireplumber pipewire-pulse pipewire-alsa pipewire-audio pipewire-jack
-    xorg-xwayland xdg-desktop-portal-wlr xdg-desktop-portal-gtk
-    sway swaybg swaylock swayidle swayimg autotiling flatpak ly
-    mpv fuzzel qalculate-gtk discord firefox zathura kanshi pcmanfm-gtk3 gimp
-    easyeffects lsp-plugins-lv2 mda.lv2 zam-plugins-lv2 calf
-    foot nvtop htop fastfetch newsboat neovim tmux asciinema
-    papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji ttc-iosevka ttf-iosevkaterm-nerd gnu-free-fonts
-    wl-clip-persist wl-clipboard cliphist libnotify swaync grim slurp swayosd
-    texlive-latex pandoc zathura-pdf-mupdf hunspell hunspell-en_us nuspell enchant languagetool
-    lua python uv python-black stylua pyright ollama
-)
-
-# Pacstrap with error handling
-if ! pacstrap /mnt "${install_pkgs[@]}"; then
-  echo "pacstrap failed. Please check the package list and network connection."
-  exit 1
-fi
+# Pacstrap stuff
+pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware sudo btrfs-progs  networkmanager
 
 # System Configuration
 genfstab -U /mnt > /mnt/etc/fstab
