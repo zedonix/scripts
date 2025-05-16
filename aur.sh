@@ -9,4 +9,5 @@ cd paru
 makepkg -si
 
 paru -S sway-audio-idle-inhibit-git sdl-ball auto-cpufreq textidote-bin && sudo snapper -c root create -d "After initial AUR"
+sudo systemctl enable --now auto-cpufreq.service
 ollama pull gemma3:1b
