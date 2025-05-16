@@ -118,9 +118,6 @@ install_pkgs=(
     lua python uv python-black stylua pyright
 )
 
-# Rate and install the base system
-reflector --country 'India' --latest 10 --age 24 --sort rate --save /etc/pacman.d/mirrorlist
-
 # Pacstrap with error handling
 if ! pacstrap /mnt "${install_pkgs[@]}"; then
   echo "pacstrap failed. Please check the package list and network connection."
@@ -128,8 +125,7 @@ if ! pacstrap /mnt "${install_pkgs[@]}"; then
 fi
 
 # System Configuration
-genfstab -U /mnt >> /mnt/etc/fstab
-
+genfstab -U /mnt > /mnt/etc/fstab
 
 # Exporting variables for chroot
 cat > /mnt/root/install.conf <<EOF
@@ -138,6 +134,7 @@ root_password=$root_password
 user=$user
 user_password=$user_password
 EOF
+chmod 600 /mnt/root/install.conf
 
 # Run chroot.sh
 cp "$(dirname "$0")/chroot.sh" /mnt/root/chroot.sh
@@ -145,5 +142,7 @@ chmod +x /mnt/root/chroot.sh
 arch-chroot /mnt /root/chroot.sh
 
 # Unmount and finalize
-umount -lR /mnt
+if mountpoint -q /mnt; then
+  umount -R /mnt
+fi
 echo "Installation completed. Please reboot your system."
