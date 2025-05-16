@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -e
 mkdir -p "$XDG_STATE_HOME"/bash
 
 SRC_DIR="/home/${USER}/Downloads/GruvboxGtk"
-DEST_DIR="${HOME}/.local/share"
+DEST_DIR="${HOME}/.local/share/themes"
 THEME_NAME="Gruvbox-Dark"
 THEME_DIR="${DEST_DIR}/${THEME_NAME}"
 rm -rf "${THEME_DIR}"
@@ -58,9 +58,10 @@ for type in jpeg svg png gif webp bmp tiff; do xdg-mime default swayimg.desktop 
 sudo virsh net-autostart default
 
 # Launch Firefox in background (no window shown)
+echo "firefor stuff"
 firefox --headless &
 
-# Wait up to 15 seconds for profile directory to be created
+# Wait up to 7 seconds for profile directory to be created
 timeout=7 # Thala for a reason
 elapsed=0
 until profile_dir=$(find ~/.mozilla/firefox -maxdepth 1 -type d -name '*.default-release' | head -n1) && [[ -n "$profile_dir" ]]; do
@@ -102,13 +103,13 @@ printf '[zram0]\nzram-size = ram * 2\ncompression-algorithm = zstd\nswap-priorit
 
 # Snapper setup
 if mountpoint -q /.snapshots; then
-  umount /.snapshots/
+  sudo umount /.snapshots/
 fi
 [[ -d /.snapshots ]] && sudo rm -rf /.snapshots/
 sudo snapper -c root create-config / || true
 sudo snapper -c home create-config /home || true
 sudo snapper -c var create-config /var || true
-mount -a
+sudo mount -a
 
 sudo systemctl enable --now snapper-timeline.timer
 sudo systemctl enable --now snapper-cleanup.timer
