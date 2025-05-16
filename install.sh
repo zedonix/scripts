@@ -90,7 +90,7 @@ mount -o noatime,compress=lzo,ssd,space_cache=v2,discard=async,subvol=@ "$part2"
 mkdir -p /mnt/{home,var,.snapshots}
 mount -o noatime,compress=lzo,ssd,space_cache=v2,discard=async,subvol=@home "$part2" /mnt/home
 mount -o noatime,compress=lzo,ssd,space_cache=v2,discard=async,subvol=@var "$part2" /mnt/var
-mount -o noatime,compress=,zstd,ssd,space_cache=v2,discard=async,subvol=@.snapshots "$part2" /mnt/.snapshots
+mount -o noatime,compress=zstd,ssd,space_cache=v2,discard=async,subvol=@.snapshots "$part2" /mnt/.snapshots
 
 # Mount EFI System Partition
 mkdir -p /mnt/boot
