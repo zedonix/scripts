@@ -117,7 +117,12 @@ install_pkgs=(
     texlive-latex pandoc zathura-pdf-mupdf hunspell hunspell-en_us nuspell enchant languagetool
     lua python uv python-black stylua pyright ollama
 )
-pacstrap /mnt "${install_pkgs[@]}";
+
+# Pacstrap with error handling
+if ! pacstrap /mnt "${install_pkgs[@]}"; then
+  echo "pacstrap failed. Please check the package list and network connection."
+  exit 1
+fi
 
 # System Configuration
 genfstab -U /mnt > /mnt/etc/fstab
