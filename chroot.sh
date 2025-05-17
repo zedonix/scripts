@@ -66,7 +66,7 @@ su - "$user" -c '
   ln -sf ~/.dotfiles/home.html ~/Documents/home/home.html
   ln -sf ~/.dotfiles/archlinux.png ~/Documents/home/archlinux.png
 
-  for link in foot fuzzel newsboat nvim sway tmux zathura swaync mpv mako; do
+  for link in foot fuzzel mako newsboat nvim sway swaync tmux zathura; do
     ln -sf ~/.dotfiles/.config/$link/ ~/.config
   done
   git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm

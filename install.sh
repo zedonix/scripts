@@ -109,7 +109,7 @@ install_pkgs=(
     pipewire wireplumber pipewire-pulse pipewire-alsa pipewire-audio pipewire-jack
     xorg-xwayland xdg-desktop-portal-wlr xdg-desktop-portal-gtk
     sway swaybg swaylock swayidle swayimg autotiling flatpak ly hyprpicker
-    mpv fuzzel qalculate-gtk discord firefox zathura kanshi pcmanfm-gtk3 gimp
+    celluloid fuzzel qalculate-gtk discord firefox zathura kanshi pcmanfm-gtk3 gimp
     easyeffects audacity lsp-plugins-lv2 mda.lv2 zam-plugins-lv2 calf
     foot nvtop htop fastfetch newsboat neovim tmux asciinema
     papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji ttc-iosevka ttf-iosevkaterm-nerd gnu-free-fonts

@@ -3,7 +3,6 @@ laptop setup
 
 ublock origin setup
 perplexica setup
-newsboat setup
 
 https://drive.google.com/drive/folders/1GpWxhZZg6jqHb72RBqgbbKAga96UnaBA
 
