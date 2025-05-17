@@ -89,7 +89,7 @@ fs-type = swap
 EOF
 
 # Services
-systemctl enable NetworkManager libvirtd sshd ananicy-cpp.service fstrim.timer ollama.service ly.service acpid power-profiles-daemon.service
+systemctl enable NetworkManager libvirtd sshd ananicy-cpp.service fstrim.timer ollama.service ly.service acpid power-profiles-daemon.service cronie.service
 freshclam
 systemctl enable clamav-daemon.service clamav-freshclam.service
 

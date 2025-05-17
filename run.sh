@@ -111,5 +111,8 @@ sudo sed -i \
   -e 's/^TIMELINE_LIMIT_YEARLY="10"/TIMELINE_LIMIT_YEARLY="0"/' \
   "/etc/snapper/configs/home"
 
+# A cron job
+(crontab -l ; echo "@daily $(which trash-empty) 30") | crontab -
+
 # Running aur.sh
 bash ~/.scripts/aur.sh
