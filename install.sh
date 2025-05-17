@@ -104,7 +104,7 @@ install_pkgs=(
     ntfs-3g exfat-utils mtools dosfstools intel-ucode inotify-tools
     grub grub-btrfs efibootmgr os-prober snapper snap-pac
     qemu-desktop virt-manager vde2 dnsmasq libvirt bridge-utils openbsd-netcat
-    openssh ncdu bat eza fzf git github-cli ripgrep ripgrep-all sqlite dysk cronie ufw clamav
+    openssh ncdu bat eza fzf git github-cli ripgrep ripgrep-all fd sqlite dysk cronie ufw clamav
     sassc udiskie gvfs yt-dlp aria2 unrar 7zip unzip rsync jq reflector polkit polkit-gnome wget
     pipewire wireplumber pipewire-pulse pipewire-alsa pipewire-audio pipewire-jack
     xorg-xwayland xdg-desktop-portal-wlr xdg-desktop-portal-gtk
