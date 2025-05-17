@@ -111,12 +111,12 @@ install_pkgs=(
     ntfs-3g exfat-utils mtools dosfstools intel-ucode inotify-tools
     grub grub-btrfs efibootmgr os-prober snapper snap-pac
     qemu-desktop virt-manager vde2 dnsmasq libvirt bridge-utils openbsd-netcat
-    openssh ncdu bat eza fzf git github-cli ripgrep ripgrep-all fd sqlite dysk cronie ufw clamav
+    openssh ncdu bat eza fzf git github-cli ripgrep ripgrep-all fd sqlite cronie ufw clamav
     sassc udiskie gvfs gvfs-mtp gvfs-gphoto2 unrar 7zip unzip rsync jq reflector polkit polkit-gnome
     pipewire wireplumber pipewire-pulse pipewire-alsa pipewire-audio pipewire-jack
     xorg-xwayland xdg-desktop-portal-wlr xdg-desktop-portal-gtk
     sway swaybg swaylock swayidle swayimg autotiling flatpak ly hyprpicker
-    celluloid fuzzel qalculate-gtk discord firefox zathura kanshi pcmanfm-gtk3 gimp file-roller
+    mpv fuzzel qalculate-gtk discord firefox zathura kanshi pcmanfm-gtk3 gimp file-roller
     easyeffects tenacity lsp-plugins-lv2 mda.lv2 zam-plugins-lv2 calf
     foot nvtop htop fastfetch newsboat neovim tmux asciinema trash-cli wget yt-dlp aria2
     papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji ttc-iosevka ttf-iosevkaterm-nerd gnu-free-fonts
