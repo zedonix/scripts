@@ -4,22 +4,25 @@ set -euo pipefail
 # --- Prompt Section (collect all user input here) ---
 
 # Disk Selection
+disks=($(lsblk -dno NAME))
 echo "Available disks:"
-lsblk -d -o NAME,SIZE,MODEL
-while true; do
-  read -p "Enter Disk (e.g. sda, nvme0n1): " disk_input
-  disk="/dev/${disk_input%/}"
-  if [ ! -b "$disk" ]; then
-    echo "Disk $disk does not exist. Try again."
-    continue
+select disk_input in "${disks[@]}"; do
+  disk="/dev/${disk_input}"
+  if [ -b "$disk" ]; then
+    break
+  else
+    echo "Invalid selection. Try again."
   fi
-  break
 done
 
 # Hostname
 while true; do
   read -p "Hostname: " hostname
-  [[ -z "$hostname" ]] && echo "Hostname cannot be empty." && continue
+  # RFC 1123: 1-63 chars, letters, digits, hyphens, not start/end with hyphen
+  if [[ ! "$hostname" =~ ^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$ ]]; then
+    echo "Invalid hostname. Use 1-63 letters, digits, or hyphens (not starting or ending with hyphen)."
+    continue
+  fi
   break
 done
 
@@ -37,7 +40,11 @@ done
 # Username
 while true; do
   read -p "Username: " user
-  [[ -z "$user" ]] && echo "Username cannot be empty." && continue
+  # Linux username: 1-32 chars, start with letter, then letters/digits/_/-
+  if [[ ! "$user" =~ ^[a-z_][a-z0-9_-]{0,31}$ ]]; then
+    echo "Invalid username. Use 1-32 lowercase letters, digits, underscores, or hyphens, starting with a letter or underscore."
+    continue
+  fi
   break
 done
 
