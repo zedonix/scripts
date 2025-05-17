@@ -38,46 +38,26 @@ gsettings set org.gnome.desktop.interface icon-theme "Papirus-Dark"
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
 # Mime setup
-shopt -s nullglob
-for desktopfile in /usr/share/applications/*.desktop; do
-  mime_types=$(grep '^MimeType=' "$desktopfile" | head -n1 | cut -d= -f2)
-  if [[ -n $mime_types ]]; then
-    IFS=';' read -ra mimes <<< "$mime_types"
-    for mime in "${mimes[@]}"; do
-      # skip empty mime types
-      [[ -z "$mime" ]] && continue
-      xdg-mime default "$(basename "$desktopfile")" "$mime"
-    done
-  fi
+find /usr/share/applications -iname '*.desktop' -print0 | while IFS= read -r -d $'\0' d; do
+  mime_types=$(grep -m1 '^MimeType=' "$d" | cut -d= -f2)
+  [[ -z "$mime_types" ]] && continue
+  IFS=';' read -ra mimes <<< "$mime_types"
+  for m in "${mimes[@]}"; do
+    [[ -z "$m" ]] && continue
+    xdg-mime default "$(basename "$d")" "$m"
+  done
 done
 for type in pdf x-pdf fdf xdp xfdf pdx; do xdg-mime default org.pwmt.zathura.desktop application/$type; done
 for type in jpeg svg png gif webp bmp tiff; do xdg-mime default swayimg.desktop image/$type; done
 
-# Libvirt setup
-sudo virsh net-autostart default
-
-# Launch Firefox in background (no window shown)
-echo "firefor stuff"
-firefox --headless &
-
-# Wait few seconds for profile directory to be created
-timeout=7 # Thala for a reason
-elapsed=0
-until profile_dir=$(find ~/.mozilla/firefox -maxdepth 1 -type d -name '*.default-release' | head -n1) && [[ -n "$profile_dir" ]]; do
-  sleep 1
-  ((elapsed++))
-  if (( elapsed >= timeout )); then
-    echo "Timeout waiting for Firefox profile creation"
-    break
+# Firefox user.js linking
+firefox
+if [ -d ~/.mozilla/firefox ]; then
+  dir=$(ls ~/.mozilla/firefox/ | grep ".default-release" | head -n1)
+  if [ -n "$dir" ]; then
+      ln -sf /home/$USER/.dotfiles/user.js /home/$USER/.mozilla/firefox/$dir/user.js
   fi
-done
-
-if [[ -n "$profile_dir" ]]; then
-  ln -sf "$HOME/.dotfiles/user.js" "$profile_dir/user.js"
 fi
-
-# Kill headless Firefox if still running
-pkill firefox || true
 
 # UFW setup
 sudo ufw allow 20/tcp
@@ -90,6 +70,9 @@ sudo ufw default allow outgoing
 sudo ufw enable
 sudo systemctl enable ufw
 
+# Libvirt setup
+sudo virsh net-autostart default
+
 # Flatpak setup
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
@@ -100,7 +83,6 @@ fi
 [[ -d /.snapshots ]] && sudo rm -rf /.snapshots/
 sudo snapper -c root create-config / || true
 sudo snapper -c home create-config /home || true
-sudo snapper -c var create-config /var || true
 sudo mount -a
 
 sudo systemctl enable --now snapper-timeline.timer

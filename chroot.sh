@@ -27,7 +27,7 @@ fi
 # Local Setup
 ln -sf "/usr/share/zoneinfo/$timezone" /etc/localtime
 hwclock --systohc
-sed -i 's/#en_US.UTF-8/en_US.UTF-8/g' /etc/locale.gen
+sed -i 's/^#en_US.UTF-8/en_US.UTF-8/g' /etc/locale.gen
 locale-gen
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
@@ -36,11 +36,7 @@ echo "%wheel ALL=(ALL) ALL" > /etc/sudoers.d/wheel
 
 # Bootloader
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-if grep -q "^#GRUB_DISABLE_OS_PROBER=false" /etc/default/grub; then
-  sed -i 's/^#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /etc/default/grub
-else
-  echo "GRUB_DISABLE_OS_PROBER=false" >> /etc/default/grub
-fi
+sed -i 's/^#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # Reflector and pacman Setup

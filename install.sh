@@ -72,7 +72,7 @@ parted -s "$disk" set 1 esp on
 parted -s "$disk" mkpart primary btrfs 1025MiB 100%
 
 # Formatting
-mkfs.fat -F32 "$part1"
+mkfs.vfat -F 32 -n EFI "$part1"
 mkfs.btrfs -f -L ROOT "$part2"
 
 mount "$part2" /mnt
@@ -83,14 +83,16 @@ mount "$part2" /mnt
 btrfs subvolume create /mnt/@
 [ ! -d /mnt/@home ] && btrfs subvolume create /mnt/@home
 [ ! -d /mnt/@var ] && btrfs subvolume create /mnt/@var
+[ ! -d /mnt/@pkg ] && btrfs subvolume create /mnt/@pkg
 [ ! -d /mnt/@snapshots ] && btrfs subvolume create /mnt/@snapshots
 
 umount /mnt
 
 mount -o noatime,compress=lzo,ssd,space_cache=v2,discard=async,subvol=@ "$part2" /mnt
-mkdir -p /mnt/{home,var,.snapshots}
+mkdir -p /mnt/{home,var,.snapshots,var/cache/pacman/pkg}
 mount -o noatime,compress=lzo,ssd,space_cache=v2,discard=async,subvol=@home "$part2" /mnt/home
 mount -o noatime,compress=lzo,ssd,space_cache=v2,discard=async,subvol=@var "$part2" /mnt/var
+mount -o noatime,compress=lzo,ssd,space_cache=v2,discard=async,subvol=@pkg "$part2" /mnt/var/cache/pacman/pkg/
 mount -o noatime,compress=zstd,ssd,space_cache=v2,discard=async,subvol=@snapshots "$part2" /mnt/.snapshots
 
 # Mount EFI System Partition
@@ -102,23 +104,24 @@ install_pkgs=(
     base base-devel linux-zen linux-zen-headers linux-firmware sudo btrfs-progs
     man-db man-pages networkmanager network-manager-applet bash-completion ananicy-cpp zram-generator acpid power-profiles-daemon
     ntfs-3g exfat-utils mtools dosfstools intel-ucode inotify-tools
-    grub grub-btrfs efibootmgr os-prober snapper
+    grub grub-btrfs efibootmgr os-prober snapper snap-pac
     qemu-desktop virt-manager vde2 dnsmasq libvirt bridge-utils openbsd-netcat
     openssh ncdu bat eza fzf git github-cli ripgrep ripgrep-all sqlite dysk cronie ufw clamav
     sassc udiskie gvfs yt-dlp aria2 unrar 7zip unzip rsync jq reflector polkit polkit-gnome wget
     pipewire wireplumber pipewire-pulse pipewire-alsa pipewire-audio pipewire-jack
     xorg-xwayland xdg-desktop-portal-wlr xdg-desktop-portal-gtk
-    sway swaybg swaylock swayidle swayimg autotiling flatpak ly
+    sway swaybg swaylock swayidle swayimg autotiling flatpak ly hyprpicker
     mpv fuzzel qalculate-gtk discord firefox zathura kanshi pcmanfm-gtk3 gimp
     easyeffects lsp-plugins-lv2 mda.lv2 zam-plugins-lv2 calf
     foot nvtop htop fastfetch newsboat neovim tmux asciinema
     papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji ttc-iosevka ttf-iosevkaterm-nerd gnu-free-fonts
     wl-clip-persist wl-clipboard cliphist libnotify swaync grim slurp swayosd
-    texlive-latex pandoc zathura-pdf-mupdf hunspell hunspell-en_us nuspell enchant languagetool
+    texlive-latex pandoc zathura-pdf-mupdf
     lua python uv python-black stylua pyright ollama
 )
 
 # Pacstrap with error handling
+reflector --country 'India' --latest 10 --age 24 --sort rate --save /etc/pacman.d/mirrorlist
 if ! pacstrap /mnt "${install_pkgs[@]}"; then
   echo "pacstrap failed. Please check the package list and network connection."
   exit 1
