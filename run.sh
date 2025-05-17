@@ -37,12 +37,6 @@ gsettings set org.gnome.desktop.interface gtk-theme 'Gruvbox-Dark'
 gsettings set org.gnome.desktop.interface icon-theme "Papirus-Dark"
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
-# PhotoGimp setup
-cd ~/Downloads
-gh release download --pattern '*linux*' -R Diolinux/PhotoGIMP
-unzip PhotoGIMP-linux.zip
-cp -r PhotoGIMP-linux/.config/ ~/
-
 # Mime setup
 find /usr/share/applications -iname '*.desktop' -print0 | while IFS= read -r -d $'\0' d; do
   mime_types=$(grep -m1 '^MimeType=' "$d" | cut -d= -f2)
@@ -57,13 +51,23 @@ for type in pdf x-pdf fdf xdp xfdf pdx; do xdg-mime default org.pwmt.zathura.des
 for type in jpeg svg png gif webp bmp tiff; do xdg-mime default swayimg.desktop image/$type; done
 
 # Firefox user.js linking
-firefox
+git config --global user.email "zedonix@proton.me"
+git config --global user.name "piyush"
+git config --global credential.https://github.com.helper ''
+git config --global --add credential.https://github.com.helper "!$(which gh) auth git-credential"
+gh auth login
 if [ -d ~/.mozilla/firefox ]; then
   dir=$(ls ~/.mozilla/firefox/ | grep ".default-release" | head -n1)
   if [ -n "$dir" ]; then
       ln -sf /home/$USER/.dotfiles/user.js /home/$USER/.mozilla/firefox/$dir/user.js
   fi
 fi
+
+# PhotoGimp setup
+cd ~/Downloads
+gh release download --pattern '*linux*' -R Diolinux/PhotoGIMP
+unzip PhotoGIMP-linux.zip
+cp -r PhotoGIMP-linux/.config/ ~/
 
 # UFW setup
 sudo ufw allow 20/tcp
