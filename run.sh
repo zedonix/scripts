@@ -37,6 +37,12 @@ gsettings set org.gnome.desktop.interface gtk-theme 'Gruvbox-Dark'
 gsettings set org.gnome.desktop.interface icon-theme "Papirus-Dark"
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
+# PhotoGimp setup
+cd ~/Downloads
+gh release download --pattern '*linux*' -R Diolinux/PhotoGIMP
+unzip PhotoGIMP-linux.zip
+cp -r PhotoGIMP-linux/.config/ ~/
+
 # Mime setup
 find /usr/share/applications -iname '*.desktop' -print0 | while IFS= read -r -d $'\0' d; do
   mime_types=$(grep -m1 '^MimeType=' "$d" | cut -d= -f2)

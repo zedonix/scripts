@@ -1,7 +1,13 @@
+newsboat setup
+zed setup
+laptop setup
+
+ublock origin setup
+perplexica setup
+
 https://drive.google.com/drive/folders/1GpWxhZZg6jqHb72RBqgbbKAga96UnaBA
 
-unbound
-
+https://goalkicker.com/
 https://0xax.gitbooks.io/linux-insides/content/index.html
 https://wyag.thb.lt/#intro
 https://www.leshenko.net/p/ugit/#
