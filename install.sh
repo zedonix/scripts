@@ -83,16 +83,14 @@ mount "$part2" /mnt
 btrfs subvolume create /mnt/@
 [ ! -d /mnt/@home ] && btrfs subvolume create /mnt/@home
 [ ! -d /mnt/@var ] && btrfs subvolume create /mnt/@var
-[ ! -d /mnt/@pkg ] && btrfs subvolume create /mnt/@pkg
 [ ! -d /mnt/@snapshots ] && btrfs subvolume create /mnt/@snapshots
 
 umount /mnt
 
 mount -o noatime,compress=lzo,ssd,space_cache=v2,discard=async,subvol=@ "$part2" /mnt
-mkdir -p /mnt/{home,var,.snapshots,var/cache/pacman/pkg}
+mkdir -p /mnt/{home,var,.snapshots}
 mount -o noatime,compress=lzo,ssd,space_cache=v2,discard=async,subvol=@home "$part2" /mnt/home
 mount -o noatime,compress=lzo,ssd,space_cache=v2,discard=async,subvol=@var "$part2" /mnt/var
-mount -o noatime,compress=lzo,ssd,space_cache=v2,discard=async,subvol=@pkg "$part2" /mnt/var/cache/pacman/pkg/
 mount -o noatime,compress=zstd,ssd,space_cache=v2,discard=async,subvol=@snapshots "$part2" /mnt/.snapshots
 
 # Mount EFI System Partition
