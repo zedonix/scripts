@@ -1,6 +1,4 @@
-https://wiki.archlinux.org/title/Improving_performance
 https://drive.google.com/drive/folders/1GpWxhZZg6jqHb72RBqgbbKAga96UnaBA
-2.4.4 - laptop - io schedular
 
 unbound
 
