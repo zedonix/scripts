@@ -55,7 +55,7 @@ git config --global user.email "zedonix@proton.me"
 git config --global user.name "piyush"
 git config --global credential.https://github.com.helper ''
 git config --global --add credential.https://github.com.helper "!$(which gh) auth git-credential"
-gh auth login
+gh auth login -p ssh
 if [ -d ~/.mozilla/firefox ]; then
   dir=$(ls ~/.mozilla/firefox/ | grep ".default-release" | head -n1)
   if [ -n "$dir" ]; then
