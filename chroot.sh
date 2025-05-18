@@ -94,7 +94,7 @@ EOF
 # ananicy-cpp = auto nice levels
 # acpid = ACPI events such as pressing the power button or closing a laptop's lid
 rfkill unblock bluetooth
-modprobe btusb
+# modprobe btusb
 systemctl enable NetworkManager libvirtd sshd ananicy-cpp fstrim.timer ollama ly acpid cronie tlp NetworkManager-dispatcher bluetooth
 systemctl mask systemd-rfkill systemd-rfkill.socket
 
