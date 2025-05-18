@@ -97,7 +97,11 @@ rfkill unblock bluetooth
 modprobe btusb
 systemctl enable NetworkManager libvirtd sshd ananicy-cpp fstrim.timer ollama ly acpid cronie tlp NetworkManager-dispatcher bluetooth
 systemctl mask systemd-rfkill systemd-rfkill.socket
+
+# Clamav setup
 freshclam
+touch /var/log/clamav/freshclam.log
+chown clamav:clamav /var/log/clamav/freshclam.log
 systemctl enable clamav-daemon clamav-freshclam
 
 # Clean up package cache and Wrapping up
