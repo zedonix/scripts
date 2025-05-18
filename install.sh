@@ -107,7 +107,7 @@ mount "$part1" /mnt/boot
 # Pacstrap stuff
 install_pkgs=(
     base base-devel linux-zen linux-zen-headers linux-firmware sudo btrfs-progs
-    man-db man-pages networkmanager network-manager-applet bash-completion ananicy-cpp zram-generator acpid power-profiles-daemon
+    man-db man-pages networkmanager network-manager-applet bash-completion ananicy-cpp zram-generator acpid tlp tlp-rdw
     ntfs-3g exfat-utils mtools dosfstools intel-ucode inotify-tools
     grub grub-btrfs efibootmgr os-prober snapper snap-pac
     qemu-desktop virt-manager vde2 dnsmasq libvirt bridge-utils openbsd-netcat
