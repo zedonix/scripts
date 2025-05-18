@@ -1,6 +1,3 @@
-fstab what?
-fsck what?
-cups
 zed setup
 perplexica setup
 
