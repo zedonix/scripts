@@ -1,10 +1,14 @@
+fstab what?
+fsck what?
+cups
 zed setup
 perplexica setup
 
 https://drive.google.com/drive/folders/1GpWxhZZg6jqHb72RBqgbbKAga96UnaBA
 
-moz-extension://37198366-455f-4019-aae5-9ff177136ca8/asset-viewer.html?url=https%3A%2F%2Fraw.githubusercontent.com%2Fiam-py-test%2FuBlock-combo%2Fmain%2Flist.txt&title=uBlock%20combo%20list&subscribe=1
-moz-extension://37198366-455f-4019-aae5-9ff177136ca8/asset-viewer.html?url=https%3A%2F%2Fraw.githubusercontent.com%2Fyokoffing%2Ffilterlists%2Fmain%2Fclick2load.txt&title=yokoffing%27s%20click2load%20filters&subscribe=1
+https://nsfw.oisd.nl/
+https://raw.githubusercontent.com/iam-py-test/uBlock-combo/main/list.txt
+https://raw.githubusercontent.com/yokoffing/filterlists/main/click2load.txt
 
 https://goalkicker.com/
 https://0xax.gitbooks.io/linux-insides/content/index.html
