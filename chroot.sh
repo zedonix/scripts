@@ -91,10 +91,12 @@ fs-type = swap
 EOF
 
 # Services
-systemctl enable NetworkManager libvirtd sshd ananicy-cpp.service fstrim.timer ollama.service ly.service acpid cronie.service tlp.service NetworkManager-dispatcher.service
-systemctl mask systemd-rfkill.service systemd-rfkill.socket
+# ananicy-cpp = auto nice levels
+# acpid = system events like shutdown (dunno)
+systemctl enable NetworkManager libvirtd sshd ananicy-cpp fstrim.timer ollama ly acpid cronie tlp NetworkManager-dispatcher
+systemctl mask systemd-rfkill systemd-rfkill.socket
 freshclam
-systemctl enable clamav-daemon.service clamav-freshclam.service
+systemctl enable clamav-daemon clamav-freshclam
 
 # Clean up package cache and Wrapping up
 pacman -Scc --noconfirm

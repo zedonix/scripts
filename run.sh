@@ -70,10 +70,10 @@ unzip PhotoGIMP-linux.zip
 cp -r PhotoGIMP-linux/.config/ ~/
 
 # UFW setup
-sudo ufw allow 20/tcp
-sudo ufw allow 21/tcp
-sudo ufw limit 22/tcp
-sudo ufw allow 80/tcp
+sudo ufw allow 20/tcp # ftp
+sudo ufw allow 21/tcp # ftp (I am server)
+sudo ufw limit 22/tcp # ssh
+sudo ufw allow 80/tcp # https (I am server)
 sudo ufw allow 443/tcp
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
