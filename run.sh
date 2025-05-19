@@ -38,17 +38,30 @@ gsettings set org.gnome.desktop.interface icon-theme "Papirus-Dark"
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
 # Mime setup
-find /usr/share/applications -iname '*.desktop' -print0 | while IFS= read -r -d $'\0' d; do
-  mime_types=$(grep -m1 '^MimeType=' "$d" | cut -d= -f2)
-  [[ -z "$mime_types" ]] && continue
-  IFS=';' read -ra mimes <<< "$mime_types"
-  for m in "${mimes[@]}"; do
-    [[ -z "$m" ]] && continue
-    xdg-mime default "$(basename "$d")" "$m"
+echo "Setting up MIME associations... this may take a while."
+(
+  find /usr/share/applications -iname '*.desktop' -print0 | while IFS= read -r -d $'\0' d; do
+    mime_types=$(grep -m1 '^MimeType=' "$d" | cut -d= -f2)
+    [[ -z "$mime_types" ]] && continue
+    IFS=';' read -ra mimes <<< "$mime_types"
+    for m in "${mimes[@]}"; do
+      [[ -z "$m" ]] && continue
+      xdg-mime default "$(basename "$d")" "$m"
+    done
   done
+  for type in pdf x-pdf fdf xdp xfdf pdx; do xdg-mime default org.pwmt.zathura.desktop application/$type; done
+  for type in jpeg svg png gif webp bmp tiff; do xdg-mime default swayimg.desktop image/$type; done
+) &
+pid=$!
+spin='-\|/'
+i=0
+while kill -0 $pid 2>/dev/null; do
+  i=$(( (i+1) %4 ))
+  printf "\r${spin:$i:1} Setting up MIME associations..."
+  sleep 0.2
 done
-for type in pdf x-pdf fdf xdp xfdf pdx; do xdg-mime default org.pwmt.zathura.desktop application/$type; done
-for type in jpeg svg png gif webp bmp tiff; do xdg-mime default swayimg.desktop image/$type; done
+wait $pid
+printf "\rMIME associations setup complete.         \n"
 
 # Firefox user.js linking
 git config --global user.email "zedonix@proton.me"
