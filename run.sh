@@ -81,7 +81,7 @@ sudo ufw enable
 sudo systemctl enable ufw
 
 # Libvirt setup
-sudo virsh net-autostart default
+# sudo virsh net-autostart default
 
 # Flatpak setup
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo

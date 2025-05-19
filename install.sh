@@ -136,28 +136,6 @@ fi
 # System Configuration
 genfstab -U /mnt > /mnt/etc/fstab
 
-FSTAB="/mnt/etc/fstab"
-BACKUP="/mnt/etc/fstab.bak.$(date +%s)"
-
-# Backup fstab
-cp "$FSTAB" "$BACKUP"
-
-# Ensure x-systemd.automount is present in the options column for /.snapshots
-awk -v OFS='\t' '
-{
-    if ($2 == "/.snapshots") {
-        # Remove any x-systemd.automount from all fields
-        for (i=1; i<=NF; i++) gsub(/,?x-systemd\.automount/, "", $i)
-        # Add x-systemd.automount to the 4th field (mount options)
-        if ($4 !~ /(^|,)x-systemd\.automount(,|$)/) {
-            $4 = $4 ",x-systemd.automount"
-            gsub(/^,|,$/, "", $4)
-        }
-    }
-    print
-}
-' "$BACKUP" > "$FSTAB"
-
 # Exporting variables for chroot
 cat > /mnt/root/install.conf <<EOF
 hostname=$hostname

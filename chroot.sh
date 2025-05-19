@@ -115,8 +115,7 @@ awk -v OFS='\t' '
 # ananicy-cpp = auto nice levels
 # acpid = ACPI events such as pressing the power button or closing a laptop's lid
 rfkill unblock bluetooth
-# modprobe btusb
-systemctl daemon-reload
+modprobe btusb || true
 systemctl enable NetworkManager NetworkManager-dispatcher sshd ananicy-cpp fstrim.timer ollama ly acpid cronie # tlp bluetooth libvirtd
 systemctl enable btrfs-scrub@-.timer btrfs-scrub@home.timer btrfs-scrub@var.timer
 systemctl mask systemd-rfkill systemd-rfkill.socket
