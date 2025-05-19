@@ -9,4 +9,4 @@ cd paru
 makepkg -si
 
 paru -S sway-audio-idle-inhibit-git sdl-ball tlpui
-ollama pull gemma3:1b
+#ollama pull gemma3:1b

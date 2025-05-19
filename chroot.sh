@@ -64,6 +64,7 @@ su - "$user" -c '
   git clone https://github.com/zedonix/GruvboxGtk.git ~/Downloads/GruvboxGtk
 
   cp ~/.dotfiles/archpfp.png ~/Pictures/
+  cp ~/.dotfiles/.config/sway/arch.png ~/Pictures/
   ln -sf ~/.dotfiles/.bashrc ~/.bashrc
   ln -sf ~/.dotfiles/home.html ~/Documents/home/home.html
   ln -sf ~/.dotfiles/archlinux.png ~/Documents/home/archlinux.png
@@ -89,27 +90,6 @@ compression-algorithm = zstd
 swap-priority = 100
 fs-type = swap
 EOF
-
-# Fstab update
-FSTAB="/etc/fstab"
-BACKUP="/etc/fstab.bak.$(date +%s)"
-
-# Backup fstab
-cp "$FSTAB" "$BACKUP"
-
-# Ensure x-systemd.automount is present in the options column for /.snapshots
-awk -v OFS='\t' '
-{
-    if ($2 == "/.snapshots") {
-        for (i=1; i<=NF; i++) gsub(/,?x-systemd\.automount/, "", $i)
-        if ($4 !~ /(^|,)x-systemd\.automount(,|$)/) {
-            $4 = $4 ",x-systemd.automount"
-            gsub(/^,|,$/, "", $4)
-        }
-    }
-    print
-}
-' "$BACKUP" > "$FSTAB"
 
 # Services
 # ananicy-cpp = auto nice levels
