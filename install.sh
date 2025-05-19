@@ -106,8 +106,8 @@ mount -o noatime,compress=zstd,ssd,space_cache=v2,discard=async,subvol=@var "$pa
 mount -o noatime,compress=zstd,ssd,space_cache=v2,discard=async,subvol=@snapshots "$part2" /mnt/.snapshots
 
 # Mount EFI System Partition
-mkdir -p /mnt/efi
-mount "$part1" /mnt/efi
+mkdir -p /mnt/boot
+mount "$part1" /mnt/boot
 
 # Pacstrap stuff
 install_pkgs=(
