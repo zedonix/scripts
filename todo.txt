@@ -1,5 +1,30 @@
-/boot, grub, kernal images wtf?
+> nmcli con show
+NAME                UUID                                  TYPE      DEVICE 
+Wired connection 1  5ee37a74-9ddd-393b-81d0-2950dd8967f1  ethernet  enp2s0 
 
+- **IP address:** `192.168.1.100`
+- **Subnet mask:** `/24` (i.e., 255.255.255.0)
+- **Gateway:** `192.168.1.1`
+- **DNS:** `8.8.8.8` and `8.8.4.4`
+nmcli con mod "Wired connection 1" ipv4.method manual \
+  ipv4.addresses 192.168.1.100/24 \
+  ipv4.gateway 192.168.1.1 \
+  ipv4.dns "8.8.8.8,8.8.4.4"
+
+nmcli con up "Wired connection 1"
+
+| Command                                                                                          | Purpose                  |
+|--------------------------------------------------------------------------------------------------|--------------------------|
+| `nmcli con show`                                                                                 | List connections         |
+| `nmcli con mod "Wired connection 1" ipv4.method manual ...`                                      | Set static IP            |
+| `nmcli con up "Wired connection 1"`                                                              | Apply changes            |
+| `nmcli con mod "Wired connection 1" ipv4.method auto`                                            | Revert to DHCP           |
+
+
+sudo systemctl disable NetworkManager.service
+exec systemctl start NetworkManager.service
+
+CUPS setup
 zed setup
 perplexica setup
 

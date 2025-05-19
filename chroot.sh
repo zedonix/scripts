@@ -120,7 +120,7 @@ systemctl daemon-reload
 systemctl enable NetworkManager NetworkManager-dispatcher sshd ananicy-cpp fstrim.timer ollama ly acpid cronie # tlp bluetooth libvirtd
 systemctl enable btrfs-scrub@-.timer btrfs-scrub@home.timer btrfs-scrub@var.timer
 systemctl mask systemd-rfkill systemd-rfkill.socket
-systemctl disable NetworkManager-wait-online.service
+systemctl disable NetworkManager-wait-online.service systemd-networkd.service
 
 # Clamav setup
 freshclam
