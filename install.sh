@@ -6,9 +6,14 @@ set -euo pipefail
 # Disk Selection
 disks=($(lsblk -dno NAME))
 echo "Available disks:"
-select disk_input in "${disks[@]}"; do
-  disk="/dev/${disk_input}"
-  if [ -b "$disk" ]; then
+for i in "${!disks[@]}"; do
+  info=$(lsblk -dno NAME,SIZE,MODEL "/dev/${disks[$i]}")
+  printf "%2d) %s\n" "$((i+1))" "$info"
+done
+while true; do
+  read -p "Select disk [1-${#disks[@]}]: " idx
+  if [[ "$idx" =~ ^[1-9][0-9]*$ ]] && (( idx >= 1 && idx <= ${#disks[@]} )); then
+    disk="/dev/${disks[$((idx-1))]}"
     break
   else
     echo "Invalid selection. Try again."
