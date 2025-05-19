@@ -90,12 +90,34 @@ swap-priority = 100
 fs-type = swap
 EOF
 
+# Fstab update
+FSTAB="/etc/fstab"
+BACKUP="/etc/fstab.bak.$(date +%s)"
+
+# Backup fstab
+cp "$FSTAB" "$BACKUP"
+
+# Ensure x-systemd.automount is present in the options column for /.snapshots
+awk -v OFS='\t' '
+{
+    if ($2 == "/.snapshots") {
+        for (i=1; i<=NF; i++) gsub(/,?x-systemd\.automount/, "", $i)
+        if ($4 !~ /(^|,)x-systemd\.automount(,|$)/) {
+            $4 = $4 ",x-systemd.automount"
+            gsub(/^,|,$/, "", $4)
+        }
+    }
+    print
+}
+' "$BACKUP" > "$FSTAB"
+
 # Services
 # ananicy-cpp = auto nice levels
 # acpid = ACPI events such as pressing the power button or closing a laptop's lid
 rfkill unblock bluetooth
 # modprobe btusb
-systemctl enable NetworkManager NetworkManager-dispatcher libvirtd sshd ananicy-cpp fstrim.timer ollama ly acpid cronie tlp bluetooth
+systemctl daemon-reload
+systemctl enable NetworkManager NetworkManager-dispatcher sshd ananicy-cpp fstrim.timer ollama ly acpid cronie # tlp bluetooth libvirtd
 systemctl enable btrfs-scrub@-.timer btrfs-scrub@home.timer btrfs-scrub@var.timer
 systemctl mask systemd-rfkill systemd-rfkill.socket
 systemctl disable NetworkManager-wait-online.service

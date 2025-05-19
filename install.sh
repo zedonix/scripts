@@ -94,10 +94,10 @@ btrfs subvolume create /mnt/@
 
 umount /mnt
 
-mount -o noatime,compress=lzo,ssd,space_cache=v2,discard=async,subvol=@ "$part2" /mnt
+mount -o noatime,compress=zstd,ssd,space_cache=v2,discard=async,subvol=@ "$part2" /mnt
 mkdir -p /mnt/{home,var,.snapshots}
-mount -o noatime,compress=lzo,ssd,space_cache=v2,discard=async,subvol=@home "$part2" /mnt/home
-mount -o noatime,compress=lzo,ssd,space_cache=v2,discard=async,subvol=@var "$part2" /mnt/var
+mount -o noatime,compress=zstd,ssd,space_cache=v2,discard=async,subvol=@home "$part2" /mnt/home
+mount -o noatime,compress=zstd,ssd,space_cache=v2,discard=async,subvol=@var "$part2" /mnt/var
 mount -o noatime,compress=zstd,ssd,space_cache=v2,discard=async,subvol=@snapshots "$part2" /mnt/.snapshots
 
 # Mount EFI System Partition
@@ -118,7 +118,7 @@ install_pkgs=(
     xorg-xwayland xdg-desktop-portal-wlr xdg-desktop-portal-gtk
     sway swaybg swaylock swayidle swayimg autotiling flatpak ly hyprpicker
     mpv fuzzel qalculate-gtk discord firefox zathura kanshi pcmanfm-gtk3 gimp file-roller blueman
-    easyeffects tenacity lsp-plugins-lv2 mda.lv2 zam-plugins-lv2 calf
+    easyeffects audacity lsp-plugins-lv2 mda.lv2 zam-plugins-lv2 calf
     foot nvtop htop fastfetch newsboat neovim tmux asciinema trash-cli wget yt-dlp aria2
     papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji ttc-iosevka ttf-iosevkaterm-nerd gnu-free-fonts
     wl-clip-persist wl-clipboard cliphist libnotify swaync grim slurp swayosd
@@ -135,6 +135,28 @@ fi
 
 # System Configuration
 genfstab -U /mnt > /mnt/etc/fstab
+
+FSTAB="/mnt/etc/fstab"
+BACKUP="/mnt/etc/fstab.bak.$(date +%s)"
+
+# Backup fstab
+cp "$FSTAB" "$BACKUP"
+
+# Ensure x-systemd.automount is present in the options column for /.snapshots
+awk -v OFS='\t' '
+{
+    if ($2 == "/.snapshots") {
+        # Remove any x-systemd.automount from all fields
+        for (i=1; i<=NF; i++) gsub(/,?x-systemd\.automount/, "", $i)
+        # Add x-systemd.automount to the 4th field (mount options)
+        if ($4 !~ /(^|,)x-systemd\.automount(,|$)/) {
+            $4 = $4 ",x-systemd.automount"
+            gsub(/^,|,$/, "", $4)
+        }
+    }
+    print
+}
+' "$BACKUP" > "$FSTAB"
 
 # Exporting variables for chroot
 cat > /mnt/root/install.conf <<EOF
