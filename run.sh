@@ -87,6 +87,7 @@ sudo systemctl enable ufw
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 # Snapper setup
+sudo pacman -Syu snap-pac
 if mountpoint -q /.snapshots; then
   sudo umount /.snapshots/
 fi

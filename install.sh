@@ -110,7 +110,7 @@ install_pkgs=(
     ananicy-cpp zram-generator acpid tlp tlp-rdw
     man-db man-pages networkmanager network-manager-applet bash-completion bluez bluez-utils
     ntfs-3g exfat-utils mtools dosfstools intel-ucode inotify-tools
-    grub grub-btrfs efibootmgr os-prober snapper snap-pac
+    grub grub-btrfs efibootmgr os-prober snapper
     qemu-desktop virt-manager vde2 dnsmasq libvirt bridge-utils openbsd-netcat
     openssh ncdu bat eza fzf git github-cli ripgrep ripgrep-all fd sqlite cronie ufw clamav tldr
     sassc udiskie gvfs gvfs-mtp gvfs-gphoto2 unrar 7zip unzip rsync jq reflector polkit polkit-gnome
@@ -120,7 +120,7 @@ install_pkgs=(
     mpv fuzzel qalculate-gtk discord firefox zathura kanshi pcmanfm-gtk3 gimp file-roller blueman
     easyeffects audacity lsp-plugins-lv2 mda.lv2 zam-plugins-lv2 calf
     foot nvtop htop fastfetch newsboat neovim tmux asciinema trash-cli wget yt-dlp aria2
-    papirus-icon-theme noto-fonts noto-fonts-cjk noto-fonts-emoji ttc-iosevka ttf-iosevkaterm-nerd gnu-free-fonts
+    papirus-icon-theme noto-fonts noto-fonts-emoji ttc-iosevka ttf-iosevkaterm-nerd gnu-free-fonts
     wl-clip-persist wl-clipboard cliphist libnotify swaync grim slurp swayosd
     texlive-latex pandoc zathura-pdf-mupdf
     lua python uv python-black stylua pyright bash-language-server ollama
