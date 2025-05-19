@@ -115,7 +115,7 @@ install_pkgs=(
     ananicy-cpp zram-generator acpid tlp tlp-rdw
     man-db man-pages networkmanager network-manager-applet bash-completion bluez bluez-utils
     ntfs-3g exfat-utils mtools dosfstools intel-ucode inotify-tools
-    grub grub-btrfs efibootmgr os-prober snapper
+    grub grub-btrfs efibootmgr os-prober snapper snap-pac
     qemu-desktop virt-manager vde2 dnsmasq libvirt bridge-utils openbsd-netcat
     openssh ncdu bat eza fzf git github-cli ripgrep ripgrep-all fd sqlite cronie ufw clamav tldr
     sassc udiskie gvfs gvfs-mtp gvfs-gphoto2 unrar 7zip unzip rsync jq reflector polkit polkit-gnome
