@@ -38,37 +38,17 @@ gsettings set org.gnome.desktop.interface icon-theme "Papirus-Dark"
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
 # Mime setup
-echo "Setting up MIME associations... this may take a while."
-(
-  find /usr/share/applications -iname '*.desktop' -print0 | while IFS= read -r -d $'\0' d; do
-    mime_types=$(grep -m1 '^MimeType=' "$d" | cut -d= -f2)
-    [[ -z "$mime_types" ]] && continue
-    IFS=';' read -ra mimes <<< "$mime_types"
-    for m in "${mimes[@]}"; do
-      [[ -z "$m" ]] && continue
-      xdg-mime default "$(basename "$d")" "$m"
-    done
-  done
-  for type in pdf x-pdf fdf xdp xfdf pdx; do xdg-mime default org.pwmt.zathura.desktop application/$type; done
-  for type in jpeg svg png gif webp bmp tiff; do xdg-mime default swayimg.desktop image/$type; done
-) &
-pid=$!
-spin='-\|/'
-i=0
-while kill -0 $pid 2>/dev/null; do
-  i=$(( (i+1) %4 ))
-  printf "\r${spin:$i:1} Setting up MIME associations..."
-  sleep 0.2
-done
-wait $pid
-printf "\rMIME associations setup complete.         \n"
+for type in pdf x-pdf fdf xdp xfdf pdx; do xdg-mime default org.pwmt.zathura.desktop application/$type; done
+for type in jpeg svg png gif webp bmp tiff; do xdg-mime default swayimg.desktop image/$type; done
 
-# Firefox user.js linking
+# Git setup
 git config --global user.email "zedonix@proton.me"
 git config --global user.name "piyush"
 git config --global credential.https://github.com.helper ''
 git config --global --add credential.https://github.com.helper "!$(which gh) auth git-credential"
 gh auth login -p ssh
+
+# Firefox user.js linking
 if [ -d ~/.mozilla/firefox ]; then
   dir=$(ls ~/.mozilla/firefox/ | grep ".default-release" | head -n1)
   if [ -n "$dir" ]; then
@@ -78,9 +58,18 @@ fi
 
 # PhotoGimp setup
 cd ~/Downloads
-gh release download --pattern '*linux*' -R Diolinux/PhotoGIMP
-unzip PhotoGIMP-linux.zip
-cp -r PhotoGIMP-linux/.config/ ~/
+git clone --filter=blob:none --no-checkout https://github.com/Diolinux/PhotoGIMP.git
+cd PhotoGIMP
+git sparse-checkout init --cone
+git sparse-checkout set .config
+git checkout
+cp -r .config ~/.config
+
+# tldr wiki setup
+curl -L 'https://raw.githubusercontent.com/filiparag/wikiman/master/Makefile' -o 'wikiman-makefile'
+make -f ./wikiman-makefile source-tldr
+sudo make -f ./wikiman-makefile source-install
+sudo make -f ./wikiman-makefile clean
 
 # UFW setup
 sudo ufw allow 20/tcp # ftp
@@ -104,8 +93,8 @@ if mountpoint -q /.snapshots; then
   sudo umount /.snapshots/
 fi
 [[ -d /.snapshots ]] && sudo rm -rf /.snapshots/
-sudo snapper -c root create-config / || true
-sudo snapper -c home create-config /home || true
+sudo snapper -c root create-config /
+sudo snapper -c home create-config /home
 sudo mount -a
 
 sudo systemctl enable --now snapper-timeline.timer
