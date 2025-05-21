@@ -97,6 +97,8 @@ su - "$user" -c '
 '
 # Root .config
 mkdir -p /root/.config
+echo '[ -f ~/.bashrc ] && . ~/.bashrc' > /root/.bash_profile
+mkdir /root/.config
 ln -sf /home/"$user"/.dotfiles/.bashrc ~/.bashrc
 ln -sf /home/"$user"/.dotfiles/.config/nvim/ ~/.config
 
