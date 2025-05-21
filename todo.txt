@@ -24,8 +24,6 @@ nmcli con up "Wired connection 1"
 sudo systemctl disable NetworkManager.service
 exec systemctl start NetworkManager.service
 
-efi boot yt vid
-
 CUPS setup
 zed setup
 perplexica setup

@@ -37,39 +37,17 @@ gsettings set org.gnome.desktop.interface gtk-theme 'Gruvbox-Dark'
 gsettings set org.gnome.desktop.interface icon-theme "Papirus-Dark"
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
-# Mime setup
-for type in pdf x-pdf fdf xdp xfdf pdx; do xdg-mime default org.pwmt.zathura.desktop application/$type; done
-for type in jpeg svg png gif webp bmp tiff; do xdg-mime default swayimg.desktop image/$type; done
-
-# Git setup
-git config --global user.email "zedonix@proton.me"
-git config --global user.name "piyush"
-git config --global credential.https://github.com.helper ''
-git config --global --add credential.https://github.com.helper "!$(which gh) auth git-credential"
-gh auth login -p ssh
-
 # Firefox user.js linking
+echo 'https://nsfw.oisd.nl/
+https://raw.githubusercontent.com/iam-py-test/uBlock-combo/main/list.txt
+https://raw.githubusercontent.com/yokoffing/filterlists/main/click2load.txt' | wl-copy
+firefox
 if [ -d ~/.mozilla/firefox ]; then
   dir=$(ls ~/.mozilla/firefox/ | grep ".default-release" | head -n1)
   if [ -n "$dir" ]; then
       ln -sf /home/$USER/.dotfiles/user.js /home/$USER/.mozilla/firefox/$dir/user.js
   fi
 fi
-
-# PhotoGimp setup
-cd ~/Downloads
-git clone --filter=blob:none --no-checkout https://github.com/Diolinux/PhotoGIMP.git
-cd PhotoGIMP
-git sparse-checkout init --cone
-git sparse-checkout set .config
-git checkout
-cp -r .config ~/.config
-
-# tldr wiki setup
-curl -L 'https://raw.githubusercontent.com/filiparag/wikiman/master/Makefile' -o 'wikiman-makefile'
-make -f ./wikiman-makefile source-tldr
-sudo make -f ./wikiman-makefile source-install
-sudo make -f ./wikiman-makefile clean
 
 # UFW setup
 sudo ufw allow 20/tcp # ftp
