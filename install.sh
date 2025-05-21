@@ -117,7 +117,7 @@ install_pkgs=(
     ntfs-3g exfat-utils mtools dosfstools intel-ucode inotify-tools
     grub grub-btrfs efibootmgr os-prober snapper snap-pac
     qemu-desktop virt-manager vde2 dnsmasq libvirt bridge-utils openbsd-netcat
-    openssh ncdu bat eza fzf git ripgrep ripgrep-all fd sqlite cronie ufw clamav
+    openssh ncdu bat bat-extras eza fzf git ripgrep ripgrep-all fd sqlite cronie ufw clamav
     sassc udiskie gvfs gvfs-mtp gvfs-gphoto2 unrar 7zip unzip rsync jq reflector polkit polkit-gnome
     man-db man-pages wikiman tldr arch-wiki-docs
     pipewire wireplumber pipewire-pulse pipewire-alsa pipewire-audio pipewire-jack
@@ -129,7 +129,7 @@ install_pkgs=(
     papirus-icon-theme noto-fonts noto-fonts-emoji ttc-iosevka ttf-iosevkaterm-nerd gnu-free-fonts
     wl-clip-persist wl-clipboard cliphist libnotify swaync grim slurp swayosd
     texlive-latex pandoc zathura-pdf-mupdf
-    lua python uv python-black stylua pyright bash-language-server ollama
+    lua python uv python-black stylua pyright bash-language-server shfmt ollama
 )
 
 # Pacstrap with error handling
