@@ -90,7 +90,6 @@ su - "$user" -c '
   git config --global user.name "piyush"
 '
 # Root .config
-mkdir -p /root/.config
 echo '[ -f ~/.bashrc ] && . ~/.bashrc' > /root/.bash_profile
 mkdir /root/.config
 ln -sf /home/"$user"/.dotfiles/.bashrc ~/.bashrc
