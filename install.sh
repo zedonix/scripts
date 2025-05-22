@@ -133,6 +133,7 @@ install_pkgs=(
 )
 
 # Pacstrap with error handling
+reflector --country 'India' --latest 10 --age 24 --sort rate --save /etc/pacman.d/mirrorlist
 if ! pacstrap /mnt "${install_pkgs[@]}"; then
   echo "pacstrap failed. Please check the package list and network connection."
   exit 1
