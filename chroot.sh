@@ -134,18 +134,6 @@ echo -e "[main]\nsystemd-resolved=false" | sudo tee /etc/NetworkManager/conf.d/n
 # Set DNS handling to 'default'
 echo -e "[main]\ndns=default" | sudo tee /etc/NetworkManager/conf.d/dns.conf > /dev/null
 
-# Configure static IP, gateway, and custom DNS
-nmcli con mod "Wired connection 1" \
-  ipv4.method manual \
-  ipv4.addresses 192.168.1.100/24 \
-  ipv4.gateway 192.168.1.1 \
-  ipv4.dns "1.1.1.1,1.0.0.1"
-nmcli con mod "Wired connection 1" ipv4.ignore-auto-dns yes
-
-# Apply changes
-nmcli con down "Wired connection 1"
-nmcli con up "Wired connection 1"
-
 # Clamav setup
 freshclam
 touch /var/log/clamav/freshclam.log

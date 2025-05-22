@@ -66,6 +66,18 @@ sudo systemctl enable ufw
 # Flatpak setup
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
+# Configure static IP, gateway, and custom DNS
+nmcli con mod "Wired connection 1" \
+  ipv4.method manual \
+  ipv4.addresses 192.168.1.100/24 \
+  ipv4.gateway 192.168.1.1 \
+  ipv4.dns "1.1.1.1,1.0.0.1"
+nmcli con mod "Wired connection 1" ipv4.ignore-auto-dns yes
+
+# Apply changes
+nmcli con down "Wired connection 1"
+nmcli con up "Wired connection 1"
+
 # Snapper setup
 if mountpoint -q /.snapshots; then
   sudo umount /.snapshots/
