@@ -126,7 +126,26 @@ modprobe btusb || true
 systemctl enable NetworkManager NetworkManager-dispatcher sshd ananicy-cpp fstrim.timer ollama ly acpid cronie # tlp bluetooth libvirtd
 systemctl enable btrfs-scrub@-.timer btrfs-scrub@home.timer btrfs-scrub@var.timer
 systemctl mask systemd-rfkill systemd-rfkill.socket
-systemctl disable NetworkManager-wait-online.service systemd-networkd.service
+systemctl disable NetworkManager-wait-online.service systemd-networkd.service systemd-resolved
+
+# Prevent NetworkManager from using systemd-resolved
+sudo mkdir -p /etc/NetworkManager/conf.d
+echo -e "[main]\nsystemd-resolved=false" | sudo tee /etc/NetworkManager/conf.d/no-systemd-resolved.conf > /dev/null
+
+# Set DNS handling to 'default'
+echo -e "[main]\ndns=default" | sudo tee /etc/NetworkManager/conf.d/dns.conf > /dev/null
+
+# Configure static IP, gateway, and custom DNS
+nmcli con mod "Wired connection 1" \
+  ipv4.method manual \
+  ipv4.addresses 192.168.1.100/24 \
+  ipv4.gateway 192.168.1.1 \
+  ipv4.dns "1.1.1.1,1.0.0.1"
+nmcli con mod "Wired connection 1" ipv4.ignore-auto-dns yes
+
+# Apply changes
+nmcli con down "Wired connection 1"
+nmcli con up "Wired connection 1"
 
 # Clamav setup
 freshclam
