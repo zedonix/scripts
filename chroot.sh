@@ -85,12 +85,6 @@ su - "$user" -c '
   git checkout
   cp -r .config/* ~/.config
 
-  # tldr wiki setup
-  curl -L "https://raw.githubusercontent.com/filiparag/wikiman/master/Makefile" -o "wikiman-makefile"
-  make -f ./wikiman-makefile source-tldr
-  sudo make -f ./wikiman-makefile source-install
-  sudo make -f ./wikiman-makefile clean
-
   # Git config
   git config --global user.email "zedonix@proton.me"
   git config --global user.name "piyush"
@@ -101,6 +95,12 @@ echo '[ -f ~/.bashrc ] && . ~/.bashrc' > /root/.bash_profile
 mkdir /root/.config
 ln -sf /home/"$user"/.dotfiles/.bashrc ~/.bashrc
 ln -sf /home/"$user"/.dotfiles/.config/nvim/ ~/.config
+
+# tldr wiki setup
+curl -L "https://raw.githubusercontent.com/filiparag/wikiman/master/Makefile" -o "wikiman-makefile"
+make -f ./wikiman-makefile source-tldr
+make -f ./wikiman-makefile source-install
+make -f ./wikiman-makefile clean
 
 # Polkit/Firefox policy
 mkdir -p /etc/firefox/policies
