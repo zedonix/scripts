@@ -41,7 +41,7 @@ gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 echo 'https://nsfw.oisd.nl/
 https://raw.githubusercontent.com/iam-py-test/uBlock-combo/main/list.txt
 https://raw.githubusercontent.com/yokoffing/filterlists/main/click2load.txt' | wl-copy
-firefox
+gh auth login
 if [ -d ~/.mozilla/firefox ]; then
   dir=$(ls ~/.mozilla/firefox/ | grep ".default-release" | head -n1)
   if [ -n "$dir" ]; then

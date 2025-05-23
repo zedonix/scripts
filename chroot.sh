@@ -112,7 +112,7 @@ shred -u /root/install.conf
 cat > /etc/systemd/zram-generator.conf <<EOF
 [zram0]
 zram-size = ram * 2
-compression-algorithm = zstd
+compression-algorithm = zstd #lzo-rle
 swap-priority = 100
 fs-type = swap
 EOF
@@ -120,8 +120,8 @@ EOF
 # Services
 # ananicy-cpp = auto nice levels
 # acpid = ACPI events such as pressing the power button or closing a laptop's lid
-rfkill unblock bluetooth
-modprobe btusb || true
+# rfkill unblock bluetooth
+# modprobe btusb || true
 systemctl enable NetworkManager NetworkManager-dispatcher sshd ananicy-cpp fstrim.timer ollama ly acpid cronie # tlp bluetooth libvirtd
 systemctl enable btrfs-scrub@-.timer btrfs-scrub@home.timer btrfs-scrub@var.timer
 systemctl mask systemd-rfkill systemd-rfkill.socket
