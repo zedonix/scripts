@@ -69,21 +69,11 @@ su - "$user" -c '
   ln -sf ~/.dotfiles/.bashrc ~/.bashrc
   ln -sf ~/.dotfiles/home.html ~/Documents/home/home.html
   ln -sf ~/.dotfiles/archlinux.png ~/Documents/home/archlinux.png
-  ln -sf ~/.dotfiles/.config/mimeapps.list ~/.config/mimeapps.list
 
-  for link in foot fuzzel mako mpv newsboat nvim sway swaync tmux zathura; do
-    ln -sf ~/.dotfiles/.config/$link/ ~/.config
+  for link in foot fuzzel GIMP mako mpv newsboat nvim sway swaync tmux wikiman zathura mimeapps.list; do
+    ln -sf ~/.dotfiles/.config/$link ~/.config
   done
   git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
-
-  # PhotoGimp setup
-  cd ~/Downloads
-  git clone --filter=blob:none --no-checkout https://github.com/Diolinux/PhotoGIMP.git
-  cd PhotoGIMP
-  git sparse-checkout init --cone
-  git sparse-checkout set .config
-  git checkout
-  cp -r .config/* ~/.config
 
   # Git config
   git config --global user.email "zedonix@proton.me"
