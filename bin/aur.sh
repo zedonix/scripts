@@ -1,17 +1,28 @@
 #!/bin/bash
 
 if [ -z "$1" ]; then
-    echo "Usage: $0 <package-name>"
+    echo "Usage: $0 <package-name|aur-git-url>"
     exit 1
 fi
 
-pkg="$1"
+input="$1"
 aur_dir="$HOME/.aur"
 
 mkdir -p "$aur_dir"
 cd "$aur_dir" || { echo "Failed to access $aur_dir"; exit 1; }
 
-if git clone "https://aur.archlinux.org/$pkg.git"; then
+# Detect if input is a URL or a package name
+if [[ "$input" =~ ^https://aur\.archlinux\.org/([a-zA-Z0-9._-]+)\.git$ ]]; then
+    pkg="${BASH_REMATCH[1]}"
+    url="$input"
+else
+    pkg="$input"
+    url="https://aur.archlinux.org/$pkg.git"
+fi
+
+echo "Cloning from: $url"
+
+if git clone "$url"; then
     cd "$pkg" || { echo "Failed to enter $pkg directory"; exit 1; }
     if [ ! -f PKGBUILD ]; then
         echo "Error: Package '$pkg' does not exist on the AUR."
@@ -32,5 +43,5 @@ if git clone "https://aur.archlinux.org/$pkg.git"; then
         echo "Build cancelled."
     fi
 else
-    echo "Failed to clone $pkg. Is '$pkg' a valid package?"
+    echo "Failed to clone $pkg. Is '$pkg' a valid package or URL?"
 fi
