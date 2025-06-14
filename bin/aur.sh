@@ -9,7 +9,10 @@ input="$1"
 aur_dir="$HOME/.aur"
 
 mkdir -p "$aur_dir"
-cd "$aur_dir" || { echo "Failed to access $aur_dir"; exit 1; }
+cd "$aur_dir" || {
+    echo "Failed to access $aur_dir"
+    exit 1
+}
 
 # Detect if input is a URL or a package name
 if [[ "$input" =~ ^https://aur\.archlinux\.org/([a-zA-Z0-9._-]+)\.git$ ]]; then
@@ -23,14 +26,17 @@ fi
 echo "Cloning from: $url"
 
 if git clone "$url"; then
-    cd "$pkg" || { echo "Failed to enter $pkg directory"; exit 1; }
+    cd "$pkg" || {
+        echo "Failed to enter $pkg directory"
+        exit 1
+    }
     if [ ! -f PKGBUILD ]; then
         echo "Error: Package '$pkg' does not exist on the AUR."
         cd ..
         rm -rf "$pkg"
         exit 1
     fi
-    less PKGBUILD
+    nvim PKGBUILD
     read -p "Build $pkg? [Y/n] " -r
     if [[ $REPLY =~ ^[Yy]?$ ]]; then
         if makepkg -si --noconfirm --needed; then
