@@ -21,10 +21,10 @@ fi
 
 if [[ "$state" -eq 0 ]]; then
     # Hide cursor: move to bottom-right
-    swaymsg seat '*' cursor set $((width-1)) $((height-1))
-    echo 1 > "$STATE_FILE"
+    swaymsg seat '*' cursor set $((width - 1)) $((height - 1))
+    echo 1 >"$STATE_FILE"
 else
     # Show cursor: move to center
     swaymsg seat '*' cursor set "$center_x" "$center_y"
-    echo 0 > "$STATE_FILE"
+    echo 0 >"$STATE_FILE"
 fi
