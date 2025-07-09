@@ -8,5 +8,5 @@ while true; do
     [ "$bat_status" = "Charging" ] && status="⚡" || status=""
 
     echo "[$timestamp | Battery: ${bat_capacity}%$status]"
-    sleep 60
+    sleep 1
 done
