@@ -5,34 +5,39 @@
 export DISPLAY=:0
 export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/1000/bus"
 
-# Battery percentage at which to notify
+# Battery percentage levels
 WARNING_LEVEL=20
 CRITICAL_LEVEL=5
 BATTERY_DISCHARGING=$(acpi -b | grep "Battery 0" | grep -c "Discharging")
 BATTERY_LEVEL=$(acpi -b | grep "Battery 0" | grep -P -o '[0-9]+(?=%)')
 
-# Use files to store whether we've shown a notification or not (to prevent multiple notifications)
+# Notification state files
 FULL_FILE=/tmp/batteryfull
 EMPTY_FILE=/tmp/batteryempty
 CRITICAL_FILE=/tmp/batterycritical
 
-# Reset notifications if the computer is charging/discharging
-if [ "$BATTERY_DISCHARGING" -eq 1 ] && [ -f $FULL_FILE ]; then
-    rm $FULL_FILE
-elif [ "$BATTERY_DISCHARGING" -eq 0 ] && [ -f $EMPTY_FILE ]; then
-    rm $EMPTY_FILE
+# Reset state on change of power mode
+if [ "$BATTERY_DISCHARGING" -eq 1 ] && [ -f "$FULL_FILE" ]; then
+    rm "$FULL_FILE"
+elif [ "$BATTERY_DISCHARGING" -eq 0 ] && [ -f "$EMPTY_FILE" ]; then
+    rm "$EMPTY_FILE"
 fi
 
-# If the battery is charging and is full (and has not shown notification yet)
-if [ "$BATTERY_LEVEL" -gt 99 ] && [ "$BATTERY_DISCHARGING" -eq 0 ] && [ ! -f $FULL_FILE ]; then
-    notify-send "Battery Charged" "Battery is fully charged." -i "battery" -r 9991
-    touch $FULL_FILE
-    # If the battery is low and is not charging (and has not shown notification yet)
-elif [ "$BATTERY_LEVEL" -le $WARNING_LEVEL ] && [ "$BATTERY_DISCHARGING" -eq 1 ] && [ ! -f $EMPTY_FILE ]; then
-    notify-send "Low Battery" "${BATTERY_LEVEL}% of battery remaining." -u critical -i "battery-low" -r 9991
-    touch $EMPTY_FILE
-    # If the battery is critical and is not charging (and has not shown notification yet)
-elif [ "$BATTERY_LEVEL" -le $CRITICAL_LEVEL ] && [ "$BATTERY_DISCHARGING" -eq 1 ] && [ ! -f $CRITICAL_FILE ]; then
-    notify-send "Battery Critical" "The computer will shutdown soon." -u critical -i "battery-low" -r 9991
-    touch $CRITICAL_FILE
+# Icon paths (adjust if you're not using Papirus)
+ICON_FULL="/usr/share/icons/Papirus/48x48/status/battery-full.svg"
+ICON_LOW="/usr/share/icons/Papirus/48x48/status/battery-low.svg"
+ICON_CRITICAL="/usr/share/icons/Papirus/48x48/status/battery-caution.svg"
+
+# Notification logic
+if [ "$BATTERY_LEVEL" -gt 99 ] && [ "$BATTERY_DISCHARGING" -eq 0 ] && [ ! -f "$FULL_FILE" ]; then
+    notify-send "Battery Charged" "Battery is fully charged." -i "$ICON_FULL" -r 9991
+    touch "$FULL_FILE"
+
+elif [ "$BATTERY_LEVEL" -le "$WARNING_LEVEL" ] && [ "$BATTERY_DISCHARGING" -eq 1 ] && [ ! -f "$EMPTY_FILE" ]; then
+    notify-send "Low Battery" "${BATTERY_LEVEL}% of battery remaining." -u critical -i "$ICON_LOW" -r 9991
+    touch "$EMPTY_FILE"
+
+elif [ "$BATTERY_LEVEL" -le "$CRITICAL_LEVEL" ] && [ "$BATTERY_DISCHARGING" -eq 1 ] && [ ! -f "$CRITICAL_FILE" ]; then
+    notify-send "Battery Critical" "The computer will shutdown soon." -u critical -i "$ICON_CRITICAL" -r 9991
+    touch "$CRITICAL_FILE"
 fi
