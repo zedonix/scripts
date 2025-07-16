@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # State file to store toggle state
 STATE_FILE="/tmp/cursor_hidden_state"

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Get the brightness percentage:
 MAX_BRIGHTNESS=$(cat /sys/class/backlight/intel_backlight/max_brightness)

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 AUR_DIR="$HOME/.aur"
 UPDATED_PACKAGES=()
