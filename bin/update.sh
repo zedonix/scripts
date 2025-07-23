@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-AUR_DIR="$HOME/.aur"
+AUR_DIR="$HOME/Templates/aur"
 UPDATED_PACKAGES=()
 
 if [ ! -d "$AUR_DIR" ]; then
@@ -18,6 +18,8 @@ for pkgdir in "$AUR_DIR"/*; do
         # Save current HEAD commit hash
         old_commit=$(git rev-parse HEAD)
 
+        # Stash changes
+        git stash
         # Pull latest changes
         git pull --quiet
 

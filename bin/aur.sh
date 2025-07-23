@@ -6,7 +6,7 @@ if [ -z "$1" ]; then
 fi
 
 input="$1"
-aur_dir="$HOME/.aur"
+aur_dir="$HOME/Templates/aur"
 
 mkdir -p "$aur_dir"
 cd "$aur_dir" || {
