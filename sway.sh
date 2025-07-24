@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export PATH="$PATH:$HOME/.scripts/bin"
+export PATH="$PATH:$HOME/Documents/scripts/bin"
 
 export XDG_CURRENT_DESKTOP=sway
 export XDG_SESSION_DESKTOP=sway
