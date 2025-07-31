@@ -39,7 +39,7 @@ if git clone "$url"; then
     nvim PKGBUILD
     read -p "Build $pkg? [Y/n] " -r
     if [[ $REPLY =~ ^[Yy]?$ ]]; then
-        if makepkg -si --noconfirm --needed; then
+        if makepkg -si --clean --cleanbuild --noconfirm --needed; then
             echo "$pkg is installed"
         else
             echo "Build failed. Opening package page in browser..."
