@@ -2,7 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-AUR_DIR="${AUR_DIR:-$HOME/Templates/aur}"
+AUR_DIR="${AUR_DIR:-$HOME/Documents/aur}"
 UPDATED_PACKAGES=()
 
 # helper: detect default branch for the repo in CWD
