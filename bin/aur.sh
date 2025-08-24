@@ -16,7 +16,7 @@ if [[ ${1:-} == "" ]]; then
 fi
 
 input="$1"
-aur_dir="$HOME/Documents/aur"
+aur_dir="$HOME/Documents/personal/aur"
 mkdir -p "$aur_dir"
 cd "$aur_dir"
 

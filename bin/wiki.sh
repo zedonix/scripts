@@ -6,7 +6,7 @@ while true; do
         createFile=$(date +"%Y-%m-%d")
     fi
 
-    filePath=~/Knowledge/wiki/"$createFile.md"
+    filePath=~/Documents/personal/wiki/"$createFile.md"
 
     if [[ -e "$filePath" ]]; then
         echo "File already exists. Try a different name."
