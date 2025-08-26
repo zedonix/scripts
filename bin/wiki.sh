@@ -18,8 +18,7 @@ done
 touch "$filePath"
 nvim "$filePath"
 
-# Delete the file if it's empty (size 0)
+# Delete the file if it's empty
 if [[ ! -s "$filePath" ]]; then
     rm "$filePath"
-    echo "Empty file deleted."
 fi
