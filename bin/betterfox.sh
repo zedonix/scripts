@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-trash "$HOME/Downloads/user.js" &> /dev/null
-trash "$HOME/Downloads/userMY.js" &> /dev/null
+trash "$HOME/Downloads/user.js" &>/dev/null
+trash "$HOME/Downloads/userMY.js" &>/dev/null
 awk '
 BEGIN {skip=0}
 {
@@ -10,4 +10,4 @@ BEGIN {skip=0}
 }
 ' "$HOME/Documents/projects/default/dotfiles/user.js" >"$HOME/Downloads/userMY.js"
 curl -Lo "$HOME/Downloads/user.js" https://raw.githubusercontent.com/yokoffing/Betterfox/main/user.js
-delta --side-by-side "$HOME/Downloads/userMy.js" "$HOME/Downloads/user.js"
+delta --side-by-side "$HOME/Downloads/userMY.js" "$HOME/Downloads/user.js"
