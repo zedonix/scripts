@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 export PATH="$PATH:$HOME/.local/bin"
 
@@ -25,4 +25,4 @@ export VISUAL=nvim
 export SYSTEMD_EDITOR=nvim
 export MANPAGER="nvim +Man!"
 
-exec /usr/bin/sway
+exec /usr/bin/sway "$@"
