@@ -1,2 +1,7 @@
 #!/usr/bin/env bash
-fuzzel --dmenu < "${1}"
+set -euo pipefail
+
+chooser=(fuzzel --dmenu)
+selected="$(cat - | "${chooser[@]}")" || exit 1
+
+printf '%s\n' "$selected"
