@@ -1,46 +1,25 @@
 #!/usr/bin/env bash
-set -euo pipefail
+SNAP="/.snapshots"
+ENT="/boot/loader/entries"
 
-SNAPSHOT_BASE="/.snapshots"
-BOOT_ENTRIES_DIR="/boot/loader/entries"
-
-update_entry() {
-    local file="$1" subvol="$2"
-    cp "$file" "$file.bak"
-    sed -i -E "s#subvol=[^ ,]+#subvol=${subvol}#g; t; /^options /s#$# rootflags=subvol=${subvol}#; t; /^options /a options rootflags=subvol=${subvol}" "$file"
-}
-
-latest_snapshot() {
-    local cfg="$1" type="$2"
-    snapper -c "$cfg" list | awk -F'|' -v type="$type" '
-    NR>2 && /timeline/ {
-        gsub(/^ +| +$/,"",$1);
-        gsub(/^ +| +$/,"",$3);
-        gsub(/^ +| +$/,"",$5);
-        gsub(/^ +| +$/,"",$6);
-        split($3, dt, " ");
-        if (type=="daily") key=dt[1];
-        else if (type=="monthly") key=substr(dt[1],1,7);
-        if (epoch[key]=="" || epoch[key]<mktime(gensub(/[-:]/," ","g",dt[1]" "dt[2]))) {
-            epoch[key]=mktime(gensub(/[-:]/," ","g",dt[1]" "dt[2]));
-            snap[key]=$1;
-        }
+latest() {
+    snapper -c "$1" list | awk -F'|' -v t="$2" 'NR>2 && /timeline/ {
+    gsub(/^ +| +$/,"",$1); gsub(/^ +| +$/,"",$3);
+    split($3,d," "); k=(t=="daily"?d[1]:substr(d[1],1,7));
+    if(epoch[k]==""||epoch[k]<mktime(gensub(/[-:]/," ","g",d[1]" "d[2]))){
+        epoch[k]=mktime(gensub(/[-:]/," ","g",d[1]" "d[2]));snap[k]=$1;
     }
-    END {
-        max="";
-        for (k in snap) if (k>max) { max=k; num=snap[k]; }
-        print num;
-    }'
+} END{max="";for(k in snap)if(k>max){max=k;n=snap[k];}print snap[k]}'
 }
 
-ROOT_DAILY=$(latest_snapshot root daily)
-ROOT_MONTHLY=$(latest_snapshot root monthly)
-HOME_DAILY=$(latest_snapshot home daily)
-HOME_MONTHLY=$(latest_snapshot home monthly)
+update() {
+    cp "$1" "$1.bak"
+    sed -i -E "s#subvol=[^ ,]+#subvol=$2#g;/^options /{s/$/ rootflags=subvol=$2/}" "$1"
+}
 
-update_entry "$BOOT_ENTRIES_DIR/snap-root-latest.conf" "$SNAPSHOT_BASE/$ROOT_DAILY/snapshot"
-update_entry "$BOOT_ENTRIES_DIR/snap-root-monthly.conf" "$SNAPSHOT_BASE/$ROOT_MONTHLY/snapshot"
-update_entry "$BOOT_ENTRIES_DIR/snap-home-latest.conf" "$SNAPSHOT_BASE/$HOME_DAILY/snapshot"
-update_entry "$BOOT_ENTRIES_DIR/snap-home-monthly.conf" "$SNAPSHOT_BASE/$HOME_MONTHLY/snapshot"
+update "$ENT/snap-root-latest.conf" "$SNAP/$(latest root daily)/snapshot"
+update "$ENT/snap-root-monthly.conf" "$SNAP/$(latest root monthly)/snapshot"
+update "$ENT/snap-home-latest.conf" "$SNAP/$(latest home daily)/snapshot"
+update "$ENT/snap-home-monthly.conf" "$SNAP/$(latest home monthly)/snapshot"
 
-echo "Boot entries updated."
+echo "Updated boot entries."
