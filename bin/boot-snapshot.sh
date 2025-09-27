@@ -17,9 +17,9 @@ update() {
     sed -i -E "s#subvol=[^ ,]+#subvol=$2#g;/^options /{s/$/ rootflags=subvol=$2/}" "$1"
 }
 
-update "$ENT/snap-root-latest.conf" "$SNAP/$(latest root daily)/snapshot"
-update "$ENT/snap-root-monthly.conf" "$SNAP/$(latest root monthly)/snapshot"
-update "$ENT/snap-home-latest.conf" "$SNAP/$(latest home daily)/snapshot"
-update "$ENT/snap-home-monthly.conf" "$SNAP/$(latest home monthly)/snapshot"
+update "$ENT/10-snap-root-latest.conf" "$SNAP/$(latest root daily)/snapshot"
+update "$ENT/11snap-home-latest.conf" "$SNAP/$(latest home daily)/snapshot"
+update "$ENT/12snap-root-monthly.conf" "$SNAP/$(latest root monthly)/snapshot"
+update "$ENT/13snap-home-monthly.conf" "$SNAP/$(latest home monthly)/snapshot"
 
 echo "Updated boot entries."
