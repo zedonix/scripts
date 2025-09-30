@@ -12,5 +12,6 @@ if [[ -z "$NUM" ]]; then
   exit 1
 fi
 
+NUM=${NUM:-0}
 sed -Ei "s#(@snapshots/)[0-9]+#\1${NUM}#g" /boot/loader/entries/snapshot-root.conf
 printf 'root entry updated to %s/%s/snapshot\n' "$SNAP_PREFIX" "$NUM"
