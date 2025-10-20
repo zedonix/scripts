@@ -13,15 +13,9 @@ IS_MUTE=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | grep -q MUTED && echo 1 || ech
 
 # Choose icon based on mute state and volume
 if [[ "$IS_MUTE" == "0" ]]; then
-    notify-send.sh "Volume: $VOLUME%" \
-        --replace-file=/tmp/audio-notification \
-        -t 2000 \
-        -h int:value:"$VOLUME" \
-        -h string:synchronous:volume-change
+    notify-send.sh "Volume: $VOLUME%" --replace-file=/tmp/audio-notification -t 2000 -h int:value:"$VOLUME" -h string:synchronous:volume-change
+    # notify-send.sh "Pipewire" "Volume: $VOLUME%" --replace-file=/tmp/audio-notification -t 2000 -h int:value:"$VOLUME" -h string:synchronous:volume-change
 else
-    notify-send.sh "Muted (volume: $VOLUME%)" \
-        --replace-file=/tmp/audio-notification \
-        -t 2000 \
-        -h int:value:"$VOLUME" \
-        -h string:synchronous:volume-change
+    notify-send.sh "Muted (volume: $VOLUME%)" --replace-file=/tmp/audio-notification -t 2000 -h int:value:"$VOLUME" -h string:synchronous:volume-change
+    # notify-send.sh "Pipewire" "Muted (volume: $VOLUME%)" --replace-file=/tmp/audio-notification -t 2000 -h int:value:"$VOLUME" -h string:synchronous:volume-change
 fi
