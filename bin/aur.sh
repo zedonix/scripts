@@ -2,6 +2,11 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+if ! grep -qi 'arch' /etc/os-release; then
+  echo "Not using Arch Linux."
+  exit 1
+fi
+
 usage() {
   cat <<EOF
 Usage: $0 <package-name|aur-git-url>
