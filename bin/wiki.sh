@@ -6,7 +6,10 @@ while true; do
         createFile=$(date +"%Y-%m-%d")
     fi
 
-    filePath=~/Documents/personal/wiki/"$createFile.txt"
+    if [[ "$createFile" != *.* ]]; then
+        createFile="$createFile.txt"
+    fi
+    filePath="$HOME/Documents/personal/wiki/$createFile"
 
     if [[ -e "$filePath" ]]; then
         echo "File already exists. Try a different name."
