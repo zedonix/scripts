@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+swayidle -w \
+  timeout 180 'swaylock --ignore-empty-password --show-failed-attempts -f -c 000000' \
+  timeout 180 'swaymsg "output * power off"' \
+  resume 'swaymsg "output * power on"' \
+  before-sleep 'swaylock --ignore-empty-password --show-failed-attempts -fFec 282828' &
