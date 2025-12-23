@@ -78,5 +78,5 @@ while true; do
     bat="BAT N/A"
   fi
 
-  echo "[$bat | $timestamp | LOAD $load | CPU ${cpu}% | MEM ${mem}% (${mem_avail_g}G) | SWAP ${swap}%]"
+  echo "[LOAD $load | CPU ${cpu}% | MEM ${mem}% (${mem_avail_g}G) | SWAP ${swap}% | $bat | $timestamp]"
 done
