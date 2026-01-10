@@ -9,7 +9,7 @@ while true; do
     if [[ "$createFile" != *.* ]]; then
         createFile="$createFile.txt"
     fi
-    filePath="$HOME/Documents/personal/wiki/$createFile"
+    filePath="$HOME/Documents/projects/wiki/$createFile"
 
     if [[ -e "$filePath" ]]; then
         echo "File already exists. Try a different name."
