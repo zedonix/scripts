@@ -63,12 +63,8 @@ while true; do
       power=0
     fi
 
-    if [[ $status == Discharging && $power -gt 0 ]]; then
-      secs=$((now * 3600 / power))
-      h=$((secs / 3600))
-      m=$(((secs % 3600) / 60))
-      time_left=$(printf "%d:%02d" "$h" "$m")
-      bat="BAT ${cap}% ${time_left}"
+    if [[ $status == Discharging ]]; then
+      bat="BAT ${cap}%"
     elif [[ $status == Charging ]]; then
       bat="BAT ${cap}% +"
     else
